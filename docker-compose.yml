@@ -1,0 +1,11 @@
+# Football Quiz: static PWA served by nginx. Start/update: docker compose up -d
+services:
+  football-quiz:
+    image: nginx:alpine
+    container_name: football-quiz
+    restart: unless-stopped
+    ports:
+      - "8097:80"
+    volumes:
+      - ./docs:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
