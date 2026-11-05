@@ -15,3 +15,11 @@ Live: https://teo2301.github.io/football-quiz/
 
 Home server copy: `docker compose up -d` serves it on :8097
 (tailnet HTTPS: https://riccioserver.tail0d3eb6.ts.net:8445).
+
+## Leaderboard
+
+`server/leaderboard.py` (container `football-quiz-scores`, 127.0.0.1:8093) stores scores in
+`data/leaderboard.db` (not in git). The page posts to it at
+https://riccioserver.tail0d3eb6.ts.net:10000/api through Tailscale Funnel
+(`tailscale funnel --bg --https=10000 http://127.0.0.1:8093`). The server works out the
+points itself. Each player's best game shows, per quiz length, for this week and all time.

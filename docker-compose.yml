@@ -1,5 +1,6 @@
-# Football Quiz: static PWA served by nginx. Start/update: docker compose up -d
+# Football Quiz. Start/update: docker compose up -d
 services:
+  # The quiz itself (the public copy is GitHub Pages; this is the home copy)
   football-quiz:
     image: nginx:alpine
     container_name: football-quiz
@@ -9,3 +10,16 @@ services:
     volumes:
       - ./docs:/usr/share/nginx/html:ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+  # Leaderboard API. Localhost only; public via `tailscale funnel --https=10000`.
+  football-quiz-scores:
+    image: python:3.13-alpine
+    container_name: football-quiz-scores
+    restart: unless-stopped
+    user: "1000:1000"
+    command: ["python", "-u", "/app/leaderboard.py"]
+    ports:
+      - "127.0.0.1:8093:8000"
+    volumes:
+      - ./server:/app:ro
+      - ./data:/data

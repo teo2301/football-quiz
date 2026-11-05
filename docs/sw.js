@@ -1,6 +1,6 @@
 // Offline support. Bump VERSION after changing index.html or the file list.
 // questions.json is network-first so new questions show up without a bump.
-const VERSION = "fq-v1";
+const VERSION = "fq-v2";
 const FILES = ["./", "index.html", "questions.json", "manifest.json", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

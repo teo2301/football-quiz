@@ -49,6 +49,18 @@ h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut
 .review .ans{color:var(--good);font-weight:600}
 .review .yours{color:var(--bad)}
 .hidden{display:none!important}
+.lb{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.lb li{display:grid;grid-template-columns:2.2em 1fr auto;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.lb li.me{border-color:var(--accent);border-width:2px}
+.lb .pos{font-weight:750;color:var(--muted);text-align:center}
+.lb .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb .meta{font-size:.75rem;color:var(--muted);font-weight:400}
+.lb .pts{font-weight:750;text-align:right}
+.post{margin-top:18px}
+.row{display:flex;gap:8px}
+.row input{flex:1;min-width:0;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px;font:inherit}
+.row .btn{width:auto;margin:0;padding:12px 18px}
+.linkbtn{background:none;border:0;color:var(--accent);font:inherit;font-size:.85rem;padding:4px;cursor:pointer;text-decoration:underline}
 .small{font-size:.8rem;color:var(--muted)}
 </style>
 </head>
@@ -73,6 +85,7 @@ h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut
 
   <button class="btn" id="start">Start quiz</button>
   <p class="small center" id="pool"></p>
+  <button class="btn ghost" id="openBoard">🏆 Leaderboard</button>
 
   <h2>Your record</h2>
   <div class="stats">
@@ -100,10 +113,28 @@ h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut
   <h1 class="center">Full time</h1>
   <p class="big" id="final"></p>
   <p class="center sub" id="verdict"></p>
+  <div class="card post">
+    <div id="postAsk">
+      <p style="margin:0 0 10px">Put your score on the leaderboard? Pick a name:</p>
+      <div class="row"><input id="nameIn" maxlength="16" placeholder="Your name" autocomplete="nickname"><button class="btn" id="postBtn">Post</button></div>
+    </div>
+    <p id="postMsg" class="hidden" style="margin:0"></p>
+  </div>
   <button class="btn" id="again">Play again</button>
   <button class="btn ghost" id="menu">Change settings</button>
   <h2 id="missedH">What you missed</h2>
   <ul class="review" id="missed"></ul>
+</section>
+
+<section id="board" class="hidden">
+  <div class="top"><h1 style="margin:0">🏆 Leaderboard</h1><button class="chip" id="boardBack">Back</button></div>
+  <p class="sub">Best game per player. Points: 1 / 2 / 3 per correct Easy / Medium / Hard answer, ×1.25 with the 20 s timer, ×1.5 with 10 s.</p>
+  <div class="chips" id="bPeriod"></div>
+  <div class="chips" id="bLen" style="margin-top:8px"></div>
+  <h2 id="bTitle"></h2>
+  <ul class="lb" id="lb"></ul>
+  <p class="small center" id="bMsg"></p>
+  <p class="small center" id="meLine"></p>
 </section>
 
 </main>
@@ -114,6 +145,10 @@ const DIFFS = {0:"Mixed", 1:"Easy", 2:"Medium", 3:"Hard"};
 const LENGTHS = {10:"10", 20:"20", 50:"50"};
 const TIMERS = {0:"Off", 20:"20 s", 10:"10 s"};
 
+// Leaderboard API on the home server (public via Tailscale Funnel).
+const API = "https://riccioserver.tail0d3eb6.ts.net:10000/api";
+const PERIODS = {week:"This week", all:"All time"};
+const board = {period:"week", len:"10"};
 const store = {
   get(k, d) { try { const v = localStorage.getItem("fq_" + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
   set(k, v) { try { localStorage.setItem("fq_" + k, JSON.stringify(v)); } catch {} }
@@ -163,7 +198,7 @@ function renderHome() {
 }
 
 function show(id) {
-  for (const s of ["home", "play", "done"]) $(s).classList.toggle("hidden", s !== id);
+  for (const s of ["home", "play", "done", "board"]) $(s).classList.toggle("hidden", s !== id);
   window.scrollTo(0, 0);
 }
 
@@ -173,7 +208,7 @@ function start() {
   // Unseen questions first, so repeats only start once a pool is exhausted.
   const picked = [...shuffle(p.filter(q => !seen.has(q.id))), ...shuffle(p.filter(q => seen.has(q.id)))]
                  .slice(0, Number(settings.len));
-  game = {qs: picked, i: 0, right: 0, streak: 0, best: 0, missed: []};
+  game = {qs: picked, i: 0, right: 0, streak: 0, best: 0, missed: [], byDiff: {1: 0, 2: 0, 3: 0}};
   show("play");
   ask();
 }
@@ -222,7 +257,7 @@ function answer(choice) {
     if (b.textContent === q.a) b.classList.add("right");
     else if (b.textContent === choice) b.classList.add("wrong");
   }
-  if (ok) { game.right++; game.streak++; game.best = Math.max(game.best, game.streak); }
+  if (ok) { game.right++; game.byDiff[q.d]++; game.streak++; game.best = Math.max(game.best, game.streak); }
   else { game.streak = 0; game.missed.push({q, choice}); }
   const seen = new Set(store.get("seen", [])); seen.add(q.id); store.set("seen", [...seen]);
   const f = $("fact");
@@ -264,10 +299,128 @@ function finish() {
     if (m.choice !== null) { const p3 = document.createElement("div"); p3.className = "yours"; p3.textContent = "✗ " + m.choice; li.append(p3); }
     ul.appendChild(li);
   }
+  game.result = {total: n, right: game.byDiff, league: settings.league, diff: Number(settings.diff),
+                 timer: Number(settings.timer), streak: game.best};
+  const name = store.get("name", "");
+  $("nameIn").value = name;
+  $("postMsg").classList.add("hidden");
+  // Only whole quizzes of 10/20/50 count; a short pool (e.g. Hard + one league) doesn't.
+  const eligible = [10, 20, 50].includes(n) && n === Number(settings.len);
+  $("postAsk").classList.toggle("hidden", !eligible || !!name);
+  if (!eligible) postMsg("Leaderboard scores need a full 10, 20 or 50-question quiz.");
+  else if (name) postScore(name);
   show("done");
 }
 
+function postMsg(text, link) {
+  const m = $("postMsg"); m.textContent = text; m.classList.remove("hidden");
+  if (link) { const b = document.createElement("button"); b.className = "linkbtn"; b.textContent = link.text; b.onclick = link.fn; m.append(" ", b); }
+}
+
+function points(r) {
+  const mult = {0: 1, 20: 1.25, 10: 1.5}[r.timer];
+  return Math.round((r.right[1] + 2 * r.right[2] + 3 * r.right[3]) * mult * 10) / 10;
+}
+
+async function send(entry) {
+  const res = await fetch(API + "/scores", {method: "POST", body: JSON.stringify(entry)});
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) { const e = new Error(body.error || "Server error"); e.permanent = res.status === 400; throw e; }
+  return body;
+}
+
+async function postScore(name) {
+  const entry = Object.assign({name}, game.result);
+  postMsg(`Posting ${points(entry)} points as ${name}…`);
+  try {
+    const r = await send(entry);
+    postMsg(`Posted as ${name}: ${r.points} pts · #${r.rank_week} this week · #${r.rank_all} all time.`,
+            {text: "View leaderboard", fn: () => openBoard(String(entry.total))});
+  } catch (e) {
+    if (e.permanent) { $("postAsk").classList.remove("hidden"); postMsg(e.message); return; }
+    const q = store.get("pending", []); q.push(entry); store.set("pending", q.slice(-20));
+    postMsg("You're offline, so your score is saved and will post next time you're online.");
+  }
+}
+
+async function flushPending() {
+  const q = store.get("pending", []);
+  if (!q.length || !navigator.onLine) return;
+  const left = [];
+  for (const e of q) {
+    try { await send(e); } catch (err) { if (!err.permanent) left.push(e); }
+  }
+  store.set("pending", left);
+}
+
+function savePostName() {
+  const name = $("nameIn").value.trim().replace(/\s+/g, " ");
+  if (!/^[\p{L}\p{N} .'\-_]{2,16}$/u.test(name)) { postMsg("Use 2-16 letters, numbers or spaces."); return; }
+  store.set("name", name);
+  $("postAsk").classList.add("hidden");
+  postScore(name);
+}
+
+function boardChips(el, map, key) {
+  el.innerHTML = "";
+  for (const [v, label] of Object.entries(map)) {
+    const b = document.createElement("button");
+    b.className = "chip"; b.textContent = label;
+    b.setAttribute("aria-pressed", String(board[key] === v));
+    b.onclick = () => { board[key] = v; loadBoard(); };
+    el.appendChild(b);
+  }
+}
+
+function openBoard(len) {
+  if (len) board.len = len;
+  show("board");
+  loadBoard();
+}
+
+async function loadBoard() {
+  boardChips($("bPeriod"), PERIODS, "period");
+  boardChips($("bLen"), {10: "10 questions", 20: "20 questions", 50: "50 questions"}, "len");
+  $("bTitle").textContent = `${PERIODS[board.period]} · ${board.len} questions`;
+  const ul = $("lb"); ul.innerHTML = ""; $("bMsg").textContent = "Loading…";
+  const me = store.get("name", "");
+  $("meLine").innerHTML = "";
+  if (me) {
+    $("meLine").textContent = `You post as ${me}. `;
+    const b = document.createElement("button"); b.className = "linkbtn"; b.textContent = "Change name";
+    b.onclick = () => { const n = prompt("Leaderboard name (2-16 characters)", me);
+      if (n && /^[\p{L}\p{N} .'\-_]{2,16}$/u.test(n.trim())) { store.set("name", n.trim()); loadBoard(); } };
+    $("meLine").append(b);
+  }
+  try {
+    const res = await fetch(`${API}/board?len=${board.len}&period=${board.period}`);
+    if (!res.ok) throw new Error();
+    const {rows} = await res.json();
+    $("bMsg").textContent = rows.length ? "" : "No scores yet. Be the first!";
+    rows.forEach((r, i) => {
+      const li = document.createElement("li");
+      if (me && r.name.toLowerCase() === me.toLowerCase()) li.className = "me";
+      const pos = document.createElement("span"); pos.className = "pos";
+      pos.textContent = i < 3 ? ["🥇", "🥈", "🥉"][i] : i + 1;
+      const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = r.name;
+      const meta = document.createElement("div"); meta.className = "meta";
+      meta.textContent = `${r.correct}/${r.total} · ${LEAGUES[r.league]} · ${DIFFS[r.diff]}${r.timer ? " · " + r.timer + " s" : ""}`;
+      nm.append(meta);
+      const pts = document.createElement("span"); pts.className = "pts"; pts.textContent = r.points;
+      li.append(pos, nm, pts); ul.appendChild(li);
+    });
+  } catch {
+    $("bMsg").textContent = "Couldn't reach the leaderboard. Check your connection.";
+  }
+}
+
 $("start").onclick = start;
+$("openBoard").onclick = () => openBoard();
+$("boardBack").onclick = () => { renderHome(); show("home"); };
+$("postBtn").onclick = savePostName;
+$("nameIn").addEventListener("keydown", e => { if (e.key === "Enter") savePostName(); });
+window.addEventListener("online", flushPending);
+flushPending();
 $("next").onclick = next;
 $("again").onclick = start;
 $("menu").onclick = () => { renderHome(); show("home"); };
