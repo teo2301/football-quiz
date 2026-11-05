@@ -11,5 +11,7 @@ with no backend.
 - After editing `index.html`, bump `VERSION` in `docs/sw.js` so installed copies update.
   Question changes come through without a bump.
 
+Live: https://teo2301.github.io/football-quiz/
+
 Home server copy: `docker compose up -d` serves it on :8097
 (tailnet HTTPS: https://riccioserver.tail0d3eb6.ts.net:8445).
