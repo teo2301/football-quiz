@@ -3300,5 +3300,5088 @@
 "Branislav Ivanović"
 ],
 "x": "Suárez was banned for four months."
+},
+{
+"id": "pl081",
+"l": "pl",
+"d": 2,
+"q": "Who scored the only goal at Old Trafford in May 2002 as Arsenal clinched the league and FA Cup double?",
+"a": "Sylvain Wiltord",
+"w": [
+"Thierry Henry",
+"Freddie Ljungberg",
+"Robert Pires"
+],
+"x": "Wiltord's goal won the title at United's ground, completing Arsenal's second double under Wenger."
+},
+{
+"id": "pl082",
+"l": "pl",
+"d": 2,
+"q": "Which second-tier club did Manchester United beat 3-0 in the 2004 FA Cup final?",
+"a": "Millwall",
+"w": [
+"Cardiff City",
+"Southampton",
+"Watford"
+],
+"x": "Ronaldo and Van Nistelrooy (2) scored in Cardiff against Dennis Wise's Millwall."
+},
+{
+"id": "pl083",
+"l": "pl",
+"d": 2,
+"q": "Whose penalty, his last kick for Arsenal, won the 2005 FA Cup final shoot-out against Manchester United?",
+"a": "Patrick Vieira",
+"w": [
+"Thierry Henry",
+"Ashley Cole",
+"Lauren"
+],
+"x": "The final finished 0-0; Vieira left for Juventus that summer."
+},
+{
+"id": "pl084",
+"l": "pl",
+"d": 2,
+"q": "Liverpool won the 2006 FA Cup on penalties after a 3-3 draw, thanks to a late Steven Gerrard equaliser. Who were the opponents?",
+"a": "West Ham United",
+"w": [
+"Everton",
+"Millwall",
+"Middlesbrough"
+],
+"x": "It's often called 'The Gerrard Final'; Pepe Reina saved three penalties."
+},
+{
+"id": "pl085",
+"l": "pl",
+"d": 2,
+"q": "Who scored the extra-time winner in the first FA Cup final at the new Wembley, in 2007?",
+"a": "Didier Drogba",
+"w": [
+"Frank Lampard",
+"Cristiano Ronaldo",
+"Wayne Rooney"
+],
+"x": "Chelsea beat Manchester United 1-0."
+},
+{
+"id": "pl086",
+"l": "pl",
+"d": 3,
+"q": "Which Everton player scored after 25 seconds in the 2009 FA Cup final?",
+"a": "Louis Saha",
+"w": [
+"Tim Cahill",
+"Marouane Fellaini",
+"Mikel Arteta"
+],
+"x": "It was then the fastest goal in an FA Cup final, but Chelsea came back to win 2-1."
+},
+{
+"id": "pl087",
+"l": "pl",
+"d": 2,
+"q": "In which season did Chelsea win their first league and FA Cup double?",
+"a": "2009-10",
+"w": [
+"2004-05",
+"2006-07",
+"2011-12"
+],
+"x": "Ancelotti's side beat Portsmouth 1-0 in the final after winning the league."
+},
+{
+"id": "pl088",
+"l": "pl",
+"d": 2,
+"q": "Who scored the winner as Manchester City beat Stoke in the 2011 FA Cup final, their first major trophy in 35 years?",
+"a": "Yaya Touré",
+"w": [
+"Carlos Tevez",
+"David Silva",
+"Mario Balotelli"
+],
+"x": "City won 1-0 at Wembley."
+},
+{
+"id": "pl089",
+"l": "pl",
+"d": 3,
+"q": "Who headed Wigan's stoppage-time winner against Manchester City in the 2013 FA Cup final?",
+"a": "Ben Watson",
+"w": [
+"Callum McManaman",
+"Arouna Koné",
+"James McArthur"
+],
+"x": "Wigan were relegated from the Premier League three days later."
+},
+{
+"id": "pl090",
+"l": "pl",
+"d": 2,
+"q": "Which Manchester United manager was sacked days after winning the 2016 FA Cup?",
+"a": "Louis van Gaal",
+"w": [
+"David Moyes",
+"José Mourinho",
+"Ole Gunnar Solskjær"
+],
+"x": "United beat Crystal Palace 2-1 with a Jesse Lingard volley; Mourinho replaced him."
+},
+{
+"id": "pl091",
+"l": "pl",
+"d": 2,
+"q": "Manchester City won the 2019 FA Cup final 6-0, completing England's first men's domestic treble. Who did they beat?",
+"a": "Watford",
+"w": [
+"Brighton",
+"Wolves",
+"Chelsea"
+],
+"x": "It equalled the biggest winning margin in an FA Cup final."
+},
+{
+"id": "pl092",
+"l": "pl",
+"d": 2,
+"q": "Who scored both goals as Arsenal beat Chelsea in the 2020 FA Cup final?",
+"a": "Pierre-Emerick Aubameyang",
+"w": [
+"Alexandre Lacazette",
+"Bukayo Saka",
+"Nicolas Pépé"
+],
+"x": "Arsenal won 2-1 in an empty Wembley; it was Mikel Arteta's first trophy."
+},
+{
+"id": "pl093",
+"l": "pl",
+"d": 2,
+"q": "Who scored after about 12 seconds in the 2023 FA Cup final, the fastest goal in a final?",
+"a": "İlkay Gündoğan",
+"w": [
+"Erling Haaland",
+"Kevin De Bruyne",
+"Bruno Fernandes"
+],
+"x": "Gündoğan scored twice as City beat United 2-1 on their way to the treble."
+},
+{
+"id": "pl094",
+"l": "pl",
+"d": 1,
+"q": "Which manager was sacked by Manchester United months after winning the 2024 FA Cup?",
+"a": "Erik ten Hag",
+"w": [
+"Ole Gunnar Solskjær",
+"Ralf Rangnick",
+"Louis van Gaal"
+],
+"x": "He went in October 2024 and Rúben Amorim replaced him."
+},
+{
+"id": "pl095",
+"l": "pl",
+"d": 1,
+"q": "Which Chelsea goalkeeper refused to be substituted during the 2019 League Cup final?",
+"a": "Kepa Arrizabalaga",
+"w": [
+"Willy Caballero",
+"Édouard Mendy",
+"Petr Čech"
+],
+"x": "Maurizio Sarri tried to bring on Caballero for the shoot-out; City won on penalties."
+},
+{
+"id": "pl096",
+"l": "pl",
+"d": 2,
+"q": "Manchester United's 2023 League Cup win was their first trophy since 2017. Who did they beat in the final?",
+"a": "Newcastle United",
+"w": [
+"Southampton",
+"Nottingham Forest",
+"Chelsea"
+],
+"x": "Casemiro scored and a Sven Botman own goal made it 2-0."
+},
+{
+"id": "pl097",
+"l": "pl",
+"d": 2,
+"q": "Who headed Liverpool's extra-time winner against Chelsea in the 2024 League Cup final?",
+"a": "Virgil van Dijk",
+"w": [
+"Darwin Núñez",
+"Mohamed Salah",
+"Cody Gakpo"
+],
+"x": "Klopp's injury-hit side included several academy teenagers."
+},
+{
+"id": "pl098",
+"l": "pl",
+"d": 3,
+"q": "Which club beat Arsenal in the 2011 League Cup final and were relegated the same season?",
+"a": "Birmingham City",
+"w": [
+"Wigan Athletic",
+"Blackpool",
+"West Ham United"
+],
+"x": "Obafemi Martins scored the late winner after a mix-up between Koscielny and Szczęsny."
+},
+{
+"id": "pl099",
+"l": "pl",
+"d": 3,
+"q": "Liverpool won the 2012 League Cup on penalties against which Championship club?",
+"a": "Cardiff City",
+"w": [
+"Leeds United",
+"Bristol City",
+"Swansea City"
+],
+"x": "It was Liverpool's first trophy since 2006."
+},
+{
+"id": "pl100",
+"l": "pl",
+"d": 3,
+"q": "Tottenham's only major trophy between 1999 and the 2025 Europa League was the 2008 League Cup. Who headed their extra-time winner against Chelsea?",
+"a": "Jonathan Woodgate",
+"w": [
+"Dimitar Berbatov",
+"Robbie Keane",
+"Ledley King"
+],
+"x": "Spurs won 2-1 under Juande Ramos."
+},
+{
+"id": "pl101",
+"l": "pl",
+"d": 2,
+"q": "Which club won its first major trophy in 2004, beating Bolton in the League Cup final?",
+"a": "Middlesbrough",
+"w": [
+"Charlton Athletic",
+"Birmingham City",
+"Fulham"
+],
+"x": "Steve McClaren's side won 2-1 in Cardiff."
+},
+{
+"id": "pl102",
+"l": "pl",
+"d": 2,
+"q": "Which club did Roy Hodgson take to the 2010 Europa League final?",
+"a": "Fulham",
+"w": [
+"Blackburn Rovers",
+"Liverpool",
+"West Brom"
+],
+"x": "They knocked out Juventus on the way and lost 2-1 to Atlético Madrid after extra time."
+},
+{
+"id": "pl103",
+"l": "pl",
+"d": 2,
+"q": "Who has the most assists in Premier League history?",
+"a": "Ryan Giggs",
+"w": [
+"Kevin De Bruyne",
+"Cesc Fàbregas",
+"Frank Lampard"
+],
+"x": "Giggs registered 162 Premier League assists."
+},
+{
+"id": "pl104",
+"l": "pl",
+"d": 3,
+"q": "Who scored a record 10 Premier League own goals?",
+"a": "Richard Dunne",
+"w": [
+"Jamie Carragher",
+"Martin Škrtel",
+"Phil Jagielka"
+],
+"x": "The Irish defender played for Everton, Manchester City and Aston Villa."
+},
+{
+"id": "pl105",
+"l": "pl",
+"d": 2,
+"q": "Mohamed Salah set a 38-game Premier League scoring record in 2017-18, his first season at Liverpool. How many goals?",
+"a": "32",
+"w": [
+"29",
+"30",
+"34"
+],
+"x": "Haaland broke it with 36 in 2022-23."
+},
+{
+"id": "pl106",
+"l": "pl",
+"d": 2,
+"q": "Which Manchester United striker scored five in a 7-1 win over Blackburn in November 2010?",
+"a": "Dimitar Berbatov",
+"w": [
+"Wayne Rooney",
+"Javier Hernández",
+"Michael Owen"
+],
+"x": "He shared the Golden Boot that season."
+},
+{
+"id": "pl107",
+"l": "pl",
+"d": 3,
+"q": "Which two players shared the 2010-11 Golden Boot on 20 goals?",
+"a": "Dimitar Berbatov and Carlos Tevez",
+"w": [
+"Wayne Rooney and Darren Bent",
+"Robin van Persie and Didier Drogba",
+"Fernando Torres and Carlos Tevez"
+],
+"x": "Both played for Manchester clubs."
+},
+{
+"id": "pl108",
+"l": "pl",
+"d": 2,
+"q": "Who won the 2008-09 Golden Boot with 19 goals for Chelsea?",
+"a": "Nicolas Anelka",
+"w": [
+"Didier Drogba",
+"Frank Lampard",
+"Fernando Torres"
+],
+"x": "It was Anelka's only Golden Boot."
+},
+{
+"id": "pl109",
+"l": "pl",
+"d": 2,
+"q": "Who won the 2002-03 Golden Boot with 25 goals?",
+"a": "Ruud van Nistelrooy",
+"w": [
+"Thierry Henry",
+"James Beattie",
+"Alan Shearer"
+],
+"x": "United also won the title that season."
+},
+{
+"id": "pl110",
+"l": "pl",
+"d": 2,
+"q": "Cristiano Ronaldo won the 2007-08 Golden Boot. How many league goals did he score?",
+"a": "31",
+"w": [
+"26",
+"28",
+"34"
+],
+"x": "He added eight more in the Champions League as United won both."
+},
+{
+"id": "pl111",
+"l": "pl",
+"d": 1,
+"q": "Who won the Golden Boot in 2012-13, his first season at Manchester United?",
+"a": "Robin van Persie",
+"w": [
+"Wayne Rooney",
+"Luis Suárez",
+"Gareth Bale"
+],
+"x": "His 26 goals fired United to the title in Ferguson's last season."
+},
+{
+"id": "pl112",
+"l": "pl",
+"d": 3,
+"q": "Who won the 2000-01 Golden Boot with 23 goals for Chelsea?",
+"a": "Jimmy Floyd Hasselbaink",
+"w": [
+"Gianfranco Zola",
+"Thierry Henry",
+"Marcus Stewart"
+],
+"x": "He had joined from Atlético Madrid in 2000."
+},
+{
+"id": "pl113",
+"l": "pl",
+"d": 1,
+"q": "Who won the 2023-24 Golden Boot?",
+"a": "Erling Haaland",
+"w": [
+"Cole Palmer",
+"Ollie Watkins",
+"Alexander Isak"
+],
+"x": "He scored 27, ahead of Palmer's 22."
+},
+{
+"id": "pl114",
+"l": "pl",
+"d": 2,
+"q": "Who won the 2014-15 Golden Boot?",
+"a": "Sergio Agüero",
+"w": [
+"Harry Kane",
+"Diego Costa",
+"Charlie Austin"
+],
+"x": "Agüero scored 26 goals."
+},
+{
+"id": "pl115",
+"l": "pl",
+"d": 2,
+"q": "Who won the 2020-21 Golden Boot, his third?",
+"a": "Harry Kane",
+"w": [
+"Mohamed Salah",
+"Bruno Fernandes",
+"Son Heung-min"
+],
+"x": "Kane scored 23 and also topped the assists chart."
+},
+{
+"id": "pl116",
+"l": "pl",
+"d": 1,
+"q": "Who managed Manchester City to their first Premier League title, in 2011-12?",
+"a": "Roberto Mancini",
+"w": [
+"Manuel Pellegrini",
+"Mark Hughes",
+"Pep Guardiola"
+],
+"x": "It was City's first top-flight title since 1968."
+},
+{
+"id": "pl117",
+"l": "pl",
+"d": 2,
+"q": "Who managed Manchester City to the 2013-14 title?",
+"a": "Manuel Pellegrini",
+"w": [
+"Roberto Mancini",
+"Pep Guardiola",
+"Sven-Göran Eriksson"
+],
+"x": "Liverpool finished two points behind."
+},
+{
+"id": "pl118",
+"l": "pl",
+"d": 1,
+"q": "Who managed Chelsea to the 2014-15 title?",
+"a": "José Mourinho",
+"w": [
+"Antonio Conte",
+"Carlo Ancelotti",
+"Rafael Benítez"
+],
+"x": "It was his third Premier League title with Chelsea."
+},
+{
+"id": "pl119",
+"l": "pl",
+"d": 2,
+"q": "Who replaced Arsène Wenger as Arsenal manager in 2018?",
+"a": "Unai Emery",
+"w": [
+"Mikel Arteta",
+"Patrick Vieira",
+"Massimiliano Allegri"
+],
+"x": "Emery lasted until November 2019; Arteta followed."
+},
+{
+"id": "pl120",
+"l": "pl",
+"d": 2,
+"q": "Who succeeded David Moyes as Manchester United's permanent manager in 2014?",
+"a": "Louis van Gaal",
+"w": [
+"José Mourinho",
+"Ryan Giggs",
+"Carlo Ancelotti"
+],
+"x": "Giggs was interim manager for the last four games of 2013-14."
+},
+{
+"id": "pl121",
+"l": "pl",
+"d": 1,
+"q": "Who managed Tottenham to the 2019 Champions League final?",
+"a": "Mauricio Pochettino",
+"w": [
+"Harry Redknapp",
+"José Mourinho",
+"Antonio Conte"
+],
+"x": "Spurs lost 2-0 to Liverpool in Madrid."
+},
+{
+"id": "pl122",
+"l": "pl",
+"d": 1,
+"q": "Who managed Tottenham to the 2025 Europa League title?",
+"a": "Ange Postecoglou",
+"w": [
+"Antonio Conte",
+"Thomas Frank",
+"Mauricio Pochettino"
+],
+"x": "He was sacked a few weeks later despite the trophy."
+},
+{
+"id": "pl123",
+"l": "pl",
+"d": 2,
+"q": "Who replaced Ange Postecoglou as Tottenham manager in 2025?",
+"a": "Thomas Frank",
+"w": [
+"Marco Silva",
+"Andoni Iraola",
+"Graham Potter"
+],
+"x": "Frank came from Brentford."
+},
+{
+"id": "pl124",
+"l": "pl",
+"d": 2,
+"q": "Liverpool's 2019-20 title was their first league title since which season?",
+"a": "1989-90",
+"w": [
+"1985-86",
+"1991-92",
+"1983-84"
+],
+"x": "The 30-year wait ended with seven games to spare."
+},
+{
+"id": "pl125",
+"l": "pl",
+"d": 1,
+"q": "What were bookmakers' odds on Leicester winning the league at the start of 2015-16?",
+"a": "5000-1",
+"w": [
+"500-1",
+"1000-1",
+"250-1"
+],
+"x": "Leicester had only just escaped relegation the season before."
+},
+{
+"id": "pl126",
+"l": "pl",
+"d": 2,
+"q": "Which club were relegated in 2022-23, seven years after winning the title?",
+"a": "Leicester City",
+"w": [
+"Chelsea",
+"Blackburn Rovers",
+"Aston Villa"
+],
+"x": "They bounced straight back as Championship winners in 2024."
+},
+{
+"id": "pl127",
+"l": "pl",
+"d": 2,
+"q": "Which Stoke player was famous for his long throw-ins?",
+"a": "Rory Delap",
+"w": [
+"Ryan Shawcross",
+"Peter Crouch",
+"Glenn Whelan"
+],
+"x": "Tony Pulis's Stoke turned his throws into a set-piece weapon."
+},
+{
+"id": "pl128",
+"l": "pl",
+"d": 3,
+"q": "Which goalkeeper scored after 13 seconds from his own area, against Southampton in 2013?",
+"a": "Asmir Begović",
+"w": [
+"Tim Howard",
+"Paul Robinson",
+"Ben Foster"
+],
+"x": "His long kick bounced over Artur Boruc."
+},
+{
+"id": "pl129",
+"l": "pl",
+"d": 1,
+"q": "Which Liverpool goalkeeper scored a stoppage-time header to win at West Brom in May 2021?",
+"a": "Alisson Becker",
+"w": [
+"Simon Mignolet",
+"Caoimhín Kelleher",
+"Loris Karius"
+],
+"x": "The 2-1 win helped Liverpool into the top four."
+},
+{
+"id": "pl130",
+"l": "pl",
+"d": 1,
+"q": "Who scored a famous overhead kick for Manchester United against City in February 2011?",
+"a": "Wayne Rooney",
+"w": [
+"Dimitar Berbatov",
+"Nani",
+"Javier Hernández"
+],
+"x": "It won the derby 2-1 and was voted the Premier League's best goal of its first 20 years."
+},
+{
+"id": "pl131",
+"l": "pl",
+"d": 1,
+"q": "Which club did Wayne Rooney join Manchester United from in 2004?",
+"a": "Everton",
+"w": [
+"Aston Villa",
+"Leeds United",
+"Newcastle United"
+],
+"x": "He was 18 and scored a hat-trick on his debut against Fenerbahçe."
+},
+{
+"id": "pl132",
+"l": "pl",
+"d": 1,
+"q": "Which club did Cristiano Ronaldo join Manchester United from in 2003?",
+"a": "Sporting CP",
+"w": [
+"Benfica",
+"Porto",
+"Real Madrid"
+],
+"x": "He impressed United's players in a friendly against Sporting."
+},
+{
+"id": "pl133",
+"l": "pl",
+"d": 2,
+"q": "Which club did Rio Ferdinand join Manchester United from in 2002?",
+"a": "Leeds United",
+"w": [
+"West Ham United",
+"Chelsea",
+"Aston Villa"
+],
+"x": "It was a British record fee of about £30m."
+},
+{
+"id": "pl134",
+"l": "pl",
+"d": 2,
+"q": "Which club did Didier Drogba join Chelsea from in 2004?",
+"a": "Marseille",
+"w": [
+"Lyon",
+"Monaco",
+"Guingamp"
+],
+"x": "He joined for about £24m in Mourinho's first summer."
+},
+{
+"id": "pl135",
+"l": "pl",
+"d": 1,
+"q": "Which club did Fernando Torres join Liverpool from in 2007?",
+"a": "Atlético Madrid",
+"w": [
+"Real Madrid",
+"Valencia",
+"Villarreal"
+],
+"x": "He scored 24 league goals in his first season."
+},
+{
+"id": "pl136",
+"l": "pl",
+"d": 2,
+"q": "Which club did Luis Suárez join Liverpool from in January 2011?",
+"a": "Ajax",
+"w": [
+"PSV",
+"Groningen",
+"Nacional"
+],
+"x": "He arrived on the same day Andy Carroll did."
+},
+{
+"id": "pl137",
+"l": "pl",
+"d": 1,
+"q": "Which club did Mohamed Salah join Liverpool from in 2017?",
+"a": "Roma",
+"w": [
+"Chelsea",
+"Fiorentina",
+"Basel"
+],
+"x": "He cost about £37m."
+},
+{
+"id": "pl138",
+"l": "pl",
+"d": 1,
+"q": "Which club did Erling Haaland join Manchester City from in 2022?",
+"a": "Borussia Dortmund",
+"w": [
+"RB Salzburg",
+"Molde",
+"RB Leipzig"
+],
+"x": "His release clause was about £51m."
+},
+{
+"id": "pl139",
+"l": "pl",
+"d": 1,
+"q": "Which club did Declan Rice leave to join Arsenal for £105m in 2023?",
+"a": "West Ham United",
+"w": [
+"Chelsea",
+"Aston Villa",
+"Brighton"
+],
+"x": "It was a British record at the time."
+},
+{
+"id": "pl140",
+"l": "pl",
+"d": 1,
+"q": "Which club did Moisés Caicedo join Chelsea from in 2023?",
+"a": "Brighton",
+"w": [
+"Liverpool",
+"Benfica",
+"Ajax"
+],
+"x": "Chelsea paid up to £115m."
+},
+{
+"id": "pl141",
+"l": "pl",
+"d": 2,
+"q": "Chelsea signed Enzo Fernández for a then-British record £106.8m in January 2023. Which club did he join from?",
+"a": "Benfica",
+"w": [
+"River Plate",
+"Porto",
+"Atlético Madrid"
+],
+"x": "He had just won the World Cup's Best Young Player award."
+},
+{
+"id": "pl142",
+"l": "pl",
+"d": 1,
+"q": "Which club did Jack Grealish join Manchester City from for £100m in 2021?",
+"a": "Aston Villa",
+"w": [
+"Leicester City",
+"Everton",
+"Tottenham"
+],
+"x": "He was the first British player to cost £100m."
+},
+{
+"id": "pl143",
+"l": "pl",
+"d": 1,
+"q": "Paul Pogba rejoined Manchester United in 2016 for a world record fee. Which club did he come from?",
+"a": "Juventus",
+"w": [
+"Real Madrid",
+"Monaco",
+"Marseille"
+],
+"x": "He had left United for Juventus on a free in 2012."
+},
+{
+"id": "pl144",
+"l": "pl",
+"d": 2,
+"q": "Which club did Romelu Lukaku leave to rejoin Chelsea in 2021?",
+"a": "Inter",
+"w": [
+"Manchester United",
+"Everton",
+"Roma"
+],
+"x": "Chelsea paid about £97.5m."
+},
+{
+"id": "pl145",
+"l": "pl",
+"d": 2,
+"q": "Which club did Thierry Henry join Arsenal from in 1999?",
+"a": "Juventus",
+"w": [
+"Monaco",
+"Real Madrid",
+"Barcelona"
+],
+"x": "Wenger, his old Monaco coach, turned him from a winger into a striker."
+},
+{
+"id": "pl146",
+"l": "pl",
+"d": 2,
+"q": "Which club did Andy Carroll leave for Liverpool in January 2011, for £35m?",
+"a": "Newcastle United",
+"w": [
+"West Ham United",
+"Aston Villa",
+"Sunderland"
+],
+"x": "It was a British record for an English player."
+},
+{
+"id": "pl147",
+"l": "pl",
+"d": 2,
+"q": "Which player joined Arsenal from Manchester United in the January 2018 swap for Alexis Sánchez?",
+"a": "Henrikh Mkhitaryan",
+"w": [
+"Juan Mata",
+"Anthony Martial",
+"Ander Herrera"
+],
+"x": "Sánchez had joined Arsenal from Barcelona in 2014."
+},
+{
+"id": "pl148",
+"l": "pl",
+"d": 1,
+"q": "Which club did Riyad Mahrez leave to join Manchester City in 2018?",
+"a": "Leicester City",
+"w": [
+"Le Havre",
+"Arsenal",
+"Liverpool"
+],
+"x": "City paid a club record of about £60m."
+},
+{
+"id": "pl149",
+"l": "pl",
+"d": 1,
+"q": "N'Golo Kanté won back-to-back league titles with two clubs. Which club did he leave for Chelsea in 2016?",
+"a": "Leicester City",
+"w": [
+"Caen",
+"Marseille",
+"West Ham United"
+],
+"x": "He won the 2015-16 title with Leicester and 2016-17 with Chelsea."
+},
+{
+"id": "pl150",
+"l": "pl",
+"d": 2,
+"q": "Which club did Sergio Agüero join Manchester City from in 2011?",
+"a": "Atlético Madrid",
+"w": [
+"Independiente",
+"Real Madrid",
+"Inter"
+],
+"x": "He went on to score 184 Premier League goals for City."
+},
+{
+"id": "pl151",
+"l": "pl",
+"d": 2,
+"q": "Which club did Yaya Touré join Manchester City from in 2010?",
+"a": "Barcelona",
+"w": [
+"Monaco",
+"Olympiacos",
+"Metalurh Donetsk"
+],
+"x": "He had played at centre-back in Barcelona's 2009 Champions League final win."
+},
+{
+"id": "pl152",
+"l": "pl",
+"d": 1,
+"q": "Which club did Cesc Fàbregas leave Arsenal for in 2011?",
+"a": "Barcelona",
+"w": [
+"Real Madrid",
+"Chelsea",
+"Manchester United"
+],
+"x": "He returned to the Premier League with Chelsea in 2014."
+},
+{
+"id": "pl153",
+"l": "pl",
+"d": 1,
+"q": "Which club did Harry Kane join from Tottenham in 2023?",
+"a": "Bayern Munich",
+"w": [
+"Manchester United",
+"Real Madrid",
+"Paris Saint-Germain"
+],
+"x": "He left as Tottenham's record scorer."
+},
+{
+"id": "pl154",
+"l": "pl",
+"d": 1,
+"q": "Which club did Florian Wirtz join Liverpool from in 2025?",
+"a": "Bayer Leverkusen",
+"w": [
+"Bayern Munich",
+"Borussia Dortmund",
+"RB Leipzig"
+],
+"x": "He had won the unbeaten 2023-24 Bundesliga title with Leverkusen."
+},
+{
+"id": "pl155",
+"l": "pl",
+"d": 1,
+"q": "Liverpool signed Alexander Isak for a British record fee in September 2025. Which club did he join from?",
+"a": "Newcastle United",
+"w": [
+"Real Sociedad",
+"Borussia Dortmund",
+"Brighton"
+],
+"x": "The fee was about £125m."
+},
+{
+"id": "pl156",
+"l": "pl",
+"d": 2,
+"q": "Which club did Bruno Fernandes join Manchester United from in January 2020?",
+"a": "Sporting CP",
+"w": [
+"Benfica",
+"Porto",
+"Sampdoria"
+],
+"x": "He became United's captain in 2023."
+},
+{
+"id": "pl157",
+"l": "pl",
+"d": 2,
+"q": "Which club did Rodri join Manchester City from in 2019?",
+"a": "Atlético Madrid",
+"w": [
+"Villarreal",
+"Real Madrid",
+"Valencia"
+],
+"x": "City paid his €70m release clause."
+},
+{
+"id": "pl158",
+"l": "pl",
+"d": 2,
+"q": "Which club did Son Heung-min join Tottenham from in 2015?",
+"a": "Bayer Leverkusen",
+"w": [
+"Hamburg",
+"Borussia Dortmund",
+"Wolfsburg"
+],
+"x": "He spent ten years at Spurs."
+},
+{
+"id": "pl159",
+"l": "pl",
+"d": 2,
+"q": "Which MLS club did Son Heung-min join after leaving Tottenham in 2025?",
+"a": "Los Angeles FC",
+"w": [
+"LA Galaxy",
+"Inter Miami",
+"New York City FC"
+],
+"x": "He left Spurs weeks after lifting the Europa League as captain."
+},
+{
+"id": "pl160",
+"l": "pl",
+"d": 1,
+"q": "Which club did Kevin De Bruyne join after leaving Manchester City in 2025?",
+"a": "Napoli",
+"w": [
+"Inter Miami",
+"Al-Hilal",
+"Club Brugge"
+],
+"x": "He joined Antonio Conte's champions, alongside Belgium teammate Romelu Lukaku."
+},
+{
+"id": "pl161",
+"l": "pl",
+"d": 1,
+"q": "Which club did Trent Alexander-Arnold join on a free transfer in 2025?",
+"a": "Real Madrid",
+"w": [
+"Barcelona",
+"Manchester City",
+"Paris Saint-Germain"
+],
+"x": "He left his boyhood club Liverpool when his contract ran out."
+},
+{
+"id": "pl162",
+"l": "pl",
+"d": 1,
+"q": "Which club plays at Selhurst Park?",
+"a": "Crystal Palace",
+"w": [
+"Fulham",
+"Charlton Athletic",
+"Brentford"
+],
+"x": "Palace have played there since 1924."
+},
+{
+"id": "pl163",
+"l": "pl",
+"d": 1,
+"q": "Which club plays at Molineux?",
+"a": "Wolverhampton Wanderers",
+"w": [
+"West Brom",
+"Aston Villa",
+"Stoke City"
+],
+"x": "Wolves have been at Molineux since 1889."
+},
+{
+"id": "pl164",
+"l": "pl",
+"d": 1,
+"q": "Which club plays at Craven Cottage?",
+"a": "Fulham",
+"w": [
+"Brentford",
+"QPR",
+"Crystal Palace"
+],
+"x": "The ground sits beside the Thames."
+},
+{
+"id": "pl165",
+"l": "pl",
+"d": 1,
+"q": "Which club plays at the City Ground?",
+"a": "Nottingham Forest",
+"w": [
+"Leicester City",
+"Derby County",
+"Hull City"
+],
+"x": "It sits across the River Trent from Notts County's ground."
+},
+{
+"id": "pl166",
+"l": "pl",
+"d": 1,
+"q": "Which club plays at Turf Moor?",
+"a": "Burnley",
+"w": [
+"Blackburn Rovers",
+"Bolton Wanderers",
+"Wigan Athletic"
+],
+"x": "Burnley have played there since 1883."
+},
+{
+"id": "pl167",
+"l": "pl",
+"d": 2,
+"q": "Which club left The Dell for St Mary's Stadium in 2001?",
+"a": "Southampton",
+"w": [
+"Portsmouth",
+"Coventry City",
+"Middlesbrough"
+],
+"x": "St Mary's is named after the area's church."
+},
+{
+"id": "pl168",
+"l": "pl",
+"d": 3,
+"q": "Which club left Filbert Street for a new stadium in 2002?",
+"a": "Leicester City",
+"w": [
+"Derby County",
+"Coventry City",
+"Middlesbrough"
+],
+"x": "Their new ground is now the King Power Stadium."
+},
+{
+"id": "pl169",
+"l": "pl",
+"d": 2,
+"q": "Which club left Griffin Park in 2020?",
+"a": "Brentford",
+"w": [
+"Fulham",
+"Watford",
+"Millwall"
+],
+"x": "Griffin Park was famous for having a pub on each corner."
+},
+{
+"id": "pl170",
+"l": "pl",
+"d": 1,
+"q": "Which club played at Maine Road until 2003?",
+"a": "Manchester City",
+"w": [
+"Manchester United",
+"Bolton Wanderers",
+"Stockport County"
+],
+"x": "City then moved to the stadium built for the 2002 Commonwealth Games."
+},
+{
+"id": "pl171",
+"l": "pl",
+"d": 1,
+"q": "Which club is nicknamed 'The Toffees'?",
+"a": "Everton",
+"w": [
+"Bournemouth",
+"Brentford",
+"Sunderland"
+],
+"x": "The name is said to come from a toffee shop near Goodison Park."
+},
+{
+"id": "pl172",
+"l": "pl",
+"d": 1,
+"q": "Which club is nicknamed 'The Cherries'?",
+"a": "Bournemouth",
+"w": [
+"Brentford",
+"Watford",
+"Southampton"
+],
+"x": "Bournemouth first reached the Premier League in 2015."
+},
+{
+"id": "pl173",
+"l": "pl",
+"d": 1,
+"q": "Which club is nicknamed 'The Black Cats'?",
+"a": "Sunderland",
+"w": [
+"Newcastle United",
+"Middlesbrough",
+"Hull City"
+],
+"x": "The nickname became official when they moved to the Stadium of Light in 1997."
+},
+{
+"id": "pl174",
+"l": "pl",
+"d": 1,
+"q": "Which club is nicknamed 'The Hornets'?",
+"a": "Watford",
+"w": [
+"Brentford",
+"Bournemouth",
+"Brighton"
+],
+"x": "Watford play in yellow and black."
+},
+{
+"id": "pl175",
+"l": "pl",
+"d": 1,
+"q": "Which club is nicknamed 'The Bees'?",
+"a": "Brentford",
+"w": [
+"Watford",
+"Burnley",
+"Norwich City"
+],
+"x": "Brentford reached the Premier League in 2021."
+},
+{
+"id": "pl176",
+"l": "pl",
+"d": 1,
+"q": "Which club is nicknamed 'The Cottagers'?",
+"a": "Fulham",
+"w": [
+"Crystal Palace",
+"Brentford",
+"QPR"
+],
+"x": "The name comes from Craven Cottage."
+},
+{
+"id": "pl177",
+"l": "pl",
+"d": 1,
+"q": "Which two clubs contest the Tyne-Wear derby?",
+"a": "Newcastle and Sunderland",
+"w": [
+"Newcastle and Middlesbrough",
+"Sunderland and Middlesbrough",
+"Leeds and Newcastle"
+],
+"x": "It's one of English football's fiercest rivalries."
+},
+{
+"id": "pl178",
+"l": "pl",
+"d": 2,
+"q": "Which two clubs contest the M23 derby?",
+"a": "Brighton and Crystal Palace",
+"w": [
+"Fulham and Brentford",
+"Southampton and Portsmouth",
+"Reading and Watford"
+],
+"x": "The M23 motorway links the two areas."
+},
+{
+"id": "pl179",
+"l": "pl",
+"d": 2,
+"q": "Which two clubs contest the Black Country derby?",
+"a": "Wolves and West Brom",
+"w": [
+"Aston Villa and Birmingham",
+"Stoke and Port Vale",
+"West Brom and Aston Villa"
+],
+"x": "Both clubs are from the Black Country in the West Midlands."
+},
+{
+"id": "pl180",
+"l": "pl",
+"d": 1,
+"q": "Who was Arsenal's captain in the 2003-04 Invincibles season?",
+"a": "Patrick Vieira",
+"w": [
+"Thierry Henry",
+"Sol Campbell",
+"Tony Adams"
+],
+"x": "Vieira was captain from 2002 to 2005."
+},
+{
+"id": "pl181",
+"l": "pl",
+"d": 1,
+"q": "Who did Manchester United beat in the 1999 Champions League final?",
+"a": "Bayern Munich",
+"w": [
+"Juventus",
+"Barcelona",
+"Valencia"
+],
+"x": "United scored twice in stoppage time to win 2-1."
+},
+{
+"id": "pl182",
+"l": "pl",
+"d": 2,
+"q": "Who scored Manchester United's stoppage-time equaliser in the 1999 Champions League final?",
+"a": "Teddy Sheringham",
+"w": [
+"Dwight Yorke",
+"Andy Cole",
+"David Beckham"
+],
+"x": "Solskjær got the winner moments later."
+},
+{
+"id": "pl183",
+"l": "pl",
+"d": 1,
+"q": "Who scored a famous solo goal against Arsenal in the 1999 FA Cup semi-final replay?",
+"a": "Ryan Giggs",
+"w": [
+"David Beckham",
+"Paul Scholes",
+"Dwight Yorke"
+],
+"x": "He ran from his own half in extra time."
+},
+{
+"id": "pl184",
+"l": "pl",
+"d": 3,
+"q": "Manchester United completed the treble in 1999. Who did they beat in the FA Cup final?",
+"a": "Newcastle United",
+"w": [
+"Arsenal",
+"Chelsea",
+"Middlesbrough"
+],
+"x": "Sheringham and Scholes scored in a 2-0 win."
+},
+{
+"id": "pl185",
+"l": "pl",
+"d": 2,
+"q": "How many Premier League titles did Sir Alex Ferguson win?",
+"a": "13",
+"w": [
+"11",
+"12",
+"15"
+],
+"x": "He also won two Champions Leagues and five FA Cups."
+},
+{
+"id": "pl186",
+"l": "pl",
+"d": 2,
+"q": "Manchester United won their record 20th top-flight title in which season?",
+"a": "2012-13",
+"w": [
+"2010-11",
+"2008-09",
+"2013-14"
+],
+"x": "It was Ferguson's last season."
+},
+{
+"id": "pl187",
+"l": "pl",
+"d": 2,
+"q": "Chelsea's 2004-05 title was their first league title since which year?",
+"a": "1955",
+"w": [
+"1970",
+"1962",
+"1984"
+],
+"x": "Mourinho won it in his first season."
+},
+{
+"id": "pl188",
+"l": "pl",
+"d": 1,
+"q": "Who bought Chelsea in 2003?",
+"a": "Roman Abramovich",
+"w": [
+"Todd Boehly",
+"Ken Bates",
+"Alisher Usmanov"
+],
+"x": "He sold the club in 2022 after sanctions over Russia's invasion of Ukraine."
+},
+{
+"id": "pl189",
+"l": "pl",
+"d": 2,
+"q": "Who led the consortium that bought Chelsea in 2022?",
+"a": "Todd Boehly",
+"w": [
+"Stan Kroenke",
+"John W. Henry",
+"Jim Ratcliffe"
+],
+"x": "The deal was worth about £4.25bn."
+},
+{
+"id": "pl190",
+"l": "pl",
+"d": 2,
+"q": "Which American group bought Liverpool in 2010?",
+"a": "Fenway Sports Group",
+"w": [
+"Kroenke Sports",
+"The Glazer family",
+"Hicks and Gillett"
+],
+"x": "They bought the club from Tom Hicks and George Gillett."
+},
+{
+"id": "pl191",
+"l": "pl",
+"d": 1,
+"q": "Which family has owned Manchester United since 2005?",
+"a": "The Glazers",
+"w": [
+"The Kroenkes",
+"The Abramoviches",
+"The Moores family"
+],
+"x": "Their leveraged takeover was deeply unpopular with fans."
+},
+{
+"id": "pl192",
+"l": "pl",
+"d": 1,
+"q": "Which British billionaire bought a minority stake in Manchester United in 2024?",
+"a": "Sir Jim Ratcliffe",
+"w": [
+"Sir Philip Green",
+"Mike Ashley",
+"Sir Richard Branson"
+],
+"x": "His company INEOS took over running the football side."
+},
+{
+"id": "pl193",
+"l": "pl",
+"d": 2,
+"q": "Which club was docked 10 points in November 2023 (later reduced to six) for breaking spending rules?",
+"a": "Everton",
+"w": [
+"Nottingham Forest",
+"Chelsea",
+"Leicester City"
+],
+"x": "Everton were docked points again later that season."
+},
+{
+"id": "pl194",
+"l": "pl",
+"d": 2,
+"q": "Which club did Steven Gerrard leave Liverpool for in 2015?",
+"a": "LA Galaxy",
+"w": [
+"Celtic",
+"Real Madrid",
+"Al-Ettifaq"
+],
+"x": "He later managed Rangers, Aston Villa and Al-Ettifaq."
+},
+{
+"id": "pl195",
+"l": "pl",
+"d": 1,
+"q": "Who captained Chelsea to five Premier League titles?",
+"a": "John Terry",
+"w": [
+"Frank Lampard",
+"Marcel Desailly",
+"César Azpilicueta"
+],
+"x": "Terry lifted the trophy in 2005, 2006, 2010, 2015 and 2017."
+},
+{
+"id": "pl196",
+"l": "pl",
+"d": 2,
+"q": "Who became the first player to win the PFA Players' Player of the Year three times, in 2025?",
+"a": "Mohamed Salah",
+"w": [
+"Kevin De Bruyne",
+"Thierry Henry",
+"Cristiano Ronaldo"
+],
+"x": "Salah also won it in 2018 and 2022."
+},
+{
+"id": "pl197",
+"l": "pl",
+"d": 3,
+"q": "Sunderland twice set the record for the lowest Premier League points total in the 2000s. What was their lower total, in 2005-06?",
+"a": "15",
+"w": [
+"11",
+"17",
+"19"
+],
+"x": "They had 19 in 2002-03; Derby's 11 in 2007-08 then beat both."
+},
+{
+"id": "pl198",
+"l": "pl",
+"d": 2,
+"q": "Which club conceded a record 104 goals in a 38-game Premier League season, in 2023-24?",
+"a": "Sheffield United",
+"w": [
+"Burnley",
+"Luton Town",
+"Southampton"
+],
+"x": "They also finished bottom with 16 points."
+},
+{
+"id": "pl199",
+"l": "pl",
+"d": 2,
+"q": "Which club were relegated with just 12 points in 2024-25?",
+"a": "Southampton",
+"w": [
+"Leicester City",
+"Ipswich Town",
+"Sheffield United"
+],
+"x": "They just avoided matching Derby's record low of 11."
+},
+{
+"id": "pl200",
+"l": "pl",
+"d": 1,
+"q": "Marcelo Bielsa led which club back to the Premier League in 2020 after 16 years away?",
+"a": "Leeds United",
+"w": [
+"Aston Villa",
+"Sheffield United",
+"Newcastle United"
+],
+"x": "Bielsa's Leeds won the Championship title."
+},
+{
+"id": "pl201",
+"l": "pl",
+"d": 3,
+"q": "Who knocked Leeds out of the 2001 Champions League semi-finals?",
+"a": "Valencia",
+"w": [
+"Real Madrid",
+"Bayern Munich",
+"Lazio"
+],
+"x": "David O'Leary's young side had beaten Lazio, Milan and Deportivo along the way."
+},
+{
+"id": "pl202",
+"l": "pl",
+"d": 2,
+"q": "Which former England manager took over Newcastle in 1999?",
+"a": "Sir Bobby Robson",
+"w": [
+"Kevin Keegan",
+"Graham Taylor",
+"Terry Venables"
+],
+"x": "He led them into the Champions League before leaving in 2004."
+},
+{
+"id": "pl203",
+"l": "pl",
+"d": 3,
+"q": "Which newly promoted club finished fifth in 2000-01, managed by George Burley?",
+"a": "Ipswich Town",
+"w": [
+"Charlton Athletic",
+"Bradford City",
+"Fulham"
+],
+"x": "They qualified for the UEFA Cup but were relegated the following season."
+},
+{
+"id": "pl204",
+"l": "pl",
+"d": 1,
+"q": "Mikel Arteta was assistant to which manager before taking the Arsenal job?",
+"a": "Pep Guardiola",
+"w": [
+"Arsène Wenger",
+"Unai Emery",
+"Roberto Martínez"
+],
+"x": "He spent three and a half years on City's staff."
+},
+{
+"id": "pl205",
+"l": "pl",
+"d": 2,
+"q": "Who managed Brighton from 2019 to 2022 before joining Chelsea?",
+"a": "Graham Potter",
+"w": [
+"Roberto De Zerbi",
+"Chris Hughton",
+"Fabian Hürzeler"
+],
+"x": "He lasted only seven months at Chelsea."
+},
+{
+"id": "ll061",
+"l": "ll",
+"d": 3,
+"q": "Who coached Real Madrid to the 2006-07 title, won on head-to-head over Barcelona?",
+"a": "Fabio Capello",
+"w": [
+"Bernd Schuster",
+"Vanderlei Luxemburgo",
+"Juande Ramos"
+],
+"x": "Both sides finished on 76 points; Capello was sacked anyway that summer."
+},
+{
+"id": "ll062",
+"l": "ll",
+"d": 1,
+"q": "Who coached Real Madrid to the 2011-12 title?",
+"a": "José Mourinho",
+"w": [
+"Manuel Pellegrini",
+"Carlo Ancelotti",
+"Zinedine Zidane"
+],
+"x": "His side set records with 100 points and 121 goals."
+},
+{
+"id": "ll063",
+"l": "ll",
+"d": 2,
+"q": "Who coached Barcelona to the 2004-05 and 2005-06 La Liga titles?",
+"a": "Frank Rijkaard",
+"w": [
+"Louis van Gaal",
+"Pep Guardiola",
+"Ronald Koeman"
+],
+"x": "Rijkaard also won the 2006 Champions League."
+},
+{
+"id": "ll064",
+"l": "ll",
+"d": 1,
+"q": "Who coached Barcelona to the 2014-15 treble?",
+"a": "Luis Enrique",
+"w": [
+"Pep Guardiola",
+"Tito Vilanova",
+"Ernesto Valverde"
+],
+"x": "Barcelona won La Liga, the Copa del Rey and the Champions League."
+},
+{
+"id": "ll065",
+"l": "ll",
+"d": 1,
+"q": "Which trio formed Barcelona's 'MSN' attack?",
+"a": "Messi, Suárez and Neymar",
+"w": [
+"Messi, Sánchez and Neymar",
+"Messi, Villa and Pedro",
+"Messi, Suárez and Griezmann"
+],
+"x": "They scored 122 goals between them in 2014-15."
+},
+{
+"id": "ll066",
+"l": "ll",
+"d": 1,
+"q": "Which trio formed Real Madrid's 'BBC' attack?",
+"a": "Bale, Benzema and Cristiano",
+"w": [
+"Bale, Benzema and Casemiro",
+"Bellingham, Benzema and Cristiano",
+"Bale, Butragueño and Cristiano"
+],
+"x": "They helped win four Champions Leagues in five years."
+},
+{
+"id": "ll067",
+"l": "ll",
+"d": 2,
+"q": "Which Brazilian striker joined Real Madrid from Inter in 2002, weeks after winning the World Cup?",
+"a": "Ronaldo",
+"w": [
+"Rivaldo",
+"Romário",
+"Adriano"
+],
+"x": "He won the Pichichi in 2003-04."
+},
+{
+"id": "ll068",
+"l": "ll",
+"d": 1,
+"q": "Which club did Kaká join Real Madrid from in 2009?",
+"a": "Milan",
+"w": [
+"Inter",
+"São Paulo",
+"Juventus"
+],
+"x": "He arrived in the same summer as Cristiano Ronaldo."
+},
+{
+"id": "ll069",
+"l": "ll",
+"d": 2,
+"q": "Real Madrid signed Cristiano Ronaldo in 2009 for a then world record fee. How much?",
+"a": "£80m",
+"w": [
+"£50m",
+"£65m",
+"£100m"
+],
+"x": "It beat the record set by Kaká's move days earlier."
+},
+{
+"id": "ll070",
+"l": "ll",
+"d": 1,
+"q": "Which club did Kylian Mbappé join Real Madrid from in 2024?",
+"a": "Paris Saint-Germain",
+"w": [
+"Monaco",
+"Arsenal",
+"Liverpool"
+],
+"x": "He joined on a free transfer."
+},
+{
+"id": "ll071",
+"l": "ll",
+"d": 2,
+"q": "Which club did Vinícius Júnior join Real Madrid from?",
+"a": "Flamengo",
+"w": [
+"Santos",
+"Palmeiras",
+"Fluminense"
+],
+"x": "Madrid agreed the deal when he was 16."
+},
+{
+"id": "ll072",
+"l": "ll",
+"d": 3,
+"q": "Which club did Rodrygo join Real Madrid from?",
+"a": "Santos",
+"w": [
+"Flamengo",
+"São Paulo",
+"Grêmio"
+],
+"x": "He moved in 2019 at 18."
+},
+{
+"id": "ll073",
+"l": "ll",
+"d": 1,
+"q": "Which club did Thibaut Courtois join Real Madrid from in 2018?",
+"a": "Chelsea",
+"w": [
+"Atlético Madrid",
+"Genk",
+"Liverpool"
+],
+"x": "Earlier he spent three seasons on loan at Atlético."
+},
+{
+"id": "ll074",
+"l": "ll",
+"d": 1,
+"q": "Which club did Neymar join Barcelona from in 2013?",
+"a": "Santos",
+"w": [
+"Flamengo",
+"Corinthians",
+"São Paulo"
+],
+"x": "The transfer's true cost later went to court."
+},
+{
+"id": "ll075",
+"l": "ll",
+"d": 1,
+"q": "Which club did Frenkie de Jong join Barcelona from in 2019?",
+"a": "Ajax",
+"w": [
+"PSV",
+"Feyenoord",
+"Willem II"
+],
+"x": "Ajax had just reached the Champions League semi-finals."
+},
+{
+"id": "ll076",
+"l": "ll",
+"d": 2,
+"q": "Which club did Ousmane Dembélé join Barcelona from in 2017?",
+"a": "Borussia Dortmund",
+"w": [
+"Rennes",
+"Lyon",
+"Monaco"
+],
+"x": "Barcelona used part of the Neymar money."
+},
+{
+"id": "ll077",
+"l": "ll",
+"d": 1,
+"q": "Which club did Luis Suárez join Barcelona from in 2014?",
+"a": "Liverpool",
+"w": [
+"Ajax",
+"Atlético Madrid",
+"Inter"
+],
+"x": "He was serving a ban for biting Chiellini when he signed."
+},
+{
+"id": "ll078",
+"l": "ll",
+"d": 1,
+"q": "Which club did Thierry Henry join Barcelona from in 2007?",
+"a": "Arsenal",
+"w": [
+"Juventus",
+"Monaco",
+"New York Red Bulls"
+],
+"x": "He won the 2009 sextuple at Barcelona."
+},
+{
+"id": "ll079",
+"l": "ll",
+"d": 2,
+"q": "Which club did David Villa join Barcelona from in 2010?",
+"a": "Valencia",
+"w": [
+"Atlético Madrid",
+"Real Zaragoza",
+"Sporting Gijón"
+],
+"x": "He scored in the 2011 Champions League final."
+},
+{
+"id": "ll080",
+"l": "ll",
+"d": 2,
+"q": "Which striker moved from Barcelona to Inter in 2009 as part of the Zlatan Ibrahimović deal?",
+"a": "Samuel Eto'o",
+"w": [
+"Thierry Henry",
+"Bojan",
+"Alexander Hleb"
+],
+"x": "Eto'o then won the treble with Inter in 2010."
+},
+{
+"id": "ll081",
+"l": "ll",
+"d": 2,
+"q": "Atlético Madrid signed João Félix for €126m in 2019. Which club did he join from?",
+"a": "Benfica",
+"w": [
+"Porto",
+"Sporting CP",
+"Braga"
+],
+"x": "It was Atlético's record signing."
+},
+{
+"id": "ll082",
+"l": "ll",
+"d": 2,
+"q": "Which club did Antoine Griezmann join Atlético Madrid from in 2014?",
+"a": "Real Sociedad",
+"w": [
+"Lyon",
+"Montpellier",
+"Valencia"
+],
+"x": "He came through Real Sociedad's academy after French clubs rejected him."
+},
+{
+"id": "ll083",
+"l": "ll",
+"d": 2,
+"q": "Who is Atlético Madrid's all-time top scorer?",
+"a": "Antoine Griezmann",
+"w": [
+"Luis Aragonés",
+"Fernando Torres",
+"Radamel Falcao"
+],
+"x": "He passed Luis Aragonés's record in 2024."
+},
+{
+"id": "ll084",
+"l": "ll",
+"d": 3,
+"q": "How many official goals did Lionel Messi score for Barcelona?",
+"a": "672",
+"w": [
+"598",
+"704",
+"645"
+],
+"x": "He scored them in 778 games."
+},
+{
+"id": "ll085",
+"l": "ll",
+"d": 2,
+"q": "Lionel Messi set a record for goals in a calendar year in 2012. How many?",
+"a": "91",
+"w": [
+"79",
+"86",
+"96"
+],
+"x": "It beat Gerd Müller's 85 from 1972."
+},
+{
+"id": "ll086",
+"l": "ll",
+"d": 3,
+"q": "Real Madrid scored a La Liga record number of goals in 2011-12. How many?",
+"a": "121",
+"w": [
+"107",
+"115",
+"128"
+],
+"x": "Cristiano Ronaldo scored 46 of them."
+},
+{
+"id": "ll087",
+"l": "ll",
+"d": 3,
+"q": "How many La Liga goals did Cristiano Ronaldo score for Real Madrid?",
+"a": "311",
+"w": [
+"264",
+"287",
+"338"
+],
+"x": "He scored them in 292 games."
+},
+{
+"id": "ll088",
+"l": "ll",
+"d": 3,
+"q": "How many goals did Cristiano Ronaldo score in all competitions for Real Madrid?",
+"a": "450",
+"w": [
+"398",
+"421",
+"502"
+],
+"x": "He scored them in 438 games from 2009 to 2018."
+},
+{
+"id": "ll089",
+"l": "ll",
+"d": 2,
+"q": "Who is Real Madrid's record appearance maker?",
+"a": "Raúl",
+"w": [
+"Iker Casillas",
+"Sergio Ramos",
+"Manolo Sanchís"
+],
+"x": "Raúl played 741 games for the club."
+},
+{
+"id": "ll090",
+"l": "ll",
+"d": 3,
+"q": "Which Dutchman won the 2002-03 Pichichi and European Golden Shoe with Deportivo?",
+"a": "Roy Makaay",
+"w": [
+"Ruud van Nistelrooy",
+"Patrick Kluivert",
+"Pierre van Hooijdonk"
+],
+"x": "He scored 29 league goals and joined Bayern that summer."
+},
+{
+"id": "ll091",
+"l": "ll",
+"d": 2,
+"q": "Who won the 2006-07 Pichichi in his first season at Real Madrid?",
+"a": "Ruud van Nistelrooy",
+"w": [
+"Ronaldo",
+"Raúl",
+"Gonzalo Higuaín"
+],
+"x": "He scored 25 as Madrid won the league."
+},
+{
+"id": "ll092",
+"l": "ll",
+"d": 3,
+"q": "Which Mallorca striker won the 2007-08 Pichichi?",
+"a": "Dani Güiza",
+"w": [
+"Diego Forlán",
+"Luis Fabiano",
+"Juan Arango"
+],
+"x": "His 27 goals earned a place in Spain's Euro 2008 squad."
+},
+{
+"id": "ll093",
+"l": "ll",
+"d": 1,
+"q": "Who won the 2022-23 Pichichi in his first season at Barcelona?",
+"a": "Robert Lewandowski",
+"w": [
+"Karim Benzema",
+"Vinícius Júnior",
+"Antoine Griezmann"
+],
+"x": "He scored 23 as Barcelona won the league."
+},
+{
+"id": "ll094",
+"l": "ll",
+"d": 2,
+"q": "Who won the 2005-06 Pichichi with Barcelona?",
+"a": "Samuel Eto'o",
+"w": [
+"Ronaldinho",
+"David Villa",
+"Fernando Torres"
+],
+"x": "He scored 26 as Barcelona retained the title."
+},
+{
+"id": "ll095",
+"l": "ll",
+"d": 3,
+"q": "Which Barcelona-based club won the Copa del Rey in 2000 and 2006?",
+"a": "Espanyol",
+"w": [
+"Barcelona",
+"Sabadell",
+"Girona"
+],
+"x": "They beat Atlético in 2000 and Real Zaragoza in 2006."
+},
+{
+"id": "ll096",
+"l": "ll",
+"d": 3,
+"q": "Which club beat Galáctico-era Real Madrid in the 2004 Copa del Rey final?",
+"a": "Real Zaragoza",
+"w": [
+"Espanyol",
+"Real Betis",
+"Mallorca"
+],
+"x": "Zaragoza won 3-2 after extra time."
+},
+{
+"id": "ll097",
+"l": "ll",
+"d": 2,
+"q": "Whose extra-time header won the 2011 Copa del Rey final against Barcelona?",
+"a": "Cristiano Ronaldo",
+"w": [
+"Sergio Ramos",
+"Karim Benzema",
+"Gonzalo Higuaín"
+],
+"x": "Ramos then dropped the trophy off the open-top bus."
+},
+{
+"id": "ll098",
+"l": "ll",
+"d": 1,
+"q": "Whose famous sprint down the touchline won the 2014 Copa del Rey final against Barcelona?",
+"a": "Gareth Bale",
+"w": [
+"Cristiano Ronaldo",
+"Ángel Di María",
+"Karim Benzema"
+],
+"x": "He ran around Marc Bartra, even going off the pitch."
+},
+{
+"id": "ll099",
+"l": "ll",
+"d": 2,
+"q": "Valencia won the 2019 Copa del Rey in their centenary year. Who did they beat in the final?",
+"a": "Barcelona",
+"w": [
+"Real Madrid",
+"Sevilla",
+"Getafe"
+],
+"x": "They won 2-1 in Seville."
+},
+{
+"id": "ll100",
+"l": "ll",
+"d": 2,
+"q": "Real Betis won the 2022 Copa del Rey on penalties. Who did they beat?",
+"a": "Valencia",
+"w": [
+"Athletic Club",
+"Osasuna",
+"Sevilla"
+],
+"x": "It was Betis's third Copa del Rey."
+},
+{
+"id": "ll101",
+"l": "ll",
+"d": 2,
+"q": "Who did Real Madrid beat in the 2023 Copa del Rey final?",
+"a": "Osasuna",
+"w": [
+"Athletic Club",
+"Real Betis",
+"Mallorca"
+],
+"x": "Rodrygo scored both goals in a 2-1 win."
+},
+{
+"id": "ll102",
+"l": "ll",
+"d": 2,
+"q": "Who scored Barcelona's extra-time winner against Real Madrid in the 2025 Copa del Rey final?",
+"a": "Jules Koundé",
+"w": [
+"Raphinha",
+"Lamine Yamal",
+"Ferran Torres"
+],
+"x": "Barcelona won 3-2 in Seville."
+},
+{
+"id": "ll103",
+"l": "ll",
+"d": 1,
+"q": "Since 2020, the Spanish Super Cup has mostly been played in which country?",
+"a": "Saudi Arabia",
+"w": [
+"Qatar",
+"United Arab Emirates",
+"Morocco"
+],
+"x": "It became a four-team mini-tournament at the same time."
+},
+{
+"id": "ll104",
+"l": "ll",
+"d": 3,
+"q": "Sevilla beat which Spanish club on penalties in the 2007 UEFA Cup final?",
+"a": "Espanyol",
+"w": [
+"Villarreal",
+"Getafe",
+"Valencia"
+],
+"x": "It was Sevilla's second UEFA Cup in a row."
+},
+{
+"id": "ll105",
+"l": "ll",
+"d": 2,
+"q": "Who did Sevilla beat 3-1 in the 2016 Europa League final?",
+"a": "Liverpool",
+"w": [
+"Shakhtar Donetsk",
+"Dnipro",
+"Benfica"
+],
+"x": "It was Sevilla's third Europa League in a row."
+},
+{
+"id": "ll106",
+"l": "ll",
+"d": 2,
+"q": "Sevilla beat which Italian club on penalties in the 2023 Europa League final?",
+"a": "Roma",
+"w": [
+"Inter",
+"Juventus",
+"Lazio"
+],
+"x": "José Mourinho lost a European final for the first time."
+},
+{
+"id": "ll107",
+"l": "ll",
+"d": 2,
+"q": "Sevilla won the 2020 Europa League final 3-2 in Cologne. Who did they beat?",
+"a": "Inter",
+"w": [
+"Manchester United",
+"Shakhtar Donetsk",
+"Wolves"
+],
+"x": "It was the tournament played behind closed doors after lockdown."
+},
+{
+"id": "ll108",
+"l": "ll",
+"d": 2,
+"q": "Atlético Madrid beat which Spanish club in the 2012 Europa League final?",
+"a": "Athletic Club",
+"w": [
+"Valencia",
+"Sevilla",
+"Espanyol"
+],
+"x": "Falcao scored twice in a 3-0 win in Bucharest."
+},
+{
+"id": "ll109",
+"l": "ll",
+"d": 3,
+"q": "Who scored both goals as Atlético beat Fulham in the 2010 Europa League final?",
+"a": "Diego Forlán",
+"w": [
+"Sergio Agüero",
+"Simão",
+"José Antonio Reyes"
+],
+"x": "The winner came in extra time."
+},
+{
+"id": "ll110",
+"l": "ll",
+"d": 2,
+"q": "Who scored twice as Atlético beat Marseille in the 2018 Europa League final?",
+"a": "Antoine Griezmann",
+"w": [
+"Diego Costa",
+"Kevin Gameiro",
+"Koke"
+],
+"x": "Gabi got the third in a 3-0 win."
+},
+{
+"id": "ll111",
+"l": "ll",
+"d": 3,
+"q": "Which Villarreal player missed a late penalty against Arsenal in the 2006 Champions League semi-final?",
+"a": "Juan Román Riquelme",
+"w": [
+"Diego Forlán",
+"Marcos Senna",
+"Robert Pires"
+],
+"x": "Jens Lehmann saved it and Arsenal reached the final."
+},
+{
+"id": "ll112",
+"l": "ll",
+"d": 3,
+"q": "Valencia won the 2004 UEFA Cup. Who did they beat in the final?",
+"a": "Marseille",
+"w": [
+"Porto",
+"Celtic",
+"Sporting CP"
+],
+"x": "They won 2-0 in Gothenburg, weeks after winning La Liga."
+},
+{
+"id": "ll113",
+"l": "ll",
+"d": 1,
+"q": "What name was given to Real Madrid's 10th European Cup, won in 2014?",
+"a": "La Décima",
+"w": [
+"La Galáctica",
+"La Remontada",
+"La Novena"
+],
+"x": "They had waited 12 years for it."
+},
+{
+"id": "ll114",
+"l": "ll",
+"d": 2,
+"q": "Who coached Barcelona when they lost 8-2 to Bayern in 2020?",
+"a": "Quique Setién",
+"w": [
+"Ernesto Valverde",
+"Ronald Koeman",
+"Xavi"
+],
+"x": "He was sacked days later."
+},
+{
+"id": "ll115",
+"l": "ll",
+"d": 2,
+"q": "Who coached Barcelona to the 2017-18 and 2018-19 La Liga titles?",
+"a": "Ernesto Valverde",
+"w": [
+"Luis Enrique",
+"Quique Setién",
+"Ronald Koeman"
+],
+"x": "He was sacked in January 2020 with Barcelona top of the table."
+},
+{
+"id": "ll116",
+"l": "ll",
+"d": 2,
+"q": "Which coach was sacked by Spain on the eve of the 2018 World Cup after agreeing to join Real Madrid?",
+"a": "Julen Lopetegui",
+"w": [
+"Vicente del Bosque",
+"Fernando Hierro",
+"Luis Enrique"
+],
+"x": "He lasted only four months at Madrid."
+},
+{
+"id": "ll117",
+"l": "ll",
+"d": 2,
+"q": "Carlo Ancelotti's second spell as Real Madrid coach began in which year?",
+"a": "2021",
+"w": [
+"2019",
+"2020",
+"2022"
+],
+"x": "He won two more Champions Leagues before leaving in 2025."
+},
+{
+"id": "ll118",
+"l": "ll",
+"d": 2,
+"q": "Who assisted Lionel Messi's first official Barcelona goal, against Albacete in 2005?",
+"a": "Ronaldinho",
+"w": [
+"Samuel Eto'o",
+"Deco",
+"Xavi"
+],
+"x": "Messi chipped the keeper from Ronaldinho's lob pass."
+},
+{
+"id": "ll119",
+"l": "ll",
+"d": 2,
+"q": "In November 2005, Real Madrid fans applauded which Barcelona player after he scored twice at the Bernabéu?",
+"a": "Ronaldinho",
+"w": [
+"Samuel Eto'o",
+"Lionel Messi",
+"Deco"
+],
+"x": "Barcelona won 3-0."
+},
+{
+"id": "ll120",
+"l": "ll",
+"d": 2,
+"q": "Which club did Andrés Iniesta join after leaving Barcelona in 2018?",
+"a": "Vissel Kobe",
+"w": [
+"Al Sadd",
+"New York City FC",
+"Emirates Club"
+],
+"x": "He played in Japan until 2023."
+},
+{
+"id": "ll121",
+"l": "ll",
+"d": 2,
+"q": "Which club did Xavi join after leaving Barcelona in 2015?",
+"a": "Al Sadd",
+"w": [
+"Vissel Kobe",
+"Al-Hilal",
+"New York City FC"
+],
+"x": "He later coached Al Sadd before returning to Barcelona."
+},
+{
+"id": "ll122",
+"l": "ll",
+"d": 2,
+"q": "Which club did Iker Casillas join after leaving Real Madrid in 2015?",
+"a": "Porto",
+"w": [
+"Arsenal",
+"Roma",
+"Benfica"
+],
+"x": "He suffered a heart attack in 2019 and retired."
+},
+{
+"id": "ll123",
+"l": "ll",
+"d": 1,
+"q": "Which club did Sergio Ramos join after leaving Real Madrid in 2021?",
+"a": "Paris Saint-Germain",
+"w": [
+"Sevilla",
+"Manchester United",
+"Monterrey"
+],
+"x": "He later returned to Sevilla and then joined Monterrey."
+},
+{
+"id": "ll124",
+"l": "ll",
+"d": 2,
+"q": "Which club did Raúl join after leaving Real Madrid in 2010?",
+"a": "Schalke",
+"w": [
+"Al Sadd",
+"New York Cosmos",
+"Hertha Berlin"
+],
+"x": "He reached the Champions League semi-finals with Schalke in 2011."
+},
+{
+"id": "ll125",
+"l": "ll",
+"d": 3,
+"q": "Which small Basque club reached La Liga for the first time in 2014?",
+"a": "Eibar",
+"w": [
+"Leganés",
+"Alavés",
+"Real Unión"
+],
+"x": "Their Ipurua stadium holds only about 8,000."
+},
+{
+"id": "ll126",
+"l": "ll",
+"d": 2,
+"q": "What shirt number did Lamine Yamal take from the 2025-26 season?",
+"a": "10",
+"w": [
+"9",
+"11",
+"19"
+],
+"x": "It was last worn at Barcelona by Ansu Fati, and before him Messi."
+},
+{
+"id": "ll127",
+"l": "ll",
+"d": 2,
+"q": "Who kept goal for Atlético in their 2013-14 title season, on loan from Chelsea?",
+"a": "Thibaut Courtois",
+"w": [
+"David de Gea",
+"Jan Oblak",
+"Sergio Asenjo"
+],
+"x": "Atlético also reached the Champions League final that season."
+},
+{
+"id": "ll128",
+"l": "ll",
+"d": 3,
+"q": "In which year did Athletic Club move into their new San Mamés?",
+"a": "2013",
+"w": [
+"2010",
+"2011",
+"2016"
+],
+"x": "The new ground was built next to the old one."
+},
+{
+"id": "ll129",
+"l": "ll",
+"d": 1,
+"q": "Which club plays at San Mamés?",
+"a": "Athletic Club",
+"w": [
+"Real Sociedad",
+"Osasuna",
+"Eibar"
+],
+"x": "The ground is nicknamed 'La Catedral'."
+},
+{
+"id": "ll130",
+"l": "ll",
+"d": 1,
+"q": "Which club plays at the Ramón Sánchez-Pizjuán?",
+"a": "Sevilla",
+"w": [
+"Real Betis",
+"Málaga",
+"Granada"
+],
+"x": "It hosted the 1982 World Cup semi-final."
+},
+{
+"id": "ll131",
+"l": "ll",
+"d": 2,
+"q": "Which club plays at the Benito Villamarín?",
+"a": "Real Betis",
+"w": [
+"Sevilla",
+"Cádiz",
+"Córdoba"
+],
+"x": "It's in the south of Seville."
+},
+{
+"id": "ll132",
+"l": "ll",
+"d": 2,
+"q": "Which club plays at the Estadio de la Cerámica?",
+"a": "Villarreal",
+"w": [
+"Valencia",
+"Levante",
+"Castellón"
+],
+"x": "It was called El Madrigal until 2017."
+},
+{
+"id": "ll133",
+"l": "ll",
+"d": 2,
+"q": "Which club plays at Balaídos?",
+"a": "Celta Vigo",
+"w": [
+"Deportivo La Coruña",
+"Sporting Gijón",
+"Real Oviedo"
+],
+"x": "It's in Vigo, Galicia."
+},
+{
+"id": "ll134",
+"l": "ll",
+"d": 2,
+"q": "Which club plays at the Riazor?",
+"a": "Deportivo La Coruña",
+"w": [
+"Celta Vigo",
+"Racing Santander",
+"Real Oviedo"
+],
+"x": "It's next to the beach in A Coruña."
+},
+{
+"id": "ll135",
+"l": "ll",
+"d": 2,
+"q": "Which club plays at Montilivi?",
+"a": "Girona",
+"w": [
+"Espanyol",
+"Lleida",
+"Mallorca"
+],
+"x": "Girona are part of the City Football Group."
+},
+{
+"id": "ll136",
+"l": "ll",
+"d": 3,
+"q": "Which club is nicknamed 'Txuri-Urdin' (white-blue)?",
+"a": "Real Sociedad",
+"w": [
+"Athletic Club",
+"Alavés",
+"Real Oviedo"
+],
+"x": "It refers to their blue and white striped shirts."
+},
+{
+"id": "ll137",
+"l": "ll",
+"d": 2,
+"q": "Which club is nicknamed 'Los Leones' (The Lions)?",
+"a": "Athletic Club",
+"w": [
+"Real Sociedad",
+"Osasuna",
+"Valencia"
+],
+"x": "San Mamés is named after a saint thrown to the lions."
+},
+{
+"id": "ll138",
+"l": "ll",
+"d": 2,
+"q": "Which club is nicknamed 'Los Pericos'?",
+"a": "Espanyol",
+"w": [
+"Levante",
+"Getafe",
+"Mallorca"
+],
+"x": "'Perico' is a type of parrot."
+},
+{
+"id": "ll139",
+"l": "ll",
+"d": 2,
+"q": "Which club is nicknamed 'Los Verdiblancos' (The Green and Whites)?",
+"a": "Real Betis",
+"w": [
+"Sevilla",
+"Racing Santander",
+"Elche"
+],
+"x": "Betis play in green and white stripes."
+},
+{
+"id": "ll140",
+"l": "ll",
+"d": 1,
+"q": "Which two clubs contest the Basque derby?",
+"a": "Athletic Club and Real Sociedad",
+"w": [
+"Athletic Club and Osasuna",
+"Real Sociedad and Eibar",
+"Alavés and Osasuna"
+],
+"x": "They met in the 2020 Copa del Rey final."
+},
+{
+"id": "ll141",
+"l": "ll",
+"d": 1,
+"q": "Which two clubs contest the Barcelona city derby?",
+"a": "Barcelona and Espanyol",
+"w": [
+"Barcelona and Girona",
+"Espanyol and Girona",
+"Barcelona and Valencia"
+],
+"x": "In Spanish it's the 'Derbi barceloní'."
+},
+{
+"id": "ll142",
+"l": "ll",
+"d": 2,
+"q": "Which two clubs contest the Galician derby?",
+"a": "Celta Vigo and Deportivo",
+"w": [
+"Celta Vigo and Sporting Gijón",
+"Deportivo and Racing Santander",
+"Sporting Gijón and Real Oviedo"
+],
+"x": "It's known as 'O Noso Derbi' (Our Derby)."
+},
+{
+"id": "ll143",
+"l": "ll",
+"d": 1,
+"q": "Which club does Iñaki Williams play for?",
+"a": "Athletic Club",
+"w": [
+"Real Sociedad",
+"Barcelona",
+"Villarreal"
+],
+"x": "His brother Nico plays for the same club."
+},
+{
+"id": "sa061",
+"l": "sa",
+"d": 2,
+"q": "Who coached Lazio to the 1999-2000 Scudetto?",
+"a": "Sven-Göran Eriksson",
+"w": [
+"Dino Zoff",
+"Alberto Zaccheroni",
+"Roberto Mancini"
+],
+"x": "It was Lazio's second title, 26 years after their first."
+},
+{
+"id": "sa062",
+"l": "sa",
+"d": 3,
+"q": "Juventus' 2004-05 Scudetto was later revoked over Calciopoli. Who had coached them?",
+"a": "Fabio Capello",
+"w": [
+"Marcello Lippi",
+"Carlo Ancelotti",
+"Claudio Ranieri"
+],
+"x": "The title was left unassigned."
+},
+{
+"id": "sa063",
+"l": "sa",
+"d": 2,
+"q": "Who coached Inter to the 2006-07 and 2007-08 Scudetti?",
+"a": "Roberto Mancini",
+"w": [
+"José Mourinho",
+"Héctor Cúper",
+"Leonardo"
+],
+"x": "Mourinho replaced him and won two more."
+},
+{
+"id": "sa064",
+"l": "sa",
+"d": 2,
+"q": "Who coached Juventus to five straight titles, 2014-15 to 2018-19?",
+"a": "Massimiliano Allegri",
+"w": [
+"Antonio Conte",
+"Maurizio Sarri",
+"Andrea Pirlo"
+],
+"x": "He also reached two Champions League finals."
+},
+{
+"id": "sa065",
+"l": "sa",
+"d": 2,
+"q": "Who coached Juventus to their ninth straight Scudetto in 2019-20?",
+"a": "Maurizio Sarri",
+"w": [
+"Massimiliano Allegri",
+"Andrea Pirlo",
+"Antonio Conte"
+],
+"x": "He was sacked days after the season ended."
+},
+{
+"id": "sa066",
+"l": "sa",
+"d": 2,
+"q": "Who coached Inter to the 2020-21 Scudetto, ending Juventus' run?",
+"a": "Antonio Conte",
+"w": [
+"Simone Inzaghi",
+"Luciano Spalletti",
+"Roberto Mancini"
+],
+"x": "It was Inter's first title in 11 years."
+},
+{
+"id": "sa067",
+"l": "sa",
+"d": 1,
+"q": "Who coached Inter to the 2023-24 Scudetto?",
+"a": "Simone Inzaghi",
+"w": [
+"Antonio Conte",
+"Cristian Chivu",
+"Stefano Pioli"
+],
+"x": "Inter won it with five games to spare."
+},
+{
+"id": "sa068",
+"l": "sa",
+"d": 3,
+"q": "Inter set a Serie A record run of consecutive wins in 2006-07. How many?",
+"a": "17",
+"w": [
+"12",
+"15",
+"21"
+],
+"x": "They won the title with 97 points."
+},
+{
+"id": "sa069",
+"l": "sa",
+"d": 2,
+"q": "Napoli finished second in 2017-18 with 91 points. Who was their coach?",
+"a": "Maurizio Sarri",
+"w": [
+"Carlo Ancelotti",
+"Rafael Benítez",
+"Walter Mazzarri"
+],
+"x": "His team's passing style became known as 'Sarriball'."
+},
+{
+"id": "sa070",
+"l": "sa",
+"d": 2,
+"q": "Who is Napoli's all-time top scorer?",
+"a": "Dries Mertens",
+"w": [
+"Diego Maradona",
+"Marek Hamšík",
+"Edinson Cavani"
+],
+"x": "He passed Marek Hamšík's record in 2020."
+},
+{
+"id": "sa071",
+"l": "sa",
+"d": 2,
+"q": "Who holds Napoli's record for most appearances?",
+"a": "Marek Hamšík",
+"w": [
+"Lorenzo Insigne",
+"Dries Mertens",
+"Giuseppe Bruscolotti"
+],
+"x": "The Slovak midfielder played 520 games for the club."
+},
+{
+"id": "sa072",
+"l": "sa",
+"d": 2,
+"q": "Which club did Gonzalo Higuaín join Napoli from in 2013?",
+"a": "Real Madrid",
+"w": [
+"River Plate",
+"Atlético Madrid",
+"Valencia"
+],
+"x": "He moved to Juventus for €90m in 2016."
+},
+{
+"id": "sa073",
+"l": "sa",
+"d": 1,
+"q": "Which club did Romelu Lukaku join Inter from in 2019?",
+"a": "Manchester United",
+"w": [
+"Chelsea",
+"Everton",
+"Roma"
+],
+"x": "He won the Scudetto in 2020-21."
+},
+{
+"id": "sa074",
+"l": "sa",
+"d": 3,
+"q": "Which club did Lautaro Martínez join Inter from in 2018?",
+"a": "Racing Club",
+"w": [
+"River Plate",
+"Boca Juniors",
+"Independiente"
+],
+"x": "He became Inter captain in 2023."
+},
+{
+"id": "sa075",
+"l": "sa",
+"d": 2,
+"q": "Which club did Paulo Dybala join Juventus from in 2015?",
+"a": "Palermo",
+"w": [
+"Instituto",
+"Roma",
+"Udinese"
+],
+"x": "He spent seven seasons in Turin."
+},
+{
+"id": "sa076",
+"l": "sa",
+"d": 1,
+"q": "Which club did Paulo Dybala join on a free after leaving Juventus in 2022?",
+"a": "Roma",
+"w": [
+"Inter",
+"Napoli",
+"Atlético Madrid"
+],
+"x": "He reunited with José Mourinho."
+},
+{
+"id": "sa077",
+"l": "sa",
+"d": 2,
+"q": "Which club did Rafael Leão join Milan from in 2019?",
+"a": "Lille",
+"w": [
+"Sporting CP",
+"Benfica",
+"Monaco"
+],
+"x": "He was Serie A's MVP as Milan won the 2021-22 title."
+},
+{
+"id": "sa078",
+"l": "sa",
+"d": 1,
+"q": "Which club did Olivier Giroud leave to join Milan in 2021?",
+"a": "Chelsea",
+"w": [
+"Arsenal",
+"Montpellier",
+"Lyon"
+],
+"x": "He won the Scudetto in his first season."
+},
+{
+"id": "sa079",
+"l": "sa",
+"d": 2,
+"q": "Which club did Zlatan Ibrahimović leave to return to Milan in January 2020?",
+"a": "LA Galaxy",
+"w": [
+"Manchester United",
+"Paris Saint-Germain",
+"Hammarby"
+],
+"x": "He was 38 when he returned."
+},
+{
+"id": "sa080",
+"l": "sa",
+"d": 1,
+"q": "At which club did Zlatan Ibrahimović retire in 2023?",
+"a": "Milan",
+"w": [
+"LA Galaxy",
+"Malmö",
+"Paris Saint-Germain"
+],
+"x": "He was 41."
+},
+{
+"id": "sa081",
+"l": "sa",
+"d": 1,
+"q": "Which club did Ronaldinho join Milan from in 2008?",
+"a": "Barcelona",
+"w": [
+"Paris Saint-Germain",
+"Flamengo",
+"Grêmio"
+],
+"x": "He spent two and a half seasons in Milan."
+},
+{
+"id": "sa082",
+"l": "sa",
+"d": 2,
+"q": "Which club did Andriy Shevchenko join Milan from in 1999?",
+"a": "Dynamo Kyiv",
+"w": [
+"Shakhtar Donetsk",
+"Spartak Moscow",
+"Metalist Kharkiv"
+],
+"x": "He was Serie A's top scorer in his first season."
+},
+{
+"id": "sa083",
+"l": "sa",
+"d": 1,
+"q": "Which club did Andriy Shevchenko leave Milan for in 2006?",
+"a": "Chelsea",
+"w": [
+"Real Madrid",
+"Arsenal",
+"Dynamo Kyiv"
+],
+"x": "He returned to Milan on loan in 2008-09."
+},
+{
+"id": "sa084",
+"l": "sa",
+"d": 3,
+"q": "Which club did Andrea Pirlo join Milan from in 2001?",
+"a": "Inter",
+"w": [
+"Brescia",
+"Reggina",
+"Juventus"
+],
+"x": "Ancelotti turned him into a deep-lying playmaker."
+},
+{
+"id": "sa085",
+"l": "sa",
+"d": 2,
+"q": "In which year did Paolo Maldini retire?",
+"a": "2009",
+"w": [
+"2006",
+"2007",
+"2011"
+],
+"x": "He played his entire career for Milan."
+},
+{
+"id": "sa086",
+"l": "sa",
+"d": 3,
+"q": "How many seasons did Paolo Maldini play for Milan's first team?",
+"a": "25",
+"w": [
+"20",
+"22",
+"27"
+],
+"x": "He made his debut in 1985 aged 16 and retired in 2009."
+},
+{
+"id": "sa087",
+"l": "sa",
+"d": 2,
+"q": "Who holds the record for most appearances for Inter?",
+"a": "Javier Zanetti",
+"w": [
+"Giuseppe Bergomi",
+"Giacinto Facchetti",
+"Esteban Cambiasso"
+],
+"x": "The Argentine played 858 games for the club."
+},
+{
+"id": "sa088",
+"l": "sa",
+"d": 3,
+"q": "Which club did Alessandro Del Piero join after leaving Juventus in 2012?",
+"a": "Sydney FC",
+"w": [
+"Delhi Dynamos",
+"LA Galaxy",
+"Toronto FC"
+],
+"x": "He later had a short spell in India."
+},
+{
+"id": "sa089",
+"l": "sa",
+"d": 1,
+"q": "Which club did Gianluigi Buffon join for one season in 2018-19?",
+"a": "Paris Saint-Germain",
+"w": [
+"Parma",
+"Barcelona",
+"Monaco"
+],
+"x": "He then returned to Juventus."
+},
+{
+"id": "sa090",
+"l": "sa",
+"d": 2,
+"q": "At which club did Gianluigi Buffon retire in 2023?",
+"a": "Parma",
+"w": [
+"Juventus",
+"Paris Saint-Germain",
+"Carrarese"
+],
+"x": "Parma was where he started his career."
+},
+{
+"id": "sa091",
+"l": "sa",
+"d": 2,
+"q": "Which Roma midfielder was nicknamed 'Capitan Futuro' while Totti was captain?",
+"a": "Daniele De Rossi",
+"w": [
+"Alberto Aquilani",
+"Simone Perrotta",
+"Lorenzo Pellegrini"
+],
+"x": "He later coached Roma."
+},
+{
+"id": "sa092",
+"l": "sa",
+"d": 2,
+"q": "Which Lazio captain moved to Milan in 2002?",
+"a": "Alessandro Nesta",
+"w": [
+"Giuseppe Favalli",
+"Pavel Nedvěd",
+"Siniša Mihajlović"
+],
+"x": "Lazio sold him because of money troubles."
+},
+{
+"id": "sa093",
+"l": "sa",
+"d": 1,
+"q": "Which club was owned by Silvio Berlusconi until 2017?",
+"a": "Milan",
+"w": [
+"Monza",
+"Inter",
+"Juventus"
+],
+"x": "He later bought Monza and took them into Serie A."
+},
+{
+"id": "sa094",
+"l": "sa",
+"d": 1,
+"q": "Which family has long controlled Juventus?",
+"a": "The Agnellis",
+"w": [
+"The Morattis",
+"The Berlusconis",
+"The Della Valles"
+],
+"x": "Their holding company, Exor, owns the majority."
+},
+{
+"id": "sa095",
+"l": "sa",
+"d": 3,
+"q": "Which investment firm bought Milan in 2022?",
+"a": "RedBird Capital",
+"w": [
+"Elliott Management",
+"Oaktree",
+"Suning"
+],
+"x": "RedBird bought the club from Elliott."
+},
+{
+"id": "sa096",
+"l": "sa",
+"d": 2,
+"q": "Which Chinese company owned Inter from 2016 to 2024?",
+"a": "Suning",
+"w": [
+"Wanda",
+"Alibaba",
+"Evergrande"
+],
+"x": "The American fund Oaktree took control in 2024."
+},
+{
+"id": "sa097",
+"l": "sa",
+"d": 2,
+"q": "Why were Juventus docked 10 points in 2022-23?",
+"a": "False accounting on transfer deals",
+"w": [
+"Match fixing",
+"Unpaid wages",
+"Racist chanting"
+],
+"x": "The case was about inflated player-swap valuations, known as 'plusvalenze'."
+},
+{
+"id": "sa098",
+"l": "sa",
+"d": 3,
+"q": "Which club did Antonio Cassano join from Roma in January 2006?",
+"a": "Real Madrid",
+"w": [
+"Sampdoria",
+"Milan",
+"Inter"
+],
+"x": "He returned to Italy with Sampdoria in 2007."
+},
+{
+"id": "sa099",
+"l": "sa",
+"d": 2,
+"q": "Which club did Gian Piero Gasperini join after leaving Atalanta in 2025?",
+"a": "Roma",
+"w": [
+"Juventus",
+"Milan",
+"Napoli"
+],
+"x": "He had spent nine seasons at Atalanta."
+},
+{
+"id": "sa100",
+"l": "sa",
+"d": 2,
+"q": "Who replaced Simone Inzaghi as Inter coach in 2025?",
+"a": "Cristian Chivu",
+"w": [
+"Cesc Fàbregas",
+"Roberto De Zerbi",
+"Thiago Motta"
+],
+"x": "Chivu won the 2010 treble as an Inter player."
+},
+{
+"id": "sa101",
+"l": "sa",
+"d": 2,
+"q": "Which coach returned to Milan in 2025 for a second spell?",
+"a": "Massimiliano Allegri",
+"w": [
+"Stefano Pioli",
+"Carlo Ancelotti",
+"Gennaro Gattuso"
+],
+"x": "He had won the 2010-11 Scudetto there."
+},
+{
+"id": "sa102",
+"l": "sa",
+"d": 2,
+"q": "Who coached Bologna into the Champions League in 2024 before joining Juventus?",
+"a": "Thiago Motta",
+"w": [
+"Vincenzo Italiano",
+"Siniša Mihajlović",
+"Roberto De Zerbi"
+],
+"x": "Bologna finished fifth."
+},
+{
+"id": "sa103",
+"l": "sa",
+"d": 1,
+"q": "Which former Arsenal and Barcelona midfielder became Como's coach?",
+"a": "Cesc Fàbregas",
+"w": [
+"Andrés Iniesta",
+"Mikel Arteta",
+"Xabi Alonso"
+],
+"x": "He also played for Como before moving into coaching."
+},
+{
+"id": "sa104",
+"l": "sa",
+"d": 2,
+"q": "Which Udinese striker was Serie A's top scorer in 2009-10 and 2010-11?",
+"a": "Antonio Di Natale",
+"w": [
+"Alexis Sánchez",
+"Fabio Quagliarella",
+"Vincenzo Iaquinta"
+],
+"x": "He spent 12 years at Udinese."
+},
+{
+"id": "sa105",
+"l": "sa",
+"d": 3,
+"q": "Which veteran Piacenza striker shared the 2001-02 top-scorer title with David Trezeguet?",
+"a": "Darío Hübner",
+"w": [
+"Igor Protti",
+"Cristiano Lucarelli",
+"Nicola Amoruso"
+],
+"x": "He was 35 and had never played in Serie A until he was 30."
+},
+{
+"id": "sa106",
+"l": "sa",
+"d": 2,
+"q": "Who was Serie A's top scorer for Napoli in 2012-13?",
+"a": "Edinson Cavani",
+"w": [
+"Gonzalo Higuaín",
+"Marek Hamšík",
+"Ezequiel Lavezzi"
+],
+"x": "He joined PSG that summer."
+},
+{
+"id": "sa107",
+"l": "sa",
+"d": 2,
+"q": "Who was Serie A's top scorer for Roma in 2016-17?",
+"a": "Edin Džeko",
+"w": [
+"Mohamed Salah",
+"Francesco Totti",
+"Stephan El Shaarawy"
+],
+"x": "He scored 29 league goals."
+},
+{
+"id": "sa108",
+"l": "sa",
+"d": 3,
+"q": "Who was Serie A's top scorer for Torino in 2013-14?",
+"a": "Ciro Immobile",
+"w": [
+"Alessio Cerci",
+"Andrea Belotti",
+"Rolando Bianchi"
+],
+"x": "He then moved to Borussia Dortmund."
+},
+{
+"id": "sa109",
+"l": "sa",
+"d": 2,
+"q": "Who was Serie A's top scorer in 2007-08, Juventus' first season back after Calciopoli?",
+"a": "Alessandro Del Piero",
+"w": [
+"David Trezeguet",
+"Zlatan Ibrahimović",
+"Marco Borriello"
+],
+"x": "Del Piero had stayed with Juventus in Serie B."
+},
+{
+"id": "sa110",
+"l": "sa",
+"d": 2,
+"q": "Who was Serie A's top scorer for Inter in 2008-09?",
+"a": "Zlatan Ibrahimović",
+"w": [
+"Adriano",
+"Diego Milito",
+"Samuel Eto'o"
+],
+"x": "He moved to Barcelona that summer."
+},
+{
+"id": "sa111",
+"l": "sa",
+"d": 3,
+"q": "Lazio beat Roma in the 2013 Coppa Italia final. Who scored the only goal?",
+"a": "Senad Lulić",
+"w": [
+"Miroslav Klose",
+"Hernanes",
+"Antonio Candreva"
+],
+"x": "He scored in the 71st minute, now a famous number for Lazio fans."
+},
+{
+"id": "sa112",
+"l": "sa",
+"d": 2,
+"q": "Who coached Napoli to the 2020 Coppa Italia, beating Juventus on penalties?",
+"a": "Gennaro Gattuso",
+"w": [
+"Carlo Ancelotti",
+"Maurizio Sarri",
+"Luciano Spalletti"
+],
+"x": "The final was played in an empty Stadio Olimpico."
+},
+{
+"id": "sa113",
+"l": "sa",
+"d": 2,
+"q": "Which club won the 2025 Coppa Italia, their first major trophy in 51 years?",
+"a": "Bologna",
+"w": [
+"Atalanta",
+"Fiorentina",
+"Torino"
+],
+"x": "They beat Milan 1-0 in the final."
+},
+{
+"id": "sa114",
+"l": "sa",
+"d": 2,
+"q": "Which club went bankrupt in 2015 and restarted in Serie D, before climbing back to Serie A?",
+"a": "Parma",
+"w": [
+"Fiorentina",
+"Napoli",
+"Palermo"
+],
+"x": "They were back in Serie A by 2018."
+},
+{
+"id": "sa115",
+"l": "sa",
+"d": 3,
+"q": "Who coached Juventus in Serie B in 2006-07?",
+"a": "Didier Deschamps",
+"w": [
+"Claudio Ranieri",
+"Fabio Capello",
+"Ciro Ferrara"
+],
+"x": "Juventus went straight back up."
+},
+{
+"id": "sa116",
+"l": "sa",
+"d": 2,
+"q": "Which Juventus general manager was at the centre of Calciopoli?",
+"a": "Luciano Moggi",
+"w": [
+"Giuseppe Marotta",
+"Antonio Giraudo",
+"Fabio Paratici"
+],
+"x": "He received a lifetime ban from football."
+},
+{
+"id": "sa117",
+"l": "sa",
+"d": 1,
+"q": "Which goalkeeper left Milan for PSG on a free transfer in 2021?",
+"a": "Gianluigi Donnarumma",
+"w": [
+"Mike Maignan",
+"Gianluigi Buffon",
+"Salvatore Sirigu"
+],
+"x": "Weeks later he was player of the tournament as Italy won Euro 2020."
+},
+{
+"id": "sa118",
+"l": "sa",
+"d": 2,
+"q": "Which club did Gianluigi Donnarumma join from PSG in 2025?",
+"a": "Manchester City",
+"w": [
+"Inter",
+"Chelsea",
+"Real Madrid"
+],
+"x": "He had just won the Champions League with PSG."
+},
+{
+"id": "sa119",
+"l": "sa",
+"d": 1,
+"q": "Which club did Sandro Tonali leave Milan for in 2023?",
+"a": "Newcastle United",
+"w": [
+"Juventus",
+"Chelsea",
+"Arsenal"
+],
+"x": "He was banned for ten months soon after for betting."
+},
+{
+"id": "sa120",
+"l": "sa",
+"d": 3,
+"q": "Which club did Khvicha Kvaratskhelia join Napoli from in 2022?",
+"a": "Dinamo Batumi",
+"w": [
+"Rubin Kazan",
+"Dinamo Tbilisi",
+"Lokomotiv Moscow"
+],
+"x": "He was Serie A's MVP in his first season."
+},
+{
+"id": "sa121",
+"l": "sa",
+"d": 2,
+"q": "Which club did Victor Osimhen join Napoli from in 2020?",
+"a": "Lille",
+"w": [
+"Charleroi",
+"Wolfsburg",
+"Monaco"
+],
+"x": "He was Napoli's record signing."
+},
+{
+"id": "sa122",
+"l": "sa",
+"d": 2,
+"q": "Which club did Romelu Lukaku join in 2024, reuniting with Antonio Conte?",
+"a": "Napoli",
+"w": [
+"Juventus",
+"Roma",
+"Inter"
+],
+"x": "They won the Scudetto in their first season together at Napoli."
+},
+{
+"id": "sa123",
+"l": "sa",
+"d": 2,
+"q": "Fiorentina lost the 2023 and 2024 Conference League finals. Who beat them in 2023?",
+"a": "West Ham United",
+"w": [
+"Olympiacos",
+"Roma",
+"Aston Villa"
+],
+"x": "Jarrod Bowen scored a late winner in Prague."
+},
+{
+"id": "sa124",
+"l": "sa",
+"d": 2,
+"q": "What is San Siro officially called?",
+"a": "Stadio Giuseppe Meazza",
+"w": [
+"Stadio Delle Alpi",
+"Stadio Gianni Agnelli",
+"Stadio Silvio Piola"
+],
+"x": "Meazza played for both Inter and Milan."
+},
+{
+"id": "sa125",
+"l": "sa",
+"d": 2,
+"q": "Which club plays at the Stadio Artemio Franchi?",
+"a": "Fiorentina",
+"w": [
+"Siena",
+"Torino",
+"Bologna"
+],
+"x": "The Franchi is in Florence."
+},
+{
+"id": "sa126",
+"l": "sa",
+"d": 2,
+"q": "Which club plays at the Stadio Renato Dall'Ara?",
+"a": "Bologna",
+"w": [
+"Parma",
+"Modena",
+"Sassuolo"
+],
+"x": "It hosted games at the 1934 and 1990 World Cups."
+},
+{
+"id": "sa127",
+"l": "sa",
+"d": 2,
+"q": "Which club plays at the Gewiss Stadium?",
+"a": "Atalanta",
+"w": [
+"Sassuolo",
+"Brescia",
+"Cremonese"
+],
+"x": "It's in Bergamo."
+},
+{
+"id": "sa128",
+"l": "sa",
+"d": 1,
+"q": "Which club is nicknamed 'I Rossoneri'?",
+"a": "Milan",
+"w": [
+"Inter",
+"Genoa",
+"Roma"
+],
+"x": "The name means 'the red and blacks'."
+},
+{
+"id": "sa129",
+"l": "sa",
+"d": 1,
+"q": "Which club is nicknamed 'I Nerazzurri'?",
+"a": "Inter",
+"w": [
+"Milan",
+"Atalanta",
+"Juventus"
+],
+"x": "The name means 'the black and blues'."
+},
+{
+"id": "sa130",
+"l": "sa",
+"d": 1,
+"q": "Which club is nicknamed 'I Giallorossi'?",
+"a": "Roma",
+"w": [
+"Lazio",
+"Lecce",
+"Napoli"
+],
+"x": "The name means 'the yellow and reds'."
+},
+{
+"id": "sa131",
+"l": "sa",
+"d": 1,
+"q": "Which club is nicknamed 'I Biancocelesti'?",
+"a": "Lazio",
+"w": [
+"Napoli",
+"Roma",
+"Pescara"
+],
+"x": "The name means 'the white and sky blues'."
+},
+{
+"id": "sa132",
+"l": "sa",
+"d": 1,
+"q": "Which club is nicknamed 'La Viola'?",
+"a": "Fiorentina",
+"w": [
+"Roma",
+"Torino",
+"Salernitana"
+],
+"x": "Fiorentina wear purple."
+},
+{
+"id": "sa133",
+"l": "sa",
+"d": 2,
+"q": "Which club is nicknamed 'Il Toro' and 'I Granata'?",
+"a": "Torino",
+"w": [
+"Juventus",
+"Genoa",
+"Salernitana"
+],
+"x": "Torino play in maroon."
+},
+{
+"id": "sa134",
+"l": "sa",
+"d": 1,
+"q": "Which two clubs contest the Derby della Mole?",
+"a": "Juventus and Torino",
+"w": [
+"Juventus and Inter",
+"Torino and Genoa",
+"Milan and Torino"
+],
+"x": "The Mole Antonelliana is Turin's best-known landmark."
+},
+{
+"id": "sa135",
+"l": "sa",
+"d": 3,
+"q": "Which two clubs contest the Derby del Sole?",
+"a": "Napoli and Roma",
+"w": [
+"Napoli and Lazio",
+"Roma and Lecce",
+"Palermo and Catania"
+],
+"x": "'The Derby of the Sun' is between the two biggest southern-central clubs."
+},
+{
+"id": "sa136",
+"l": "sa",
+"d": 2,
+"q": "Who scored the winning penalty for Milan in the 2003 Champions League final against Juventus?",
+"a": "Andriy Shevchenko",
+"w": [
+"Filippo Inzaghi",
+"Andrea Pirlo",
+"Rui Costa"
+],
+"x": "The final finished 0-0 at Old Trafford."
+},
+{
+"id": "eu039",
+"l": "eu",
+"d": 1,
+"q": "Who scored a famous left-foot volley for Real Madrid in the 2002 Champions League final?",
+"a": "Zinedine Zidane",
+"w": [
+"Raúl",
+"Luís Figo",
+"Roberto Carlos"
+],
+"x": "It won the final 2-1 at Hampden Park."
+},
+{
+"id": "eu040",
+"l": "eu",
+"d": 2,
+"q": "Who did Real Madrid beat in the 2002 Champions League final?",
+"a": "Bayer Leverkusen",
+"w": [
+"Bayern Munich",
+"Valencia",
+"Monaco"
+],
+"x": "Leverkusen finished second in three competitions that season."
+},
+{
+"id": "eu041",
+"l": "eu",
+"d": 2,
+"q": "Who did Real Madrid beat 3-0 in the 2000 Champions League final, the first between two clubs from the same country?",
+"a": "Valencia",
+"w": [
+"Barcelona",
+"Deportivo La Coruña",
+"Atlético Madrid"
+],
+"x": "The final was in Paris."
+},
+{
+"id": "eu042",
+"l": "eu",
+"d": 2,
+"q": "Who beat Valencia on penalties in the 2001 Champions League final?",
+"a": "Bayern Munich",
+"w": [
+"Real Madrid",
+"Leeds United",
+"Milan"
+],
+"x": "Oliver Kahn saved three penalties."
+},
+{
+"id": "eu043",
+"l": "eu",
+"d": 2,
+"q": "José Mourinho's Porto won the 2003 UEFA Cup final. Who did they beat?",
+"a": "Celtic",
+"w": [
+"Lazio",
+"Boavista",
+"Marseille"
+],
+"x": "Porto won 3-2 after extra time in Seville."
+},
+{
+"id": "eu044",
+"l": "eu",
+"d": 2,
+"q": "Liverpool won the 2001 UEFA Cup final 5-4 on a golden goal. Who did they beat?",
+"a": "Alavés",
+"w": [
+"Barcelona",
+"Roma",
+"Real Mallorca"
+],
+"x": "The golden goal was an own goal."
+},
+{
+"id": "eu045",
+"l": "eu",
+"d": 2,
+"q": "Who beat Arsenal on penalties in the 2000 UEFA Cup final?",
+"a": "Galatasaray",
+"w": [
+"Lazio",
+"Parma",
+"Leeds United"
+],
+"x": "It was the first European trophy won by a Turkish club."
+},
+{
+"id": "eu046",
+"l": "eu",
+"d": 3,
+"q": "Which club became the first Russian side to win a European trophy, the 2005 UEFA Cup?",
+"a": "CSKA Moscow",
+"w": [
+"Zenit Saint Petersburg",
+"Spartak Moscow",
+"Lokomotiv Moscow"
+],
+"x": "They beat Sporting CP in Lisbon."
+},
+{
+"id": "eu047",
+"l": "eu",
+"d": 3,
+"q": "Which club beat Rangers in the 2008 UEFA Cup final?",
+"a": "Zenit Saint Petersburg",
+"w": [
+"Bayern Munich",
+"Fiorentina",
+"Werder Bremen"
+],
+"x": "Zenit won 2-0 in Manchester."
+},
+{
+"id": "eu048",
+"l": "eu",
+"d": 3,
+"q": "Which Ukrainian club won the last UEFA Cup before it became the Europa League, in 2009?",
+"a": "Shakhtar Donetsk",
+"w": [
+"Dynamo Kyiv",
+"Dnipro",
+"Metalist Kharkiv"
+],
+"x": "They beat Werder Bremen after extra time."
+},
+{
+"id": "eu049",
+"l": "eu",
+"d": 3,
+"q": "Who headed Chelsea's stoppage-time winner against Benfica in the 2013 Europa League final?",
+"a": "Branislav Ivanović",
+"w": [
+"Fernando Torres",
+"John Terry",
+"Gary Cahill"
+],
+"x": "Rafael Benítez was Chelsea's interim manager."
+},
+{
+"id": "eu050",
+"l": "eu",
+"d": 2,
+"q": "Where was the all-London 2019 Europa League final between Chelsea and Arsenal played?",
+"a": "Baku",
+"w": [
+"Istanbul",
+"Kyiv",
+"Lisbon"
+],
+"x": "Chelsea won 4-1 in Azerbaijan."
+},
+{
+"id": "eu051",
+"l": "eu",
+"d": 2,
+"q": "Who did Manchester United beat in the 2017 Europa League final?",
+"a": "Ajax",
+"w": [
+"Benfica",
+"Villarreal",
+"Lyon"
+],
+"x": "United won 2-0 in Stockholm."
+},
+{
+"id": "eu052",
+"l": "eu",
+"d": 2,
+"q": "Who scored West Ham's late winner in the 2023 Conference League final?",
+"a": "Jarrod Bowen",
+"w": [
+"Saïd Benrahma",
+"Michail Antonio",
+"Lucas Paquetá"
+],
+"x": "It was West Ham's first major trophy since 1980."
+},
+{
+"id": "eu053",
+"l": "eu",
+"d": 2,
+"q": "Which Greek club won the 2024 Conference League?",
+"a": "Olympiacos",
+"w": [
+"Panathinaikos",
+"PAOK",
+"AEK Athens"
+],
+"x": "Ayoub El Kaabi scored the winner in extra time against Fiorentina."
+},
+{
+"id": "eu054",
+"l": "eu",
+"d": 2,
+"q": "Who beat Rangers on penalties in the 2022 Europa League final?",
+"a": "Eintracht Frankfurt",
+"w": [
+"RB Leipzig",
+"West Ham United",
+"Bayer Leverkusen"
+],
+"x": "Frankfurt had knocked out Barcelona on the way."
+},
+{
+"id": "eu055",
+"l": "eu",
+"d": 1,
+"q": "Whose second-half hat-trick in Amsterdam sent Tottenham to the 2019 Champions League final?",
+"a": "Lucas Moura",
+"w": [
+"Harry Kane",
+"Son Heung-min",
+"Fernando Llorente"
+],
+"x": "The winner came in the sixth minute of stoppage time."
+},
+{
+"id": "eu056",
+"l": "eu",
+"d": 2,
+"q": "Who scored Bayern's late winner against Borussia Dortmund in the 2013 Champions League final?",
+"a": "Arjen Robben",
+"w": [
+"Thomas Müller",
+"Mario Mandžukić",
+"Franck Ribéry"
+],
+"x": "It was the first all-German final, at Wembley."
+},
+{
+"id": "eu057",
+"l": "eu",
+"d": 2,
+"q": "Which former PSG player scored the only goal as Bayern beat PSG in the 2020 Champions League final?",
+"a": "Kingsley Coman",
+"w": [
+"Serge Gnabry",
+"Thomas Müller",
+"Robert Lewandowski"
+],
+"x": "Bayern won every game in that season's competition."
+},
+{
+"id": "eu058",
+"l": "eu",
+"d": 1,
+"q": "Who did Real Madrid beat in the 2024 Champions League final at Wembley?",
+"a": "Borussia Dortmund",
+"w": [
+"Bayern Munich",
+"Inter",
+"Manchester City"
+],
+"x": "Carvajal and Vinícius scored in a 2-0 win."
+},
+{
+"id": "eu059",
+"l": "eu",
+"d": 2,
+"q": "Who did Real Madrid beat 4-1 in the 2017 Champions League final in Cardiff?",
+"a": "Juventus",
+"w": [
+"Atlético Madrid",
+"Monaco",
+"Liverpool"
+],
+"x": "They were the first team to retain the trophy in the Champions League era."
+},
+{
+"id": "eu060",
+"l": "eu",
+"d": 2,
+"q": "Who scored a hat-trick for Real Madrid in their 2022 comeback against PSG?",
+"a": "Karim Benzema",
+"w": [
+"Vinícius Júnior",
+"Luka Modrić",
+"Rodrygo"
+],
+"x": "He scored three in 17 minutes."
+},
+{
+"id": "eu061",
+"l": "eu",
+"d": 2,
+"q": "Who scored twice in two minutes, at the very end of normal time, as Real Madrid came back against Manchester City in the 2022 semi-final?",
+"a": "Rodrygo",
+"w": [
+"Karim Benzema",
+"Vinícius Júnior",
+"Marco Asensio"
+],
+"x": "Benzema then won it with a penalty in extra time."
+},
+{
+"id": "eu062",
+"l": "eu",
+"d": 3,
+"q": "Against which club did Lionel Messi score five goals in a 2012 Champions League match?",
+"a": "Bayer Leverkusen",
+"w": [
+"Arsenal",
+"Celtic",
+"APOEL"
+],
+"x": "Barcelona won 7-1."
+},
+{
+"id": "eu063",
+"l": "eu",
+"d": 1,
+"q": "Who is the Champions League's all-time top scorer?",
+"a": "Cristiano Ronaldo",
+"w": [
+"Lionel Messi",
+"Robert Lewandowski",
+"Karim Benzema"
+],
+"x": "He scored 140 goals in the competition."
+},
+{
+"id": "eu064",
+"l": "eu",
+"d": 2,
+"q": "How many Champions League titles did Cristiano Ronaldo win?",
+"a": "5",
+"w": [
+"3",
+"4",
+"6"
+],
+"x": "One with Manchester United and four with Real Madrid."
+},
+{
+"id": "eu065",
+"l": "eu",
+"d": 2,
+"q": "In 2024, Modrić, Kroos, Carvajal and Nacho equalled Paco Gento's record for most European Cups won. How many?",
+"a": "6",
+"w": [
+"4",
+"5",
+"7"
+],
+"x": "Modrić, Carvajal and Nacho won all six with Real Madrid; Kroos won one of his with Bayern."
+},
+{
+"id": "eu066",
+"l": "eu",
+"d": 2,
+"q": "How many Champions Leagues has Carlo Ancelotti won as a coach, a record?",
+"a": "5",
+"w": [
+"3",
+"4",
+"6"
+],
+"x": "Two with Milan and three with Real Madrid."
+},
+{
+"id": "eu067",
+"l": "eu",
+"d": 2,
+"q": "How many Champions Leagues has Pep Guardiola won as a coach?",
+"a": "3",
+"w": [
+"2",
+"4",
+"5"
+],
+"x": "Two with Barcelona (2009, 2011) and one with Manchester City (2023)."
+},
+{
+"id": "eu068",
+"l": "eu",
+"d": 2,
+"q": "Which coach has won the Europa League a record four times?",
+"a": "Unai Emery",
+"w": [
+"José Mourinho",
+"Diego Simeone",
+"Rafael Benítez"
+],
+"x": "Three with Sevilla and one with Villarreal."
+},
+{
+"id": "eu069",
+"l": "eu",
+"d": 3,
+"q": "Leicester reached the Champions League quarter-finals in their only campaign, 2016-17. Who knocked them out?",
+"a": "Atlético Madrid",
+"w": [
+"Juventus",
+"Sevilla",
+"Monaco"
+],
+"x": "Leicester had beaten Sevilla in the last 16."
+},
+{
+"id": "eu070",
+"l": "eu",
+"d": 2,
+"q": "Who knocked Manchester City out of the 2019 Champions League on away goals, after VAR ruled out a late City winner?",
+"a": "Tottenham",
+"w": [
+"Liverpool",
+"Monaco",
+"Lyon"
+],
+"x": "Raheem Sterling's stoppage-time goal was disallowed for offside."
+},
+{
+"id": "eu071",
+"l": "eu",
+"d": 2,
+"q": "From which season did UEFA scrap the away goals rule?",
+"a": "2021-22",
+"w": [
+"2018-19",
+"2019-20",
+"2023-24"
+],
+"x": "Ties level on aggregate now go to extra time."
+},
+{
+"id": "eu072",
+"l": "eu",
+"d": 2,
+"q": "How many teams take part in the Champions League league phase introduced in 2024-25?",
+"a": "36",
+"w": [
+"32",
+"40",
+"48"
+],
+"x": "Each team plays eight games against different opponents."
+},
+{
+"id": "eu073",
+"l": "eu",
+"d": 2,
+"q": "How many English clubs signed up to the European Super League in April 2021?",
+"a": "6",
+"w": [
+"4",
+"5",
+"8"
+],
+"x": "All six pulled out within 48 hours after fans protested."
+},
+{
+"id": "eu074",
+"l": "eu",
+"d": 2,
+"q": "How many consecutive Bundesliga titles did Bayern win from 2012-13?",
+"a": "11",
+"w": [
+"8",
+"10",
+"12"
+],
+"x": "Leverkusen ended the run in 2023-24."
+},
+{
+"id": "eu075",
+"l": "eu",
+"d": 2,
+"q": "Robert Lewandowski broke Gerd Müller's Bundesliga scoring record in 2020-21. How many goals?",
+"a": "41",
+"w": [
+"39",
+"40",
+"43"
+],
+"x": "Müller's record of 40 had stood since 1971-72."
+},
+{
+"id": "eu076",
+"l": "eu",
+"d": 3,
+"q": "How many Bundesliga goals did Harry Kane score in his first season, 2023-24?",
+"a": "36",
+"w": [
+"30",
+"32",
+"41"
+],
+"x": "It was the most by a debut-season player."
+},
+{
+"id": "eu077",
+"l": "eu",
+"d": 2,
+"q": "Who won the 2004 Ballon d'Or with Milan?",
+"a": "Andriy Shevchenko",
+"w": [
+"Kaká",
+"Paolo Maldini",
+"Ronaldinho"
+],
+"x": "He was the third Ukrainian to win it."
+},
+{
+"id": "eu078",
+"l": "eu",
+"d": 2,
+"q": "Who won the 2005 Ballon d'Or?",
+"a": "Ronaldinho",
+"w": [
+"Frank Lampard",
+"Steven Gerrard",
+"Thierry Henry"
+],
+"x": "He also won the 2006 Champions League with Barcelona."
+},
+{
+"id": "eu079",
+"l": "eu",
+"d": 2,
+"q": "Who won the 2000 Ballon d'Or, the year he moved to Real Madrid?",
+"a": "Luís Figo",
+"w": [
+"Zinedine Zidane",
+"Andriy Shevchenko",
+"Rivaldo"
+],
+"x": "He had joined from Barcelona that summer."
+},
+{
+"id": "eu080",
+"l": "eu",
+"d": 2,
+"q": "Who won the 2002 Ballon d'Or after starring at the World Cup?",
+"a": "Ronaldo",
+"w": [
+"Rivaldo",
+"Oliver Kahn",
+"Roberto Carlos"
+],
+"x": "He scored eight goals in Japan and South Korea."
+},
+{
+"id": "eu081",
+"l": "eu",
+"d": 1,
+"q": "In which year was the Ballon d'Or not awarded because of the Covid pandemic?",
+"a": "2020",
+"w": [
+"2019",
+"2021",
+"2022"
+],
+"x": "Robert Lewandowski was widely seen as the likely winner."
+},
+{
+"id": "eu082",
+"l": "eu",
+"d": 1,
+"q": "How many Ballon d'Or awards has Cristiano Ronaldo won?",
+"a": "5",
+"w": [
+"3",
+"4",
+"6"
+],
+"x": "2008, 2013, 2014, 2016 and 2017."
+},
+{
+"id": "eu083",
+"l": "eu",
+"d": 2,
+"q": "Which Qatari group bought Paris Saint-Germain in 2011?",
+"a": "Qatar Sports Investments",
+"w": [
+"Qatar Airways",
+"Al Jazeera",
+"Ooredoo"
+],
+"x": "PSG won their first Champions League 14 years later."
+},
+{
+"id": "eu084",
+"l": "eu",
+"d": 1,
+"q": "Which MLS club did Lionel Messi join in 2023?",
+"a": "Inter Miami",
+"w": [
+"LA Galaxy",
+"New York City FC",
+"Los Angeles FC"
+],
+"x": "He won the Leagues Cup within weeks of arriving."
+},
+{
+"id": "eu085",
+"l": "eu",
+"d": 1,
+"q": "Which Saudi club did Cristiano Ronaldo join in January 2023?",
+"a": "Al Nassr",
+"w": [
+"Al-Hilal",
+"Al-Ittihad",
+"Al-Ahli"
+],
+"x": "He became the world's best-paid athlete."
+},
+{
+"id": "eu086",
+"l": "eu",
+"d": 2,
+"q": "Which Saudi club did Karim Benzema join in 2023?",
+"a": "Al-Ittihad",
+"w": [
+"Al Nassr",
+"Al-Hilal",
+"Al-Ettifaq"
+],
+"x": "He left Real Madrid as the club's second-highest scorer."
+},
+{
+"id": "eu087",
+"l": "eu",
+"d": 2,
+"q": "Which Saudi club did Neymar join in 2023?",
+"a": "Al-Hilal",
+"w": [
+"Al Nassr",
+"Al-Ittihad",
+"Al-Qadsiah"
+],
+"x": "Injury limited him to a handful of games before he returned to Santos."
+},
+{
+"id": "eu088",
+"l": "eu",
+"d": 2,
+"q": "Who scored twice in Chelsea's 3-0 win over PSG in the 2025 Club World Cup final?",
+"a": "Cole Palmer",
+"w": [
+"João Pedro",
+"Nicolas Jackson",
+"Enzo Fernández"
+],
+"x": "Palmer also set up João Pedro for the third."
+},
+{
+"id": "eu089",
+"l": "eu",
+"d": 3,
+"q": "Which Italian club won the last ever Cup Winners' Cup, in 1999?",
+"a": "Lazio",
+"w": [
+"Parma",
+"Fiorentina",
+"Sampdoria"
+],
+"x": "They beat Mallorca 2-1 at Villa Park."
+},
+{
+"id": "eu090",
+"l": "eu",
+"d": 3,
+"q": "Which club beat Manchester United in the 1999 UEFA Super Cup?",
+"a": "Lazio",
+"w": [
+"Bayern Munich",
+"Galatasaray",
+"Parma"
+],
+"x": "Marcelo Salas scored the only goal in Monaco."
+},
+{
+"id": "eu091",
+"l": "eu",
+"d": 1,
+"q": "Who was Chelsea's interim manager when they won the 2012 Champions League?",
+"a": "Roberto Di Matteo",
+"w": [
+"Rafael Benítez",
+"Guus Hiddink",
+"André Villas-Boas"
+],
+"x": "He had replaced André Villas-Boas in March."
+},
+{
+"id": "eu092",
+"l": "eu",
+"d": 1,
+"q": "Who managed Chelsea to the 2021 Champions League?",
+"a": "Thomas Tuchel",
+"w": [
+"Frank Lampard",
+"Antonio Conte",
+"Maurizio Sarri"
+],
+"x": "He had only taken over in January."
+},
+{
+"id": "in017",
+"l": "in",
+"d": 1,
+"q": "Who scored Germany's extra-time winner in the 2014 World Cup final?",
+"a": "Mario Götze",
+"w": [
+"Thomas Müller",
+"Miroslav Klose",
+"André Schürrle"
+],
+"x": "Germany beat Argentina 1-0 in Rio."
+},
+{
+"id": "in018",
+"l": "in",
+"d": 1,
+"q": "Who did France beat 4-2 in the 2018 World Cup final?",
+"a": "Croatia",
+"w": [
+"Belgium",
+"England",
+"Argentina"
+],
+"x": "Mbappé became the second teenager to score in a World Cup final, after Pelé."
+},
+{
+"id": "in019",
+"l": "in",
+"d": 1,
+"q": "Who won the Golden Boot at the 2018 World Cup?",
+"a": "Harry Kane",
+"w": [
+"Kylian Mbappé",
+"Romelu Lukaku",
+"Cristiano Ronaldo"
+],
+"x": "Kane scored six, three of them penalties."
+},
+{
+"id": "in020",
+"l": "in",
+"d": 2,
+"q": "Who won the Golden Boot at the 2010 World Cup?",
+"a": "Thomas Müller",
+"w": [
+"David Villa",
+"Wesley Sneijder",
+"Diego Forlán"
+],
+"x": "Four players scored five; Müller won on assists."
+},
+{
+"id": "in021",
+"l": "in",
+"d": 2,
+"q": "Who won the Golden Boot at the 2014 World Cup?",
+"a": "James Rodríguez",
+"w": [
+"Thomas Müller",
+"Lionel Messi",
+"Neymar"
+],
+"x": "He scored six for Colombia, including a famous volley against Uruguay."
+},
+{
+"id": "in022",
+"l": "in",
+"d": 2,
+"q": "Who won the Golden Boot at the 2006 World Cup?",
+"a": "Miroslav Klose",
+"w": [
+"Hernán Crespo",
+"Thierry Henry",
+"Ronaldo"
+],
+"x": "He scored five for the hosts."
+},
+{
+"id": "in023",
+"l": "in",
+"d": 1,
+"q": "Who holds the record for most World Cup goals, with 16?",
+"a": "Miroslav Klose",
+"w": [
+"Ronaldo",
+"Lionel Messi",
+"Kylian Mbappé"
+],
+"x": "He passed Ronaldo's 15 during the 7-1 win over Brazil in 2014."
+},
+{
+"id": "in024",
+"l": "in",
+"d": 1,
+"q": "Which Italian player did Zinedine Zidane headbutt in the 2006 World Cup final?",
+"a": "Marco Materazzi",
+"w": [
+"Fabio Cannavaro",
+"Gennaro Gattuso",
+"Gianluca Zambrotta"
+],
+"x": "Zidane was sent off in his last professional game."
+},
+{
+"id": "in025",
+"l": "in",
+"d": 1,
+"q": "Which Asian team reached the 2002 World Cup semi-finals?",
+"a": "South Korea",
+"w": [
+"Japan",
+"China",
+"Saudi Arabia"
+],
+"x": "They beat Italy and Spain along the way."
+},
+{
+"id": "in026",
+"l": "in",
+"d": 1,
+"q": "Who did Brazil beat in the 2002 World Cup final?",
+"a": "Germany",
+"w": [
+"Turkey",
+"Argentina",
+"France"
+],
+"x": "Ronaldo scored both goals in Yokohama."
+},
+{
+"id": "in027",
+"l": "in",
+"d": 1,
+"q": "Who did Spain beat in the 2010 World Cup final?",
+"a": "Netherlands",
+"w": [
+"Germany",
+"Argentina",
+"Uruguay"
+],
+"x": "Iniesta's extra-time goal won it 1-0."
+},
+{
+"id": "in028",
+"l": "in",
+"d": 1,
+"q": "Which goalkeeper captained Spain to Euro 2008, the 2010 World Cup and Euro 2012?",
+"a": "Iker Casillas",
+"w": [
+"Víctor Valdés",
+"Pepe Reina",
+"David de Gea"
+],
+"x": "He spent most of his career at Real Madrid."
+},
+{
+"id": "in029",
+"l": "in",
+"d": 2,
+"q": "Who coached Spain to Euro 2008?",
+"a": "Luis Aragonés",
+"w": [
+"Vicente del Bosque",
+"José Antonio Camacho",
+"Iñaki Sáez"
+],
+"x": "He left after the tournament and Del Bosque took over."
+},
+{
+"id": "in030",
+"l": "in",
+"d": 2,
+"q": "Who coached Spain to the 2010 World Cup and Euro 2012?",
+"a": "Vicente del Bosque",
+"w": [
+"Luis Aragonés",
+"Julen Lopetegui",
+"Luis Enrique"
+],
+"x": "He had won two Champions Leagues with Real Madrid."
+},
+{
+"id": "in031",
+"l": "in",
+"d": 2,
+"q": "Who coached Spain to Euro 2024?",
+"a": "Luis de la Fuente",
+"w": [
+"Luis Enrique",
+"Julen Lopetegui",
+"Robert Moreno"
+],
+"x": "He had coached most of the squad in Spain's youth teams."
+},
+{
+"id": "in032",
+"l": "in",
+"d": 1,
+"q": "Who coached Italy to the Euro 2020 title?",
+"a": "Roberto Mancini",
+"w": [
+"Antonio Conte",
+"Gian Piero Ventura",
+"Luciano Spalletti"
+],
+"x": "He took over after Italy missed the 2018 World Cup."
+},
+{
+"id": "in033",
+"l": "in",
+"d": 2,
+"q": "Who coached Italy to the 2006 World Cup?",
+"a": "Marcello Lippi",
+"w": [
+"Giovanni Trapattoni",
+"Cesare Prandelli",
+"Roberto Donadoni"
+],
+"x": "He had also won the 1996 Champions League with Juventus."
+},
+{
+"id": "in034",
+"l": "in",
+"d": 2,
+"q": "Who scored Italy's two late extra-time goals against hosts Germany in the 2006 semi-final?",
+"a": "Fabio Grosso and Alessandro Del Piero",
+"w": [
+"Luca Toni and Francesco Totti",
+"Andrea Pirlo and Fabio Grosso",
+"Marco Materazzi and Del Piero"
+],
+"x": "Both goals came in the last two minutes."
+},
+{
+"id": "in035",
+"l": "in",
+"d": 2,
+"q": "Who scored Italy's equaliser in the Euro 2020 final?",
+"a": "Leonardo Bonucci",
+"w": [
+"Federico Chiesa",
+"Lorenzo Insigne",
+"Giorgio Chiellini"
+],
+"x": "Italy won on penalties."
+},
+{
+"id": "in036",
+"l": "in",
+"d": 1,
+"q": "Who scored England's second-minute goal in the Euro 2020 final?",
+"a": "Luke Shaw",
+"w": [
+"Harry Kane",
+"Raheem Sterling",
+"Kieran Trippier"
+],
+"x": "It was his first goal for England."
+},
+{
+"id": "in037",
+"l": "in",
+"d": 1,
+"q": "In which year was Euro 2020 actually played?",
+"a": "2021",
+"w": [
+"2020",
+"2022",
+"2019"
+],
+"x": "The Covid pandemic delayed it by a year."
+},
+{
+"id": "in038",
+"l": "in",
+"d": 2,
+"q": "Who won the Golden Boot at Euro 2016?",
+"a": "Antoine Griezmann",
+"w": [
+"Cristiano Ronaldo",
+"Gareth Bale",
+"Olivier Giroud"
+],
+"x": "He scored six for the hosts."
+},
+{
+"id": "in039",
+"l": "in",
+"d": 1,
+"q": "Which nation knocked England out of Euro 2016?",
+"a": "Iceland",
+"w": [
+"Wales",
+"Portugal",
+"Slovakia"
+],
+"x": "Iceland won 2-1 in Nice."
+},
+{
+"id": "in040",
+"l": "in",
+"d": 2,
+"q": "England won their first ever World Cup penalty shoot-out in 2018. Who against?",
+"a": "Colombia",
+"w": [
+"Sweden",
+"Tunisia",
+"Belgium"
+],
+"x": "It came in the last 16."
+},
+{
+"id": "in041",
+"l": "in",
+"d": 2,
+"q": "Who knocked England out of Euro 2012 on penalties in the quarter-finals?",
+"a": "Italy",
+"w": [
+"Spain",
+"Germany",
+"Portugal"
+],
+"x": "Andrea Pirlo chipped a Panenka penalty."
+},
+{
+"id": "in042",
+"l": "in",
+"d": 1,
+"q": "Who was England's first foreign manager, appointed in 2001?",
+"a": "Sven-Göran Eriksson",
+"w": [
+"Fabio Capello",
+"Guus Hiddink",
+"Thomas Tuchel"
+],
+"x": "He took England to three quarter-finals."
+},
+{
+"id": "in043",
+"l": "in",
+"d": 1,
+"q": "Who scored a hat-trick in England's 5-1 win in Germany in 2001?",
+"a": "Michael Owen",
+"w": [
+"Emile Heskey",
+"Steven Gerrard",
+"David Beckham"
+],
+"x": "It was a World Cup qualifier in Munich."
+},
+{
+"id": "in044",
+"l": "in",
+"d": 1,
+"q": "Whose stoppage-time free kick against Greece in 2001 sent England to the 2002 World Cup?",
+"a": "David Beckham",
+"w": [
+"Steven Gerrard",
+"Teddy Sheringham",
+"Paul Scholes"
+],
+"x": "The game finished 2-2 at Old Trafford."
+},
+{
+"id": "in045",
+"l": "in",
+"d": 2,
+"q": "England failed to qualify for Euro 2008 after losing 3-2 to Croatia at Wembley. Who was their manager?",
+"a": "Steve McClaren",
+"w": [
+"Sven-Göran Eriksson",
+"Fabio Capello",
+"Roy Hodgson"
+],
+"x": "He was sacked the next day."
+},
+{
+"id": "in046",
+"l": "in",
+"d": 1,
+"q": "Who is England's all-time top scorer?",
+"a": "Harry Kane",
+"w": [
+"Wayne Rooney",
+"Bobby Charlton",
+"Gary Lineker"
+],
+"x": "He passed Wayne Rooney's 53 in 2023."
+},
+{
+"id": "in047",
+"l": "in",
+"d": 3,
+"q": "Who scored Argentina's winning penalty in the 2022 World Cup final shoot-out?",
+"a": "Gonzalo Montiel",
+"w": [
+"Lionel Messi",
+"Paulo Dybala",
+"Lautaro Martínez"
+],
+"x": "The final finished 3-3 after extra time."
+},
+{
+"id": "in048",
+"l": "in",
+"d": 1,
+"q": "Which nation became the first African team to reach a World Cup semi-final, in 2022?",
+"a": "Morocco",
+"w": [
+"Senegal",
+"Ghana",
+"Cameroon"
+],
+"x": "They knocked out Spain and Portugal."
+},
+{
+"id": "in049",
+"l": "in",
+"d": 1,
+"q": "How many teams are playing at the 2026 World Cup?",
+"a": "48",
+"w": [
+"32",
+"40",
+"64"
+],
+"x": "It's co-hosted by the USA, Canada and Mexico."
+},
+{
+"id": "in050",
+"l": "in",
+"d": 2,
+"q": "Argentina beat which country in the 2024 Copa América final?",
+"a": "Colombia",
+"w": [
+"Brazil",
+"Uruguay",
+"Canada"
+],
+"x": "Lautaro Martínez scored in extra time."
+},
+{
+"id": "in051",
+"l": "in",
+"d": 1,
+"q": "Argentina won the 2021 Copa América, Messi's first major international trophy. Who did they beat in the final?",
+"a": "Brazil",
+"w": [
+"Chile",
+"Colombia",
+"Uruguay"
+],
+"x": "Ángel Di María scored at the Maracanã."
+},
+{
+"id": "in052",
+"l": "in",
+"d": 2,
+"q": "Defending champions Germany went out in the 2018 World Cup group stage after losing 2-0 to which team?",
+"a": "South Korea",
+"w": [
+"Serbia",
+"Sweden",
+"Japan"
+],
+"x": "It was the first time Germany went out in the first round since 1938."
+},
+{
+"id": "in053",
+"l": "in",
+"d": 2,
+"q": "Who headed Spain's winner against Germany in the 2010 World Cup semi-final?",
+"a": "Carles Puyol",
+"w": [
+"Gerard Piqué",
+"Sergio Ramos",
+"David Villa"
+],
+"x": "Spain won 1-0 in Durban."
+},
+{
+"id": "in054",
+"l": "in",
+"d": 2,
+"q": "Who knocked Italy out of the 2002 World Cup with a golden goal?",
+"a": "South Korea",
+"w": [
+"Croatia",
+"Mexico",
+"Turkey"
+],
+"x": "Ahn Jung-hwan, who played in Italy for Perugia, scored."
+},
+{
+"id": "in055",
+"l": "in",
+"d": 2,
+"q": "Which team beat Italy in the play-off for the 2018 World Cup?",
+"a": "Sweden",
+"w": [
+"Switzerland",
+"North Macedonia",
+"Republic of Ireland"
+],
+"x": "It was Italy's first missed World Cup since 1958."
+},
+{
+"id": "in056",
+"l": "in",
+"d": 2,
+"q": "Which team knocked Italy out of 2022 World Cup qualifying in a play-off semi-final?",
+"a": "North Macedonia",
+"w": [
+"Sweden",
+"Switzerland",
+"Northern Ireland"
+],
+"x": "A late goal won it 1-0 in Palermo, months after Italy won Euro 2020."
+},
+{
+"id": "in057",
+"l": "in",
+"d": 2,
+"q": "Who scored a chipped 'Panenka' penalty in the 2006 World Cup final?",
+"a": "Zinedine Zidane",
+"w": [
+"Andrea Pirlo",
+"Thierry Henry",
+"Francesco Totti"
+],
+"x": "It hit the bar and bounced over the line."
+},
+{
+"id": "in058",
+"l": "in",
+"d": 2,
+"q": "Who won the first UEFA Nations League, in 2019?",
+"a": "Portugal",
+"w": [
+"Netherlands",
+"Spain",
+"France"
+],
+"x": "They beat the Netherlands 1-0 in Porto."
+},
+{
+"id": "in059",
+"l": "in",
+"d": 2,
+"q": "Portugal won the 2025 Nations League final on penalties. Who did they beat?",
+"a": "Spain",
+"w": [
+"Germany",
+"France",
+"Netherlands"
+],
+"x": "It was their second Nations League title."
+},
+{
+"id": "in060",
+"l": "in",
+"d": 1,
+"q": "Who holds the record for most men's international goals?",
+"a": "Cristiano Ronaldo",
+"w": [
+"Ali Daei",
+"Lionel Messi",
+"Sunil Chhetri"
+],
+"x": "He passed Ali Daei's 109 in 2021."
+},
+{
+"id": "in061",
+"l": "in",
+"d": 1,
+"q": "Which home nation reached the Euro 2016 semi-finals?",
+"a": "Wales",
+"w": [
+"England",
+"Northern Ireland",
+"Republic of Ireland"
+],
+"x": "They beat Belgium 3-1 in the quarter-finals."
+},
+{
+"id": "in062",
+"l": "in",
+"d": 2,
+"q": "Whose flying header started the Netherlands' 5-1 win over Spain at the 2014 World Cup?",
+"a": "Robin van Persie",
+"w": [
+"Arjen Robben",
+"Wesley Sneijder",
+"Klaas-Jan Huntelaar"
+],
+"x": "It was a rematch of the 2010 final."
+},
+{
+"id": "in063",
+"l": "in",
+"d": 1,
+"q": "Which player's goal-line handball against Ghana in 2010 kept Uruguay in the World Cup?",
+"a": "Luis Suárez",
+"w": [
+"Diego Forlán",
+"Edinson Cavani",
+"Diego Lugano"
+],
+"x": "Asamoah Gyan missed the penalty and Uruguay won the shoot-out."
+},
+{
+"id": "in064",
+"l": "in",
+"d": 1,
+"q": "Whose shot clearly crossed the line but wasn't given against Germany at the 2010 World Cup?",
+"a": "Frank Lampard",
+"w": [
+"Steven Gerrard",
+"Wayne Rooney",
+"Jermain Defoe"
+],
+"x": "It helped bring in goal-line technology."
+},
+{
+"id": "in065",
+"l": "in",
+"d": 3,
+"q": "Who scored Greece's winner in the Euro 2004 final?",
+"a": "Angelos Charisteas",
+"w": [
+"Theodoros Zagorakis",
+"Giorgos Karagounis",
+"Zisis Vryzas"
+],
+"x": "Greece beat Portugal 1-0 in Lisbon."
+},
+{
+"id": "in066",
+"l": "in",
+"d": 3,
+"q": "Who coached Greece to the Euro 2004 title?",
+"a": "Otto Rehhagel",
+"w": [
+"Fernando Santos",
+"Guus Hiddink",
+"Berti Vogts"
+],
+"x": "The German was in charge from 2001 to 2010."
+},
+{
+"id": "in067",
+"l": "in",
+"d": 2,
+"q": "Who scored Spain's first goal in the Euro 2024 final?",
+"a": "Nico Williams",
+"w": [
+"Lamine Yamal",
+"Dani Olmo",
+"Álvaro Morata"
+],
+"x": "Spain beat England 2-1."
+},
+{
+"id": "in068",
+"l": "in",
+"d": 1,
+"q": "Who hosted Euro 2024?",
+"a": "Germany",
+"w": [
+"England",
+"France",
+"Netherlands"
+],
+"x": "Spain won it, a record fourth European title."
+},
+{
+"id": "in069",
+"l": "in",
+"d": 1,
+"q": "Which three countries are hosting the 2026 World Cup?",
+"a": "USA, Canada and Mexico",
+"w": [
+"USA, Mexico and Costa Rica",
+"USA, Canada and Jamaica",
+"Mexico, Canada and Cuba"
+],
+"x": "It's the first World Cup with three hosts."
 }
 ]
