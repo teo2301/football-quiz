@@ -16,7 +16,7 @@ var MODES = [
   {id: "blitz", name: "Blitz", desc: "60 seconds, as many as you can", go: "startBlitz"},
   {id: "hilo", name: "Higher or lower", desc: "Goals, caps, fees and crowds", go: "startHilo"},
   {id: "career", name: "Career path", desc: "Name the player from his clubs", go: "startCareer"},
-  {id: "challenge", name: "Challenge", desc: "Send a mate your exact quiz"}
+  {id: "challenge", name: "Challenge", desc: "Send a mate your exact quiz", go: "openChallengeHub"}
 ];
 var lastStart = null;       // what "Play again" on the result screen does
 
@@ -49,6 +49,7 @@ function renderHome() {
   var seen = store.get("seen", []).length;
   $("seenNote").textContent = BANK.length ? "You've seen " + seen + " of " + BANK.length + " questions. Classic serves unseen ones first." : "";
   renderDailyCard();
+  refreshDivStrip();
 }
 
 // ---------------------------------------------------------------- daily
@@ -141,6 +142,7 @@ function finishDaily(g, date) {
   $("rShare").classList.remove("hidden");
   $("rShare").onclick = function () { shareText(shareDailyText(rec)); };
   $("again").classList.add("hidden");
+  $("chBox").classList.add("hidden");
   renderMissed(g);
   show("done");
   submitResult("daily", {date: date, answers: g.answers}, function (r, name) {
@@ -156,6 +158,7 @@ function resultScreen() {
   $("rFlame").classList.add("hidden");
   $("rShare").classList.add("hidden");
   $("again").classList.remove("hidden");
+  $("chBox").classList.add("hidden");
   $("missedH").textContent = "What you missed";
   $("postMsg").classList.add("hidden");
   $("postAsk").classList.add("hidden");
@@ -221,6 +224,7 @@ function finishClassic(g) {
   $("verdict").textContent = verdict(r / n) + " " + (Math.round(g.points * 10) / 10) + " pts." +
     (g.fiftyOn >= 0 ? " (50:50 used.)" : "");
   resultScreen();
+  offerChallenge(g);
   renderMissed(g);
   show("done");
   // Only whole quizzes of 10/20/50 count; a short pool (e.g. Hard + one league) doesn't.

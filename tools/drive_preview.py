@@ -171,8 +171,51 @@ async def new_modes(tab):
     await tab.shot("32-career-result")
 
 
-async def run(scheme, name, taken_name=None):
-    prof = tempfile.mkdtemp(prefix="fq-chrome-")
+LOADED = "document.getElementById('%s').textContent !== 'Loading…'"
+VISIBLE = "!document.getElementById('%s').classList.contains('hidden')"
+
+
+async def social_maker(tab, shared):
+    """Light run: send a challenge from the classic result, start a private league."""
+    await tab.js("document.getElementById('rChallenge').click()")
+    await tab.wait("!!lastClassic && !!lastClassic.code", 10)
+    shared["challenge"] = await tab.js("lastClassic.code")
+    await tab.shot("06b-challenge-made")
+    await tab.js("document.querySelector('[data-tab=leaguesTab]').click()")
+    await tab.wait(LOADED % "lgMsg")
+    await tab.js("document.getElementById('lgName').value='Preview FC';document.getElementById('lgCreate').click()")
+    await tab.wait(VISIBLE % "league")
+    await tab.wait(LOADED % "lMsg")
+    shared["league"] = await tab.js("document.getElementById('lCode').textContent")
+    await tab.shot("40-league-created")
+
+
+async def social_player(tab, shared):
+    """Dark run: open the challenge link, play it, then the league invite link, join."""
+    await tab.goto(URL + "#c=" + shared["challenge"])
+    await tab.wait("BANK.length > 0")
+    await tab.wait(VISIBLE % "ciPlay")
+    await tab.shot("41-challenge-invite")
+    await tab.js("document.getElementById('ciPlay').click()")
+    await play(tab, [True, True, False, True, True, True, False, True, True, True], snap_first="42-challenge")
+    await tab.wait(VISIBLE % "vs")
+    await tab.wait("!!chal && !!chal.result", 10)
+    await tab.shot("43-challenge-vs")
+    await tab.goto(URL + "#j=" + shared["league"])
+    await tab.wait(VISIBLE % "lgInvite")
+    await tab.shot("44-league-invite")
+    await tab.js("document.getElementById('lgInviteJoin').click()")
+    await tab.wait(VISIBLE % "league")
+    await tab.wait("document.querySelectorAll('#lTable li').length >= 2")
+    await tab.shot("45-league-table")
+    await tab.js("document.querySelectorAll('#lPeriod .chip')[1].click()")
+    await tab.wait("document.querySelectorAll('#lTable li').length >= 2")
+    await tab.shot("46-league-alltime")
+
+
+async def run(scheme, name, taken_name=None, shared=None, prof=None):
+    keep = prof is not None
+    prof = prof or tempfile.mkdtemp(prefix="fq-chrome-")
     port = PORT + (1 if scheme == "dark" else 0)
     proc = subprocess.Popen([CHROME, "--headless=new", "--remote-debugging-port=%d" % port, "--user-data-dir=" + prof,
                              "--no-sandbox", "--no-first-run", "--hide-scrollbars", "--disable-gpu", "about:blank"],
@@ -194,9 +237,30 @@ async def run(scheme, name, taken_name=None):
             await tab.send("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-color-scheme", "value": scheme}]})
             await tab.goto(URL)
             await tab.wait("BANK.length > 0 && document.fonts.status === 'loaded'")
+            if shared.get("creator_view"):     # reopen the light profile: the sender's view of their challenge
+                await tab.goto(URL + "#c=" + shared["challenge"])
+                await tab.wait("!!chal && chal.mine && chal.plays.length > 0", 10)
+                await tab.shot("47-challenge-sender-view")
+                await tab.js("document.getElementById('vsHome').click()")
+                await tab.wait("!document.getElementById('divStrip').classList.contains('hidden')")
+                await tab.shot("48-home-strip")
+                reader.cancel()
+                return tab.errors
             fonts = await tab.js("Array.from(document.fonts).filter(function(f){return f.status==='loaded'}).map(function(f){return f.family+' '+f.weight})")
             print(scheme, "fonts loaded:", fonts)
             await tab.shot("01-home")
+            if scheme == "dark":    # before having a name: hub + the name sheet
+                await tab.js("document.querySelector('[data-mode=challenge]').click()")
+                await tab.wait(LOADED % "h2hMsg")
+                await tab.shot("35-challenge-hub-empty")
+                await tab.js("document.querySelector('[data-tab=leaguesTab]').click()")
+                await tab.wait(LOADED % "lgMsg")
+                await tab.shot("36-leagues-noname")
+                await tab.js("document.getElementById('lgName').value='Nameless';document.getElementById('lgCreate').click()")
+                await tab.wait(VISIBLE % "nameSheet")
+                await tab.shot("37-name-sheet", full=False)
+                await tab.js("document.getElementById('nsCancel').click()")
+                await tab.js("document.querySelector('[data-tab=home]').click()")
 
             # Classic: 10 questions, right/wrong mix, first answers captured
             await tab.js("document.querySelector('.mode.active').click()")
@@ -214,6 +278,10 @@ async def run(scheme, name, taken_name=None):
             await tab.js("document.getElementById('nameIn').value=%s;document.getElementById('postBtn').click()" % json.dumps(name))
             await tab.wait("/Posted as/.test(document.getElementById('postMsg').textContent)", 10)
             await tab.shot("06-classic-posted")
+            if scheme == "light":
+                await social_maker(tab, shared)
+            else:
+                await social_player(tab, shared)
 
             # Daily
             await tab.js("document.getElementById('menu').click()")
@@ -240,7 +308,15 @@ async def run(scheme, name, taken_name=None):
                 await tab.wait("document.getElementById('bMsg').textContent !== 'Loading…'")
                 await tab.shot("12%s-board-%s" % ("bcde"[k], kind))
             await tab.js("document.querySelector('[data-tab=leaguesTab]').click()")
+            await tab.wait(LOADED % "lgMsg")
+            await tab.wait("document.querySelectorAll('#dvTable li').length > 0")
             await tab.shot("13-leagues")
+            await tab.js("document.querySelector('[data-tab=home]').click()")
+            await tab.wait(VISIBLE % "divStrip")
+            await tab.shot("13b-home-strip", full=False)
+            await tab.js("document.querySelector('[data-mode=challenge]').click()")
+            await tab.wait(LOADED % "h2hMsg")
+            await tab.shot("13c-challenge-hub")
             await tab.js("document.querySelector('[data-tab=me]').click()")
             await tab.shot("14-me")
             await tab.goto(URL + "privacy.html")
@@ -256,16 +332,25 @@ async def run(scheme, name, taken_name=None):
     finally:
         proc.terminate()
         proc.wait()
-        shutil.rmtree(prof, ignore_errors=True)
+        if not keep:
+            shutil.rmtree(prof, ignore_errors=True)
 
 
 async def main(which):
     os.makedirs(OUT, exist_ok=True)
     errs, tag = {}, time.strftime("%H%M%S")      # fresh browser = fresh player id, so fresh names
-    if which in ("light", "both"):
-        errs["light"] = await run("light", "Light " + tag)
-    if which in ("dark", "both"):
-        errs["dark"] = await run("dark", "Dark " + tag, taken_name="light " + tag if which == "both" else None)
+    shared = {}
+    light_prof = tempfile.mkdtemp(prefix="fq-chrome-")
+    try:
+        # light sends a challenge + makes a league; dark (another player) plays it and joins;
+        # then the light profile reopens to see the sender's side.
+        errs["light"] = await run("light", "Light " + tag, shared=shared, prof=light_prof)
+        if which == "both":
+            errs["dark"] = await run("dark", "Dark " + tag, taken_name="light " + tag, shared=shared)
+            shared["creator_view"] = True
+            errs["light-sender"] = await run("light", "Light " + tag, shared=shared, prof=light_prof)
+    finally:
+        shutil.rmtree(light_prof, ignore_errors=True)
     for k, v in errs.items():
         print(k, "console errors/warnings:", v or "none")
 

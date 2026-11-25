@@ -262,3 +262,103 @@ body.playing .tabbar{display:none}
 .cres .bad{margin:0;color:var(--wrong);font-weight:700}
 .review .path{font-size:13px;color:var(--chalk2);margin-top:4px}
 @media (prefers-color-scheme:dark){.cres .bad{color:#ff9a6b}.path li .dot{color:#08170e}}
+
+/* ---------- Phase 3: challenges, leagues, divisions */
+.ctitle{font-size:26px;font-weight:700;color:var(--ink);margin:2px 0 4px}
+.cmeta{color:var(--ink2);font-size:14px;margin:6px 0 0}
+.tile .cmeta{color:var(--chalk2)}
+.card .namerow input,.namerow.incard input{background:transparent;color:var(--ink);border-color:var(--cardb)}
+.card .namerow input::placeholder{color:var(--ink2)}
+.namerow.incard{margin-top:14px}
+input.code{text-transform:uppercase;letter-spacing:.18em;font-family:var(--head);font-weight:600;font-size:20px}
+input.code::placeholder{letter-spacing:.18em}
+.howto,.form,.join{margin-top:12px}
+.howto b,.form b,.join b{display:block;font-family:var(--head);font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.howto p,.join p{margin:0;color:var(--chalk2);font-size:14.5px}
+.howto .btn{margin-top:12px;min-height:46px;font-size:16px}
+.join{border-color:var(--yellow);box-shadow:inset 0 0 0 1px var(--yellow)}
+.btnpair{display:flex}
+.btnpair .btn{margin-top:12px;min-height:46px;font-size:16px}
+.btnpair .btn + .btn{margin-left:10px}
+.lb li.tap{cursor:pointer}
+.lb li.zup{box-shadow:inset 4px 0 0 var(--yellow)}
+.lb li.zdown{box-shadow:inset 4px 0 0 var(--segwrong)}
+.lb li.me.zup{box-shadow:inset 0 0 0 1px var(--yellow),inset 4px 0 0 var(--yellow)}
+.lb li.me.zdown{box-shadow:inset 0 0 0 1px var(--yellow),inset 4px 0 0 var(--segwrong)}
+#chal .msg.err,#chIntro .msg.err,.card .msg.err,.sheet .msg.err{color:var(--wrong)}
+.card .msg{color:var(--ink2)}
+@media (prefers-color-scheme:dark){#chIntro .msg.err,.card .msg.err,.sheet .msg.err{color:#ff9a6b}}
+
+/* home division strip */
+.divstrip{display:flex;align-items:center;width:100%;margin-top:12px;min-height:56px;padding:10px 14px;text-align:left;cursor:pointer;font-size:14px}
+.divstrip .dic{width:22px;height:22px;margin-right:12px;color:var(--yellow);-webkit-flex-shrink:0;flex-shrink:0}
+.divstrip .dic svg{display:block}
+.divstrip .dtx{-webkit-box-flex:1;flex:1;min-width:0;color:var(--chalk2);line-height:1.35}
+.divstrip .dtx b{font-family:var(--head);font-weight:600;font-size:16px;letter-spacing:.05em;text-transform:uppercase;color:var(--chalk)}
+.divstrip .chev{font-size:24px;line-height:1;color:var(--chalk3);margin-left:10px}
+.divstrip.zup{border-color:var(--yellow)}
+.divstrip.zdown{border-color:var(--segwrong)}
+
+/* division card */
+.divcard .row1{display:flex;align-items:center;justify-content:space-between}
+.divcard .lbl{font-family:var(--head);font-weight:600;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.divcard .left{font-size:13.5px;font-weight:600;color:var(--flame);white-space:nowrap}
+.divcard .ctitle{margin-top:6px}
+.ladder{display:flex;margin:8px 0 2px}
+.ladder span{-webkit-box-flex:1;flex:1;height:6px;border-radius:3px;background:var(--cardb)}
+.ladder span + span{margin-left:4px}
+.ladder span.on{background:var(--right)}
+.banner{margin:12px 0 0;padding:8px 12px;border-radius:10px;background:rgba(242,194,48,.22);color:var(--ink);font-weight:600;font-size:14.5px}
+.divtable{margin-top:4px}
+#dvNote{margin:12px 2px 0}
+
+/* league page */
+.codetile{display:flex;align-items:center;justify-content:space-between}
+.codetile .lbl{display:block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--chalk2)}
+.codebig{display:block;font-family:var(--head);font-weight:700;font-size:32px;letter-spacing:.16em;color:var(--yellow)}
+.codetile .btn{width:auto;margin:0 0 0 12px;padding:10px 22px;min-height:48px;font-size:17px}
+#lPeriod{margin-top:10px}
+#lNote{margin:12px 2px 0}
+#lLeave{margin-top:22px}
+
+/* invite */
+.invite{text-align:center;padding:24px 18px}
+.invite .lbl{font-family:var(--head);font-weight:600;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2)}
+.invite .who{margin:10px 0 0;font-family:var(--head);font-weight:700;font-size:38px;line-height:1.05;text-transform:uppercase;letter-spacing:.03em}
+.invite .sub{margin:2px 0 0;color:var(--ink2);font-weight:600}
+.target{display:inline-block;margin:18px auto 0;padding:10px 26px;border-radius:14px;background:var(--score);color:var(--chalk)}
+.target span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--chalk3)}
+.target b{display:block;font-family:var(--head);font-weight:700;font-size:40px;line-height:1.1;color:var(--yellow);font-variant-numeric:tabular-nums}
+.target em{display:block;font-style:normal;font-size:13px;color:var(--chalk2)}
+.invite .cmeta{margin-top:14px}
+
+/* side by side */
+.vscard .lbl{font-size:13px}
+.vsrow{display:flex;align-items:center;margin-top:12px}
+.vsrow .side{-webkit-box-flex:1;flex:1;min-width:0}
+.vsrow .nm{display:block;font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vsrow b{display:block;font-family:var(--head);font-weight:700;font-size:52px;line-height:1.05;font-variant-numeric:tabular-nums}
+.vsrow em{display:block;font-style:normal;font-size:13px;color:var(--ink2)}
+.vsrow .mid{width:44px;font-family:var(--head);font-weight:700;font-size:16px;text-transform:uppercase;color:var(--ink2)}
+.vscard .verdict{margin-top:12px;font-weight:700;color:var(--ink);font-size:17px}
+.vscard .h2h{margin:6px 0 0;font-size:13.5px;color:var(--ink2)}
+#vsMsg{text-align:center}
+.qq .qh{display:flex;align-items:flex-start}
+.qq .qn{width:24px;-webkit-flex-shrink:0;flex-shrink:0;font-family:var(--head);font-weight:600;color:var(--chalk3)}
+.qq .qt{-webkit-box-flex:1;flex:1;min-width:0}
+.qq .mks{display:flex;margin-left:10px;-webkit-flex-shrink:0;flex-shrink:0}
+.mk{display:block;width:24px;height:24px;border-radius:6px;padding:4px}
+.mk + .mk{margin-left:6px}
+.mk svg{display:block;width:16px;height:16px}
+.mk.ok{background:var(--chalk);color:var(--right)}
+.mk.no{background:var(--segwrong);color:#fff}
+.mk.none{background:var(--segnone);color:var(--chalk);text-align:center;line-height:16px}
+.qq .ans,.qq .yours,.qq .theirs{margin-left:24px}
+.review .theirs{color:var(--chalk2);margin-top:2px}
+#vsPlays .btn{margin-top:14px}
+@media (prefers-color-scheme:dark){.mk.ok{color:#136637}}
+
+/* name sheet */
+.sheet{position:fixed;left:0;right:0;top:0;bottom:0;z-index:8;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.sheet .card{width:100%;max-width:528px}
+.sheet .linkbtn{display:block;margin:6px auto 0;color:var(--ink2)}

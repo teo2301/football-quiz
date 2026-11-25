@@ -6,6 +6,7 @@
     var t = this.getAttribute("data-tab");
     if (t === "home") return goHome();
     if (t === "boards") return openBoard();
+    if (t === "leaguesTab") return openLeaguesTab();
     if (t === "me") renderMe();
     show(t);
   };
@@ -37,12 +38,14 @@
   $("meSave").onclick = saveMeName;
   $("meName").addEventListener("keydown", function (e) { if (e.key === "Enter") saveMeName(); });
   window.addEventListener("online", flushPending);
+  wireCompete();
   setInterval(tickCountdown, 1000);
 
   playerId();
   renderHome();
-  loadBank().then(function () { renderHome(); flushPending(); }).catch(function () {
+  loadBank().then(function () { renderHome(); flushPending(); handleHash(); }).catch(function () {
     $("subtitle").textContent = "Couldn't load the questions. Check your connection and reload.";
+    handleHash();
   });
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
 })();

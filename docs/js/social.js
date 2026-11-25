@@ -37,6 +37,7 @@ async function sendResult(name) {
   try {
     var r = await api("/" + p.kind, body);
     pendingPost = null;
+    divCache = null;            // points changed: refetch the division strip
     p.onOk(r, name);
   } catch (e) {
     if (e.status === 409 && TAKEN_RE.test(e.message)) return askName("That name is taken — pick another");
