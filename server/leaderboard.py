@@ -30,6 +30,10 @@ on 127.0.0.1:8093 and is reached publicly through Tailscale Funnel on :10000.
     GET  /api/league            ?code= &player_id= &period=week|all -> league table (points from every mode)
     GET  /api/division          ?player_id=          -> your weekly division table (promotion / relegation)
 
+  Phase 5 (question quality):
+    POST /api/report            {player_id, id, reason: wrong|outdated|typo|other, note?}  -> {ok}
+                                one report per player per question (a second one updates it); own rate limit
+
   Phase 4 (achievements):
     POST /api/badges            {player_id, badges: [id, ...]}  -> badges are earned in the app; the server
                                 keeps the union and boards/tables show each player's best three as `badges`
@@ -240,6 +244,18 @@ def init():
         c.execute("""CREATE TABLE IF NOT EXISTS division_weeks (
             week TEXT PRIMARY KEY,
             settled_utc TEXT NOT NULL)""")
+        # Phase 5: players flag a question (wrong answer / outdated / typo). One open
+        # report per player per question; question_stats.py lists them, nothing is auto-edited.
+        c.execute("""CREATE TABLE IF NOT EXISTS reports (
+            id INTEGER PRIMARY KEY,
+            player_id TEXT NOT NULL,
+            qid TEXT NOT NULL,
+            reason TEXT NOT NULL,
+            note TEXT NOT NULL,
+            status TEXT NOT NULL DEFAULT 'open',
+            created_utc TEXT NOT NULL,
+            UNIQUE(player_id, qid))""")
+        c.execute("CREATE INDEX IF NOT EXISTS reports_status ON reports(status, qid)")
 
 
 def clock():
@@ -1059,6 +1075,41 @@ def current_tier(c, pid):
     return r["tier"] if r else divisions.BOTTOM
 
 
+# ---------------------------------------------------------------- reports
+
+REPORT_RATE = (10, 3600)    # at most 10 reports per IP per hour (own budget)
+REPORT_REASONS = ("wrong", "outdated", "typo", "other")
+NOTE_MAX = 300
+
+
+def clean_note(raw):
+    if raw is None:
+        return ""
+    if not isinstance(raw, str):
+        raise ValueError("bad note")
+    s = "".join(ch for ch in raw.replace("\t", " ") if ch == "\n" or unicodedata.category(ch)[0] != "C")
+    return re.sub(r"[ \t]+", " ", s).strip()[:NOTE_MAX]
+
+
+def add_report(data):
+    pid = clean_pid(data.get("player_id"))
+    qid = data.get("id")
+    by_id, _ = bank()
+    if not isinstance(qid, str) or qid not in by_id:
+        raise ValueError("unknown question")
+    reason = data.get("reason")
+    if reason not in REPORT_REASONS:
+        raise ValueError("bad reason")
+    note = clean_note(data.get("note"))
+    if reason == "other" and not note:
+        raise ValueError("say what's wrong in the note")
+    with db() as c:
+        c.execute("""INSERT INTO reports (player_id, qid, reason, note, status, created_utc) VALUES (?,?,?,?,'open',?)
+                     ON CONFLICT(player_id, qid) DO UPDATE SET reason = excluded.reason, note = excluded.note,
+                     status = 'open', created_utc = excluded.created_utc""", (pid, qid, reason, note, now_utc()))
+    return {"ok": True}
+
+
 # ---------------------------------------------------------------- HTTP
 
 class Handler(BaseHTTPRequestHandler):
@@ -1147,12 +1198,16 @@ class Handler(BaseHTTPRequestHandler):
         route = {"/api/scores": add_score, "/api/daily": add_daily, "/api/name": set_name,
                  "/api/challenges": create_challenge, "/api/challenge/play": play_challenge,
                  "/api/leagues": create_league, "/api/leagues/join": join_league,
-                 "/api/leagues/leave": leave_league, "/api/badges": set_badges}.get(path)
+                 "/api/leagues/leave": leave_league, "/api/badges": set_badges,
+                 "/api/report": add_report}.get(path)
         if not route:
             return self._send(404, {"error": "not found"})
         if path == "/api/badges":
             if limited(self._ip(), BADGE_RATE, "badges:"):
                 return self._send(429, {"error": "Too many updates - try again in a few minutes."})
+        elif path == "/api/report":
+            if limited(self._ip(), REPORT_RATE, "report:"):
+                return self._send(429, {"error": "Thanks - that's a lot of reports. Try again later."})
         elif limited(self._ip()):
             return self._send(429, {"error": "Too many scores - try again in a few minutes."})
         if path in ("/api/challenges", "/api/leagues") and limited(self._ip(), CREATE_RATE, "create:"):

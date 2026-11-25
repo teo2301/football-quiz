@@ -620,6 +620,63 @@ class Badges(Base):
         self.assertEqual(json.loads(subprocess.check_output([node, "-e", js])), A.clean(ids))
 
 
+class Reports(Base):
+    def test_report_stored_and_updated_not_duplicated(self):
+        me, q = pid(), BANK[0]
+        self.assertEqual(L.add_report({"player_id": me, "id": q["id"], "reason": "typo", "note": "  spelt\x00 wrong  "}),
+                         {"ok": True})
+        L.add_report({"player_id": me, "id": q["id"], "reason": "outdated"})
+        L.add_report({"player_id": pid(), "id": q["id"], "reason": "wrong", "note": "x" * 900})
+        with L.db() as c:
+            rows = c.execute("SELECT reason, note, status FROM reports ORDER BY id").fetchall()
+        self.assertEqual([tuple(r) for r in rows], [("outdated", "", "open"), ("wrong", "x" * L.NOTE_MAX, "open")])
+
+    def test_report_rejects_bad_input(self):
+        q = BANK[0]["id"]
+        for bad in ({"player_id": "nope", "id": q, "reason": "typo"},
+                    {"player_id": pid(), "id": "zz999", "reason": "typo"},
+                    {"player_id": pid(), "id": q, "reason": "boring"},
+                    {"player_id": pid(), "id": q, "reason": "other"},          # "other" needs a note
+                    {"player_id": pid(), "id": q, "reason": "typo", "note": 5}):
+            with self.assertRaises(ValueError):
+                L.add_report(bad)
+        self.assertEqual(L.clean_note("a\tb\u200b\n c"), "a b\n c")
+
+    def test_question_stats_flags_misgrading_and_reports(self):
+        import question_stats as QS
+        easy = next(q for q in BANK if q["d"] == 1)
+        hard = next(q for q in BANK if q["d"] == 3)
+        few = [q for q in BANK if q["d"] == 1][1]
+        rows = ([(easy["id"], int(i < 7)) for i in range(20)]       # 35% on an Easy -> flagged
+                + [(hard["id"], int(i < 18)) for i in range(20)]    # 90% on a Hard -> flagged
+                + [(few["id"], 0) for _ in range(19)])              # too few answers to judge
+        med = next(q for q in BANK if q["d"] == 2)
+        rows += [(med["id"], 0) for _ in range(30)]                 # Medium: never judged
+        with L.db() as c:
+            c.executemany("INSERT INTO answers (player_id, qid, correct, mode, created_utc) VALUES ('p',?,?,'classic','t')", rows)
+        L.add_report({"player_id": pid(), "id": med["id"], "reason": "wrong", "note": "It was the other one"})
+        L.add_report({"player_id": pid(), "id": med["id"], "reason": "typo"})
+        s = QS.summary(os.environ["QUIZ_DB"], os.environ["QUESTIONS_PATH"])
+        flagged = {m["id"]: m for m in s["misgraded"]}
+        self.assertEqual(set(flagged), {easy["id"], hard["id"]})
+        self.assertEqual(flagged[easy["id"]]["correct_rate"], 0.35)
+        self.assertEqual([(r["id"], r["count"]) for r in s["reports"]], [(med["id"], 2)])
+        txt = QS.as_text(s, short=True)
+        self.assertIn("2 open reports on 1 question", txt)
+        self.assertIn("It was the other one", txt)
+        self.assertEqual(QS.resolve(os.environ["QUIZ_DB"], med["id"]), 2)
+        self.assertEqual(QS.summary(os.environ["QUIZ_DB"], os.environ["QUESTIONS_PATH"])["reports"], [])
+
+    def test_weekly_report_dry_run(self):
+        L.add_report({"player_id": pid(), "id": BANK[0]["id"], "reason": "outdated", "note": "He retired"})
+        env = dict(os.environ, DRY_RUN="1", NOTIFY="/bin/false")
+        out = subprocess.run(["sh", os.path.join(ROOT, "tools", "weekly_report.sh")], env=env,
+                             capture_output=True, text=True)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("1 open report on 1 question", out.stdout)
+        self.assertIn("He retired", out.stdout)
+
+
 class Http(Base):
     """The real handler on a random port: routes, status codes, the creation rate limit."""
     @classmethod
@@ -686,6 +743,19 @@ class Http(Base):
         self.assertEqual(self.call("/badges", {"player_id": me, "badges": []}, ip="10.0.0.7")[0], 429)
         st, b = self.call("/board?len=10&period=week")
         self.assertEqual((st, b["rows"]), (200, []))
+
+    def test_report_route_and_its_own_limit(self):
+        me, q = pid(), BANK[0]["id"]
+        for _ in range(L.RATE[0]):          # a used-up score budget doesn't block reports
+            L.limited("10.0.0.8")
+        st, r = self.call("/report", {"player_id": me, "id": q, "reason": "typo"}, ip="10.0.0.8")
+        self.assertEqual((st, r), (200, {"ok": True}))
+        self.assertEqual(self.call("/report", {"player_id": me, "id": q, "reason": "nah"}, ip="10.0.0.8")[0], 400)
+        for _ in range(L.REPORT_RATE[0] - 2):
+            self.call("/report", {"player_id": me, "id": q, "reason": "typo"}, ip="10.0.0.8")
+        self.assertEqual(self.call("/report", {"player_id": me, "id": q, "reason": "typo"}, ip="10.0.0.8")[0], 429)
+        # and reports don't eat into another IP's score budget
+        self.assertEqual(self.call("/name", {"name": "Reporter", "player_id": me}, ip="10.0.0.11")[0], 200)
 
     def test_creation_rate_limit_per_ip(self):
         me = pid()
