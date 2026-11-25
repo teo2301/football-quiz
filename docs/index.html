@@ -14,10 +14,12 @@
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="app.css">
 <script defer src="js/daily-gen.js"></script>
+<script defer src="js/match.js"></script>
 <script defer src="js/core.js"></script>
 <script defer src="js/quiz.js"></script>
 <script defer src="js/social.js"></script>
 <script defer src="js/modes.js"></script>
+<script defer src="js/games.js"></script>
 <script defer src="js/board.js"></script>
 <script defer src="js/me.js"></script>
 <script defer src="js/app.js"></script>
@@ -87,18 +89,64 @@
 <section id="play" class="hidden">
   <div class="playtop"><span class="mname" id="mname">Classic</span><button class="iconbtn" id="quit">Quit</button></div>
   <div class="scoreboard">
-    <div><span>Question</span><b id="sbQ">1/10</b></div>
-    <div><span>Points</span><b id="sbP">0</b></div>
+    <div><span id="sbQL">Question</span><b id="sbQ">1/10</b></div>
+    <div><span id="sbPL">Points</span><b id="sbP">0</b></div>
     <div><span id="sbClockL">Clock</span><b id="sbC">0:00</b></div>
   </div>
   <div class="segs" id="segs"></div>
   <div class="card qcard">
+    <button class="lifeline hidden" id="fifty" aria-label="50:50 lifeline: remove two wrong answers, half points">50:50</button>
     <span class="tag" id="qtag"></span>
     <p class="q" id="qtext"></p>
   </div>
   <div class="opts" id="opts"></div>
   <div class="fact hidden" id="fact"><b>Did you know</b><p id="factText"></p></div>
   <button class="btn hidden" id="next">Next</button>
+</section>
+
+<!-- ============ Higher or lower ============ -->
+<section id="hilo" class="hidden">
+  <div class="playtop"><span class="mname">Higher or lower</span><button class="iconbtn" id="hiQuit">Quit</button></div>
+  <div class="scoreboard">
+    <div><span>Streak</span><b id="hiStreak">0</b></div>
+    <div><span>Best</span><b id="hiBest">0</b></div>
+  </div>
+  <p class="hicat" id="hiCat"></p>
+  <div class="card statcard" id="hiA"></div>
+  <div class="vs"><span>vs</span></div>
+  <div class="card statcard" id="hiB"></div>
+  <p class="hiask" id="hiAsk"></p>
+  <div class="hibtns" id="hiBtns">
+    <button class="btn" id="hiBtn"><span aria-hidden="true">▲ </span>Higher</button>
+    <button class="btn" id="loBtn"><span aria-hidden="true">▼ </span>Lower</button>
+  </div>
+  <button class="btn hidden" id="hiNext">Next</button>
+  <p class="small center" id="hiNote"></p>
+</section>
+
+<!-- ============ Career path ============ -->
+<section id="career" class="hidden">
+  <div class="playtop"><span class="mname">Career path</span><button class="iconbtn" id="cQuit">Quit</button></div>
+  <div class="scoreboard">
+    <div><span>Player</span><b id="cNum">1/5</b></div>
+    <div><span>Points</span><b id="cPts">0</b></div>
+    <div><span>Worth</span><b id="cWorth">5</b></div>
+  </div>
+  <div class="card ccard">
+    <span class="tag">Senior clubs in order</span>
+    <ol class="path" id="cPath"></ol>
+    <p class="left" id="cLeft"></p>
+  </div>
+  <div id="cAsk">
+    <div class="namerow guessrow"><input id="cGuess" maxlength="60" placeholder="Who is it?" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false"><button class="btn" id="cGuessBtn">Guess</button></div>
+    <p class="msg" id="cMsg" aria-live="polite"></p>
+    <div class="cbtns"><button class="btn ghost" id="cClue">Next clue</button><button class="btn ghost" id="cGiveUp">Give up</button></div>
+    <p class="small center">5 points with one club showing, then 4, 3, 2 and 1. A wrong guess shows the next clue.</p>
+  </div>
+  <div id="cRes" class="hidden">
+    <div class="card cres"><p class="lbl">It was</p><p class="who" id="cResName"></p><p id="cResLine"></p></div>
+    <button class="btn" id="cNext">Next player</button>
+  </div>
 </section>
 
 <!-- ============ Result ============ -->
@@ -127,8 +175,8 @@
 <!-- ============ BOARDS tab ============ -->
 <section id="boards" class="hidden">
   <div class="pagehead"><h1>Boards</h1></div>
-  <div class="seg" id="bKind"></div>
-  <div class="chips" id="bPeriod" style="margin-top:10px"></div>
+  <div class="chips" id="bKind"></div>
+  <div class="chips" id="bPeriod" style="margin-top:6px;padding-top:6px;border-top:1px solid var(--tileb)"></div>
   <div class="chips" id="bLen"></div>
   <h2 class="sec" id="bTitle"></h2>
   <ul class="lb" id="lb"></ul>
@@ -163,6 +211,13 @@
     <div class="stat tile"><b id="mPlayed">0</b><span>classic</span></div>
     <div class="stat tile"><b id="mPct">–</b><span>correct</span></div>
     <div class="stat tile"><b id="mSeen">0</b><span>seen</span></div>
+  </div>
+  <h2 class="sec">Personal bests</h2>
+  <div class="stats">
+    <div class="stat tile"><b id="bSurvival">–</b><span>survival</span></div>
+    <div class="stat tile"><b id="bBlitz">–</b><span>blitz</span></div>
+    <div class="stat tile"><b id="bHilo">–</b><span>hi-lo</span></div>
+    <div class="stat tile"><b id="bCareer">–</b><span>career</span></div>
   </div>
   <h2 class="sec">About</h2>
   <div class="tile">

@@ -83,17 +83,92 @@ class Tab:
         await self.wait("document.readyState === 'complete'")
 
 
-async def play(tab, rights, snap_first=None):
-    """Answer the current game: rights[i] True = pick the right answer."""
+async def play(tab, rights, snap_first=None, fifty_at=None, auto=False):
+    """Answer the current game: rights[i] True = pick the right answer.
+    fifty_at: use the 50:50 before answering that question. auto: the game moves on by itself (blitz)."""
     for i, ok in enumerate(rights):
         await tab.wait("!!game && !game.locked && document.querySelectorAll('#opts .opt').length === 4")
         pick = ("game.qs[game.i].a" if ok else "game.qs[game.i].w[0]")
+        if i == fifty_at:
+            await tab.js("document.getElementById('fifty').click()")
+            await tab.shot((snap_first or "x") + "-fifty", full=False)
         if snap_first is not None and i == 0:
             await tab.shot(snap_first + "-question", full=False)
         await tab.js("(function(){var v=%s;var b=[].slice.call(document.querySelectorAll('#opts .opt')).filter(function(x){return x.getAttribute('data-v')===v})[0];b.click();return true})()" % pick)
         if snap_first is not None and i in (0, 1):
             await tab.shot("%s-answer%d-%s" % (snap_first, i + 1, "right" if ok else "wrong"), full=False)
-        await tab.js("document.getElementById('next').click()")
+        if auto:
+            await tab.wait("!game || game.answers.length === %d && !game.locked" % (i + 1))
+        else:
+            await tab.js("document.getElementById('next').click()")
+
+
+async def wait_posted(tab):
+    await tab.wait("/Posted as/.test(document.getElementById('postMsg').textContent)", 10)
+
+
+async def new_modes(tab):
+    """Survival, Blitz, Higher or lower, Career path; each ends on its result screen and posts."""
+    tile = "document.querySelector('[data-mode=%s]').click()"
+    await tab.js("document.getElementById('menu').click()")
+    # Survival: 4 right then out
+    await tab.js(tile % "survival")
+    await play(tab, [True, True, True, True, False], snap_first="20-survival")
+    await tab.wait("!document.getElementById('done').classList.contains('hidden')")
+    await wait_posted(tab)
+    await tab.shot("21-survival-result")
+    # Blitz: a few answers, then run the clock out
+    await tab.js("document.getElementById('menu').click()")
+    await tab.js(tile % "blitz")
+    await play(tab, [True, True, False, True, True, True], auto=True)
+    await tab.shot("22-blitz-playing", full=False)
+    await tab.js("game.deadline = Date.now(); true")
+    await tab.wait("!document.getElementById('done').classList.contains('hidden')")
+    await wait_posted(tab)
+    await tab.shot("23-blitz-result")
+    # Higher or lower: 3 right calls then a wrong one
+    await tab.js("document.getElementById('menu').click()")
+    await tab.js(tile % "hilo")
+    await tab.wait("!!hilo && !!hilo.pair && !document.getElementById('hilo').classList.contains('hidden')")
+    await tab.shot("24-hilo-question", full=False)
+    right = "(hilo.pair.b.v > hilo.pair.a.v ? 'hiBtn' : 'loBtn')"
+    wrong = "(hilo.pair.b.v > hilo.pair.a.v ? 'loBtn' : 'hiBtn')"
+    for k in range(4):
+        await tab.wait("!!hilo && !hilo.locked")
+        await tab.js("document.getElementById(%s).click()" % (right if k < 3 else wrong))
+        if k == 0:
+            await tab.shot("25-hilo-right", full=False)
+        if k == 3:
+            await tab.shot("26-hilo-wrong", full=False)
+        await tab.js("document.getElementById('hiNext').click()")
+    await tab.wait("!document.getElementById('done').classList.contains('hidden')")
+    await wait_posted(tab)
+    await tab.shot("27-hilo-result")
+    # Career path: wrong guess, then right; clue+right; give up; typo'd right; right at once
+    await tab.js("document.getElementById('menu').click()")
+    await tab.js(tile % "career")
+    await tab.wait("!!career && !document.getElementById('career').classList.contains('hidden')")
+    await tab.shot("28-career-clue1", full=False)
+    name = "career.players[career.i].n"
+    guess = "(function(g){var i=document.getElementById('cGuess');i.value=g;document.getElementById('cGuessBtn').click();return true})(%s)"
+    await tab.js(guess % "'Nobody Atall'")
+    await tab.shot("29-career-wrong", full=False)
+    await tab.js(guess % name)
+    await tab.shot("30-career-right")
+    await tab.js("document.getElementById('cNext').click()")
+    await tab.js("document.getElementById('cClue').click()")
+    await tab.js(guess % name.replace(".n", ".n.toLowerCase()"))
+    await tab.js("document.getElementById('cNext').click()")
+    await tab.js("document.getElementById('cGiveUp').click()")
+    await tab.shot("31-career-gaveup")
+    await tab.js("document.getElementById('cNext').click()")
+    await tab.js(guess % (name + ".split(' ').slice(-1)[0]"))
+    await tab.js("document.getElementById('cNext').click()")
+    await tab.js(guess % name)
+    await tab.js("document.getElementById('cNext').click()")
+    await tab.wait("!document.getElementById('done').classList.contains('hidden')")
+    await wait_posted(tab)
+    await tab.shot("32-career-result")
 
 
 async def run(scheme, name, taken_name=None):
@@ -129,7 +204,7 @@ async def run(scheme, name, taken_name=None):
             if scheme == "dark":    # timer on in dark run, to see the clock
                 await tab.js("[].slice.call(document.querySelectorAll('#timers .chip')).filter(function(b){return b.textContent==='20 s'})[0].click()")
             await tab.js("document.getElementById('start').click()")
-            await play(tab, [False, True, True, False, True, True, True, False, True, True], snap_first="03-classic")
+            await play(tab, [False, True, True, False, True, True, True, False, True, True], snap_first="03-classic", fifty_at=2)
             await tab.wait("!document.getElementById('done').classList.contains('hidden')")
             await tab.shot("04-classic-result-askname")
             if taken_name:      # name already claimed by the light run -> must be refused
@@ -148,6 +223,7 @@ async def run(scheme, name, taken_name=None):
             await tab.shot("08-daily-result")
             await tab.js("document.getElementById('menu').click()")
             await tab.shot("09-home-daily-done")
+            await new_modes(tab)
 
             # Boards
             await tab.js("document.querySelector('[data-tab=boards]').click()")
@@ -159,6 +235,10 @@ async def run(scheme, name, taken_name=None):
             await tab.js("document.querySelectorAll('#bKind button')[1].click()")
             await tab.wait("document.getElementById('bMsg').textContent !== 'Loading…'")
             await tab.shot("12-board-classic")
+            for k, kind in enumerate(("survival", "blitz", "hilo", "career")):
+                await tab.js("[].slice.call(document.querySelectorAll('#bKind button'))[%d].click()" % (k + 2))
+                await tab.wait("document.getElementById('bMsg').textContent !== 'Loading…'")
+                await tab.shot("12%s-board-%s" % ("bcde"[k], kind))
             await tab.js("document.querySelector('[data-tab=leaguesTab]').click()")
             await tab.shot("13-leagues")
             await tab.js("document.querySelector('[data-tab=me]').click()")

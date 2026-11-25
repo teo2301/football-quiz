@@ -9,14 +9,16 @@ var ICONS = {
   career: '<circle cx="5" cy="18" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="15" r="2"/><path d="M6.4 16.4l4.3-8.6M13.6 7.4l4.2 6"/>',
   challenge: '<path d="M14.5 4l5.5 5.5-9 9H5.5V13z"/><path d="M4 20l3-3"/>'
 };
+// `go` names a function so modes defined in later files (games.js) can be wired here.
 var MODES = [
-  {id: "classic", name: "Classic", desc: "Pick a league, level and timer", on: true},
-  {id: "survival", name: "Survival", desc: "One wrong and you're out"},
-  {id: "blitz", name: "Blitz", desc: "60 seconds, as many as you can"},
-  {id: "hilo", name: "Higher or lower", desc: "Goals, fees and crowds"},
-  {id: "career", name: "Career path", desc: "Name the player from his clubs"},
+  {id: "classic", name: "Classic", desc: "Pick a league, level and timer", go: "openSetup"},
+  {id: "survival", name: "Survival", desc: "One wrong and you're out", go: "startSurvival"},
+  {id: "blitz", name: "Blitz", desc: "60 seconds, as many as you can", go: "startBlitz"},
+  {id: "hilo", name: "Higher or lower", desc: "Goals, caps, fees and crowds", go: "startHilo"},
+  {id: "career", name: "Career path", desc: "Name the player from his clubs", go: "startCareer"},
   {id: "challenge", name: "Challenge", desc: "Send a mate your exact quiz"}
 ];
+var lastStart = null;       // what "Play again" on the result screen does
 
 function goHome() { renderHome(); show("home"); }
 
@@ -25,11 +27,13 @@ function goHome() { renderHome(); show("home"); }
 function renderModes() {
   var box = $("modes"); if (box.children.length) return;
   MODES.forEach(function (m) {
-    var b = h("button", {className: "mode tile" + (m.on ? " active" : ""), disabled: !m.on},
+    var on = !!m.go;
+    var b = h("button", {className: "mode tile" + (on ? " active" : ""), disabled: !on},
       h("span", {className: "ic", innerHTML: '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[m.id] + "</svg>"}),
-      m.on ? null : h("span", {className: "soon"}, "Soon"),
+      on ? null : h("span", {className: "soon"}, "Soon"),
       h("b", null, m.name), h("span", null, m.desc));
-    if (m.on) b.onclick = openSetup;
+    b.setAttribute("data-mode", m.id);
+    if (on) b.onclick = function () { window[m.go](); };
     else b.setAttribute("aria-label", m.name + ", coming soon");
     box.appendChild(b);
   });
@@ -146,6 +150,17 @@ function finishDaily(g, date) {
   });
 }
 
+// Reset the shared result screen for a non-daily game.
+function resultScreen() {
+  $("rGrid").classList.add("hidden");
+  $("rFlame").classList.add("hidden");
+  $("rShare").classList.add("hidden");
+  $("again").classList.remove("hidden");
+  $("missedH").textContent = "What you missed";
+  $("postMsg").classList.add("hidden");
+  $("postAsk").classList.add("hidden");
+}
+
 function verdict(pct) {
   return pct === 1 ? "Perfect. Ballon d'Or material." :
     pct >= .8 ? "World class." : pct >= .6 ? "Solid Champions League level." :
@@ -191,8 +206,9 @@ function startClassic() {
   // Unseen questions first, so repeats only start once a pool is exhausted.
   var picked = shuffle(p.filter(function (q) { return !seen[q.id]; }))
     .concat(shuffle(p.filter(function (q) { return seen[q.id]; }))).slice(0, Number(settings.len));
+  lastStart = startClassic;
   startGame({mode: "classic", label: "Classic · " + LEAGUES[settings.league], qs: picked,
-             timer: Number(settings.timer), onFinish: finishClassic});
+             timer: Number(settings.timer), fifty: true, onFinish: finishClassic});
 }
 
 function finishClassic(g) {
@@ -202,14 +218,10 @@ function finishClassic(g) {
   store.set("stats", st);
   $("rLabel").textContent = "Full time";
   $("final").textContent = r + "/" + n;
-  $("verdict").textContent = verdict(r / n) + " " + (Math.round(g.points * 10) / 10) + " pts.";
-  $("rGrid").classList.add("hidden");
-  $("rFlame").classList.add("hidden");
-  $("rShare").classList.add("hidden");
-  $("again").classList.remove("hidden");
+  $("verdict").textContent = verdict(r / n) + " " + (Math.round(g.points * 10) / 10) + " pts." +
+    (g.fiftyOn >= 0 ? " (50:50 used.)" : "");
+  resultScreen();
   renderMissed(g);
-  $("postMsg").classList.add("hidden");
-  $("postAsk").classList.add("hidden");
   show("done");
   // Only whole quizzes of 10/20/50 count; a short pool (e.g. Hard + one league) doesn't.
   if (!([10, 20, 50].indexOf(n) >= 0 && n === Number(settings.len))) {

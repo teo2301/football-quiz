@@ -87,11 +87,12 @@ function toast(text) {
   clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.add("hidden"); }, 2600);
 }
 
-var SCREENS = ["home", "setup", "play", "done", "boards", "leaguesTab", "me"];
-var TAB_OF = {home: "home", setup: "home", play: "home", done: "home", boards: "boards", leaguesTab: "leaguesTab", me: "me"};
+var SCREENS = ["home", "setup", "play", "hilo", "career", "done", "boards", "leaguesTab", "me"];
+var TAB_OF = {home: "home", setup: "home", play: "home", hilo: "home", career: "home", done: "home",
+              boards: "boards", leaguesTab: "leaguesTab", me: "me"};
 function show(id) {
   SCREENS.forEach(function (s) { $(s).classList.toggle("hidden", s !== id); });
-  document.body.classList.toggle("playing", id === "play");
+  document.body.classList.toggle("playing", id === "play" || id === "hilo" || id === "career");
   var tab = TAB_OF[id];
   var btns = document.querySelectorAll("#tabbar button");
   for (var i = 0; i < btns.length; i++) {

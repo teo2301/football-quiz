@@ -1,9 +1,10 @@
 // Offline support. Bump VERSION after changing any app file or the file list.
-// questions.json is network-first so new questions show up without a bump.
-const VERSION = "fq-v3";
-const FILES = ["./", "index.html", "app.css", "privacy.html", "questions.json", "manifest.json",
+// The data files (questions, stats, careers) are network-first so new content shows up without a bump.
+const VERSION = "fq-v5";
+const DATA = ["/questions.json", "/stats.json", "/careers.json"];
+const FILES = ["./", "index.html", "app.css", "privacy.html", "questions.json", "stats.json", "careers.json", "manifest.json",
   "icon-192.png", "icon-512.png",
-  "js/daily-gen.js", "js/core.js", "js/quiz.js", "js/social.js", "js/modes.js", "js/board.js", "js/me.js", "js/app.js",
+  "js/daily-gen.js", "js/match.js", "js/core.js", "js/quiz.js", "js/social.js", "js/modes.js", "js/games.js", "js/board.js", "js/me.js", "js/app.js",
   "fonts/inter-latin.woff2", "fonts/inter-latin-ext.woff2", "fonts/oswald-latin.woff2", "fonts/oswald-latin-ext.woff2"];
 
 self.addEventListener("install", e => {
@@ -16,7 +17,7 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET" || url.origin !== location.origin || url.pathname.indexOf("/api/") >= 0) return;
-  if (url.pathname.endsWith("/questions.json")) {
+  if (DATA.some(d => url.pathname.endsWith(d))) {
     e.respondWith(fetch(e.request).then(r => {
       const copy = r.clone(); caches.open(VERSION).then(c => c.put(e.request, copy)); return r;
     }).catch(() => caches.match(e.request)));

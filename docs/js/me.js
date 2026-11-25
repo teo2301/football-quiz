@@ -10,6 +10,11 @@ function renderMe() {
   $("mPlayed").textContent = st.played;
   $("mPct").textContent = st.asked ? Math.round(100 * st.right / st.asked) + "%" : "–";
   $("mSeen").textContent = store.get("seen", []).length;
+  var b = bests();
+  $("bSurvival").textContent = b.survival || "–";
+  $("bBlitz").textContent = b.blitz || "–";
+  $("bHilo").textContent = b.hilo || "–";
+  $("bCareer").textContent = b.career || "–";
   $("version").textContent = "Football Quiz v2 · " + BANK.length + " questions";
 }
 
