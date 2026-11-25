@@ -16,6 +16,7 @@ TMP = tempfile.mkdtemp(prefix="fq-test-")
 os.environ["QUIZ_DB"] = os.path.join(TMP, "test.db")
 os.environ["QUESTIONS_PATH"] = os.path.join(ROOT, "docs", "questions.json")
 sys.path.insert(0, HERE)
+import achievements as A  # noqa: E402
 import daily_gen  # noqa: E402
 import divisions as D  # noqa: E402
 import leaderboard as L  # noqa: E402
@@ -347,7 +348,7 @@ class Runs(Base):
     def test_run_board_http_shape(self):
         self.post_run("blitz", answers(BANK[:3], [True] * 3))
         b = L.public_run_board("blitz", "all")
-        self.assertEqual(set(b["rows"][0]), {"name", "score", "correct", "total", "created_utc"})
+        self.assertEqual(set(b["rows"][0]), {"name", "score", "correct", "total", "created_utc", "badges"})
 
 def fake_clock(dt):
     L.clock = lambda: dt
@@ -440,7 +441,7 @@ class Leagues(Base):
                      "answers": answers(BANK[:4], [True] * 3 + [False])})                     # 3
         t = L.league_view(code, a, "week")
         self.assertEqual([x["name"] for x in t["rows"]], ["Bob", "Alice", "Cat"])
-        self.assertEqual(t["rows"][1], {"name": "Alice", "week": 3, "total": 3, "me": True})
+        self.assertEqual(t["rows"][1], {"name": "Alice", "week": 3, "total": 3, "me": True, "badges": []})
         self.assertTrue(t["member"] and t["owner"])
         self.assertEqual(L.my_leagues(b)["rows"][0]["rank_week"], 1)
         L.leave_league({"player_id": c, "code": code})
@@ -552,6 +553,73 @@ class Divisions(Base):
         self.assertFalse(L.division_view(p)["in_table"])
 
 
+class Badges(Base):
+    def test_store_merge_and_rank(self):
+        me = pid()
+        r = L.set_badges({"player_id": me, "badges": ["streak3", "bogus", "perfect10", "streak3"]})
+        self.assertEqual(r["badges"], ["streak3", "perfect10"])          # unknown dropped, bronze in list order
+        r = L.set_badges({"player_id": me, "badges": ["giant"]})           # union: nothing is ever lost
+        self.assertEqual(r["badges"], ["giant", "streak3", "perfect10"])
+        with self.assertRaises(ValueError):
+            L.set_badges({"player_id": me, "badges": "giant"})
+        with self.assertRaises(ValueError):
+            L.set_badges({"player_id": "nope", "badges": []})
+
+    def test_boards_show_best_three(self):
+        a, b = pid(), pid()
+        L.add_score({"mode": "survival", "name": "Badger", "player_id": a,
+                     "answers": answers(BANK[:4], [True] * 3 + [False])})
+        L.add_score({"mode": "survival", "name": "Plain", "player_id": b,
+                     "answers": answers(BANK[:3], [True] * 2 + [False])})
+        L.set_badges({"player_id": a, "badges": ["streak3", "perfect10", "surv15", "streak30", "giant"]})
+        rows = L.public_run_board("survival", "week")["rows"]
+        self.assertEqual([(r["name"], r["badges"]) for r in rows],
+                         [("Badger", ["streak30", "giant", "surv15"]), ("Plain", [])])
+        self.assertNotIn("player_id", rows[0])
+        # classic board (keyed by name) and the daily board
+        body, _ = classic_body(player=a, name="Badger")
+        body["total"] = 10
+        L.add_score(body)
+        self.assertEqual(L.with_badges(L.board(10, "week"), "name")[0]["badges"], ["streak30", "giant", "surv15"])
+        ids = L.bank()[1].ids(daily_gen.uk_today())
+        L.add_daily({"name": "Badger", "player_id": a, "date": daily_gen.uk_today().isoformat(),
+                     "answers": [{"id": i, "choice": BY_ID[i]["a"]} for i in ids]})
+        self.assertEqual(L.public_board("today")["rows"][0]["badges"], ["streak30", "giant", "surv15"])
+        # division + league tables
+        self.assertEqual(L.division_view(a)["rows"][0]["badges"], ["streak30", "giant", "surv15"])
+        code = L.create_league({"name": "Badger", "player_id": a, "league_name": "Badge League"})["code"]
+        self.assertEqual(L.league_view(code, a, "week")["rows"][0]["badges"], ["streak30", "giant", "surv15"])
+
+    def test_challenge_result_has_tiers(self):
+        a, b = pid(), pid()
+        body, qs = classic_body(right=[True] * 5 + [False] * 5, player=a, name="Top")
+        code = L.create_challenge(body)["code"]
+        with L.db() as c:
+            c.execute("INSERT INTO player_tier (player_id, tier, updated_utc) VALUES (?,?,?)", (a, 2, L.now_utc()))
+        res = L.play_challenge({"code": code, "name": "Under", "player_id": b, "answers": answers(qs, [True] * 10)})
+        self.assertEqual(res["result"]["outcome"], "win")
+        self.assertEqual(res["result"]["tiers"], {"you": D.BOTTOM, "them": 2})
+
+    def test_python_and_js_lists_match(self):
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node not installed")
+        js = "const A=require(%s);console.log(JSON.stringify(A.LIST.map(a=>[a.id,a.t])))" % json.dumps(
+            os.path.join(ROOT, "docs", "js", "ach-defs.js"))
+        out = json.loads(subprocess.check_output([node, "-e", js]))
+        self.assertEqual(out, [list(x) for x in A.LIST])
+        self.assertGreaterEqual(len(out), 25)
+
+    def test_js_rank_matches_server(self):
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node not installed")
+        ids = ["perfect10", "lg_in", "streak3", "topflight", "seen500", "giant", "x"]
+        js = "const A=require(%s);console.log(JSON.stringify(A.rank(%s)))" % (
+            json.dumps(os.path.join(ROOT, "docs", "js", "ach-defs.js")), json.dumps(ids))
+        self.assertEqual(json.loads(subprocess.check_output([node, "-e", js])), A.clean(ids))
+
+
 class Http(Base):
     """The real handler on a random port: routes, status codes, the creation rate limit."""
     @classmethod
@@ -606,6 +674,18 @@ class Http(Base):
         st, e = self.call("/challenge/play", {"code": ch["code"], "name": "Web", "player_id": me,
                                               "answers": body["answers"]})
         self.assertEqual(st, 409)
+
+    def test_badges_route_has_its_own_limit(self):
+        me = pid()
+        for _ in range(L.RATE[0]):          # use up the score budget
+            L.limited("10.0.0.7")
+        st, r = self.call("/badges", {"player_id": me, "badges": ["streak3"]}, ip="10.0.0.7")
+        self.assertEqual((st, r["badges"]), (200, ["streak3"]))
+        for _ in range(L.BADGE_RATE[0] - 1):
+            self.call("/badges", {"player_id": me, "badges": []}, ip="10.0.0.7")
+        self.assertEqual(self.call("/badges", {"player_id": me, "badges": []}, ip="10.0.0.7")[0], 429)
+        st, b = self.call("/board?len=10&period=week")
+        self.assertEqual((st, b["rows"]), (200, []))
 
     def test_creation_rate_limit_per_ip(self):
         me = pid()

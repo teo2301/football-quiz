@@ -30,6 +30,10 @@ on 127.0.0.1:8093 and is reached publicly through Tailscale Funnel on :10000.
     GET  /api/league            ?code= &player_id= &period=week|all -> league table (points from every mode)
     GET  /api/division          ?player_id=          -> your weekly division table (promotion / relegation)
 
+  Phase 4 (achievements):
+    POST /api/badges            {player_id, badges: [id, ...]}  -> badges are earned in the app; the server
+                                keeps the union and boards/tables show each player's best three as `badges`
+
 Points are computed HERE: 1/2/3 per correct Easy/Medium/Hard answer, x1.25
 with the 20 s timer, x1.5 with 10 s; the one question you used the 50/50 on
 scores half. With the new shape the server marks every
@@ -53,6 +57,7 @@ from datetime import date, datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import achievements  # noqa: E402
 import daily_gen  # noqa: E402
 import divisions  # noqa: E402
 import modes  # noqa: E402
@@ -227,6 +232,10 @@ def init():
         c.execute("""CREATE TABLE IF NOT EXISTS player_tier (
             player_id TEXT PRIMARY KEY,
             tier INTEGER NOT NULL,
+            updated_utc TEXT NOT NULL)""")
+        c.execute("""CREATE TABLE IF NOT EXISTS player_badges (
+            player_id TEXT PRIMARY KEY,
+            badges TEXT NOT NULL,
             updated_utc TEXT NOT NULL)""")
         c.execute("""CREATE TABLE IF NOT EXISTS division_weeks (
             week TEXT PRIMARY KEY,
@@ -530,7 +539,7 @@ def run_rank(pid, mode, period):
 
 
 def public_run_board(mode, period):
-    rows = run_board(mode, period)
+    rows = with_badges(run_board(mode, period))
     for r in rows:
         del r["player_id"]
     return {"mode": mode, "rows": rows}
@@ -624,7 +633,7 @@ def daily_board(period, d=None, limit=None):
 
 
 def public_board(period):
-    rows = daily_board(period, limit=50)
+    rows = with_badges(daily_board(period, limit=50))
     for r in rows:
         del r["player_id"]                  # it's what lets you post as yourself
     today = daily_gen.uk_today(clock())
@@ -716,7 +725,7 @@ def division_view(pid):
                "in_table": bool(me), "rank": None, "size": 0, "up": 0, "down": 0, "rows": [],
                "secs_left": max(0, int((divisions.week_end_utc(week) - now).total_seconds())), "last": None}
         if me:
-            rows = [dict(r) for r in c.execute(TABLE_SQL, (week, tier, me["grp"]))]
+            rows = add_badges(c, [dict(r) for r in c.execute(TABLE_SQL, (week, tier, me["grp"]))])
             up, down = divisions.zones(len(rows), tier)
             for i, r in enumerate(rows, 1):
                 r["me"] = r.pop("player_id") == pid
@@ -839,7 +848,8 @@ def get_challenge(code, pid=None):
                     "them": {"name": ch["name"] or "?", "correct": ch["correct"], "points": ch["points"],
                              "grid": ch["grid"], "choices": json.loads(ch["choices"])},
                     "outcome": "win" if me > them else "draw" if me == them else "loss",
-                    "h2h": {"won": w, "drawn": d, "lost": lo}}
+                    "h2h": {"won": w, "drawn": d, "lost": lo},
+                    "tiers": {"you": current_tier(c, pid), "them": current_tier(c, ch["creator_pid"])}}
     return out
 
 
@@ -979,13 +989,74 @@ def league_view(code, pid, period):
         lg = c.execute("SELECT * FROM leagues WHERE code = ?", (code,)).fetchone()
         if not lg:
             raise NotFound("No league with that code - check it and try again")
-        rows = _sorted(league_rows(c, lg["id"], week), period)
+        rows = add_badges(c, _sorted(league_rows(c, lg["id"], week), period))
     member = any(r["player_id"] == pid for r in rows)
     for r in rows:
         r["me"] = r.pop("player_id") == pid
         del r["joined_utc"]
     return {"code": code, "name": lg["name"], "period": period, "week": week, "members": len(rows),
             "member": member, "owner": lg["owner_pid"] == pid, "rows": rows}
+
+
+# ---------------------------------------------------------------- achievements
+
+BADGE_RATE = (30, 600)      # own budget, so syncing badges never eats into score posts
+
+
+def set_badges(data):
+    pid = clean_pid(data.get("player_id"))
+    new = achievements.clean(data.get("badges"))
+    with db() as c:
+        row = c.execute("SELECT badges FROM player_badges WHERE player_id = ?", (pid,)).fetchone()
+        have = achievements.clean(json.loads(row["badges"])) if row else []
+        merged = achievements.clean(have + new)
+        c.execute("""INSERT INTO player_badges (player_id, badges, updated_utc) VALUES (?,?,?)
+                     ON CONFLICT(player_id) DO UPDATE SET badges = excluded.badges,
+                     updated_utc = excluded.updated_utc""", (pid, json.dumps(merged), now_utc()))
+    return {"ok": True, "badges": merged}
+
+
+def badge_map(c, pids):
+    """{player_id: best three badge ids} for the given players."""
+    pids = [p for p in set(pids) if p]
+    out = {}
+    for i in range(0, len(pids), 500):
+        chunk = pids[i:i + 500]
+        for r in c.execute("SELECT player_id, badges FROM player_badges WHERE player_id IN (%s)"
+                           % ",".join("?" * len(chunk)), chunk):
+            try:
+                out[r["player_id"]] = achievements.clean(json.loads(r["badges"]))[:achievements.SHOW]
+            except (ValueError, TypeError):
+                pass
+    return out
+
+
+def add_badges(c, rows, key="player_id"):
+    """Adds `badges` (maybe empty) to each row, keyed by player_id, or by name for the classic board."""
+    if key == "name":
+        ids = {r["name_lc"]: r["player_id"] for r in c.execute(
+            "SELECT player_id, name_lc FROM players WHERE name_lc IN (%s)" % ",".join("?" * len(rows)),
+            [r["name"].lower() for r in rows])} if rows else {}
+        pids = [ids.get(r["name"].lower()) for r in rows]
+    else:
+        pids = [r.get(key) for r in rows]
+    bm = badge_map(c, pids)
+    for r, p in zip(rows, pids):
+        r["badges"] = bm.get(p, [])
+    return rows
+
+
+def with_badges(rows, key="player_id"):
+    with db() as c:
+        return add_badges(c, rows, key)
+
+
+def current_tier(c, pid):
+    week = divisions.week_key(clock())
+    r = c.execute("SELECT tier FROM divisions WHERE week = ? AND player_id = ?", (week, pid)).fetchone()
+    if not r:
+        r = c.execute("SELECT tier FROM player_tier WHERE player_id = ?", (pid,)).fetchone()
+    return r["tier"] if r else divisions.BOTTOM
 
 
 # ---------------------------------------------------------------- HTTP
@@ -1056,7 +1127,7 @@ class Handler(BaseHTTPRequestHandler):
                 period = params.get("period", "week")
                 if total not in LENGTHS or period not in ("week", "all"):
                     return self._send(400, {"error": "bad len or period"})
-                return self._send(200, {"rows": board(total, period)})
+                return self._send(200, {"rows": with_badges(board(total, period), "name")})
             if path == "/api/daily":
                 d = parse_date(params["date"]) if "date" in params else daily_gen.uk_today(clock())
                 return self._send(200, daily_ids(d))
@@ -1076,10 +1147,13 @@ class Handler(BaseHTTPRequestHandler):
         route = {"/api/scores": add_score, "/api/daily": add_daily, "/api/name": set_name,
                  "/api/challenges": create_challenge, "/api/challenge/play": play_challenge,
                  "/api/leagues": create_league, "/api/leagues/join": join_league,
-                 "/api/leagues/leave": leave_league}.get(path)
+                 "/api/leagues/leave": leave_league, "/api/badges": set_badges}.get(path)
         if not route:
             return self._send(404, {"error": "not found"})
-        if limited(self._ip()):
+        if path == "/api/badges":
+            if limited(self._ip(), BADGE_RATE, "badges:"):
+                return self._send(429, {"error": "Too many updates - try again in a few minutes."})
+        elif limited(self._ip()):
             return self._send(429, {"error": "Too many scores - try again in a few minutes."})
         if path in ("/api/challenges", "/api/leagues") and limited(self._ip(), CREATE_RATE, "create:"):
             return self._send(429, {"error": "Too many new challenges or leagues - try again later."})
