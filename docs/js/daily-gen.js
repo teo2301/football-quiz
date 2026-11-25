@@ -1,11 +1,11 @@
 // Daily quiz picker. MUST stay identical to server/daily_gen.py
 // (server/test_leaderboard.py checks both give the same ids).
-// 7 a day: 2 Easy, 4 Medium, 1 Hard, none repeated within 60 days.
+// 7 a day: 2 Easy, 3 Medium, 2 Hard, none repeated within 60 days.
 var FQDaily = (function () {
   "use strict";
   var SEQ_START = Date.UTC(2026, 10, 1);   // 2026-11-01: history starts here
   var EPOCH = Date.UTC(2026, 10, 30);      // number = days since this (2026-12-01 = #1)
-  var PLAN = [1, 1, 2, 2, 2, 2, 3];
+  var PLAN = [1, 1, 2, 2, 2, 3, 3];
   var NO_REPEAT = 60;
   var DAY = 86400000;
 

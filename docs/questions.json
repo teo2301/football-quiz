@@ -9683,5 +9683,577 @@
 "Portugal"
 ],
 "x": "The final was played in Rotterdam."
+},
+{
+"id": "pl231",
+"l": "pl",
+"d": 3,
+"q": "Who headed Manchester City's stoppage-time equaliser against QPR on the last day of 2011-12, moments before Agüero's winner?",
+"a": "Edin Džeko",
+"w": [
+"Mario Balotelli",
+"Carlos Tevez",
+"Yaya Touré"
+],
+"x": "Džeko made it 2-2 from a corner in the 92nd minute; Agüero then won the title at 3-2."
+},
+{
+"id": "pl232",
+"l": "pl",
+"d": 3,
+"q": "How many clean sheets did Petr Čech keep in the 2004-05 Premier League, a single-season record?",
+"a": "24",
+"w": [
+"20",
+"22",
+"26"
+],
+"x": "Chelsea conceded only 15 league goals that season, also a record."
+},
+{
+"id": "pl233",
+"l": "pl",
+"d": 3,
+"q": "Who scored Manchester City's stoppage-time winner at Southampton on the last day of 2017-18, taking them to 100 points?",
+"a": "Gabriel Jesus",
+"w": [
+"Raheem Sterling",
+"Leroy Sané",
+"Sergio Agüero"
+],
+"x": "He lobbed the goalkeeper in the 94th minute for a 1-0 win."
+},
+{
+"id": "pl234",
+"l": "pl",
+"d": 3,
+"q": "Ole Gunnar Solskjær scored four goals as a substitute in an 8-1 away win in February 1999. Who were the opponents?",
+"a": "Nottingham Forest",
+"w": [
+"Southampton",
+"Wimbledon",
+"Coventry City"
+],
+"x": "He came on with about 18 minutes left at the City Ground."
+},
+{
+"id": "pl235",
+"l": "pl",
+"d": 3,
+"q": "Who scored Crystal Palace's goal in their 2-1 extra-time defeat to Manchester United in the 2016 FA Cup final?",
+"a": "Jason Puncheon",
+"w": [
+"Wilfried Zaha",
+"Yannick Bolasie",
+"Connor Wickham"
+],
+"x": "Palace led until Juan Mata equalised; Jesse Lingard won it in extra time."
+},
+{
+"id": "pl236",
+"l": "pl",
+"d": 3,
+"q": "Who scored the only goal as Chelsea beat Portsmouth in the 2010 FA Cup final, completing their first league and cup double?",
+"a": "Didier Drogba",
+"w": [
+"Frank Lampard",
+"Nicolas Anelka",
+"Florent Malouda"
+],
+"x": "A free kick; Portsmouth, already relegated, had a penalty saved by Petr Čech."
+},
+{
+"id": "pl237",
+"l": "pl",
+"d": 3,
+"q": "Blackburn won the 2002 League Cup final 2-1 in Cardiff. Who did they beat?",
+"a": "Tottenham Hotspur",
+"w": [
+"Chelsea",
+"Leeds United",
+"Aston Villa"
+],
+"x": "Andy Cole scored the winner for Graeme Souness's side."
+},
+{
+"id": "pl238",
+"l": "pl",
+"d": 3,
+"q": "Who scored twice in the last eight minutes as Liverpool came from behind to beat Arsenal in the 2001 FA Cup final?",
+"a": "Michael Owen",
+"w": [
+"Emile Heskey",
+"Robbie Fowler",
+"Steven Gerrard"
+],
+"x": "Arsenal led through Freddie Ljungberg; the final was the first played in Cardiff."
+},
+{
+"id": "pl239",
+"l": "pl",
+"d": 3,
+"q": "Liverpool won the 2001 League Cup final on penalties after a 1-1 draw. Who were the opponents?",
+"a": "Birmingham City",
+"w": [
+"Tranmere Rovers",
+"Leicester City",
+"Aston Villa"
+],
+"x": "It was the first leg of Liverpool's 2001 cup treble."
+},
+{
+"id": "pl240",
+"l": "pl",
+"d": 3,
+"q": "In 2001, who became the first goalkeeper to score in a Premier League match, for Aston Villa against Everton?",
+"a": "Peter Schmeichel",
+"w": [
+"Brad Friedel",
+"Paul Robinson",
+"David James"
+],
+"x": "Villa still lost 3-2 at Goodison Park."
+},
+{
+"id": "pl241",
+"l": "pl",
+"d": 3,
+"q": "Wigan reached the League Cup final in 2006, their first top-flight season. Who beat them 4-0?",
+"a": "Manchester United",
+"w": [
+"Arsenal",
+"Chelsea",
+"Liverpool"
+],
+"x": "Wayne Rooney scored twice in Cardiff."
+},
+{
+"id": "pl242",
+"l": "pl",
+"d": 3,
+"q": "Leicester won 9-0 at Southampton in October 2019. Which two players scored hat-tricks?",
+"a": "Ayoze Pérez and Jamie Vardy",
+"w": [
+"Jamie Vardy and James Maddison",
+"Ayoze Pérez and Harvey Barnes",
+"Jamie Vardy and Youri Tielemans"
+],
+"x": "It equalled the biggest winning margin in Premier League history."
+},
+{
+"id": "pl243",
+"l": "pl",
+"d": 3,
+"q": "Who headed Newcastle's opening goal against Liverpool in the 2025 League Cup final?",
+"a": "Dan Burn",
+"w": [
+"Alexander Isak",
+"Bruno Guimarães",
+"Fabian Schär"
+],
+"x": "Isak added the second in a 2-1 win."
+},
+{
+"id": "ll164",
+"l": "ll",
+"d": 3,
+"q": "Who coached Deportivo La Coruña to their only La Liga title, in 1999-2000?",
+"a": "Javier Irureta",
+"w": [
+"John Toshack",
+"Víctor Fernández",
+"Luis Aragonés"
+],
+"x": "Irureta stayed until 2005 and also won the 2002 Copa del Rey."
+},
+{
+"id": "ll165",
+"l": "ll",
+"d": 3,
+"q": "Barcelona won the 2009 Copa del Rey final 4-1, the first trophy of their sextuple. Who did they beat?",
+"a": "Athletic Club",
+"w": [
+"Sevilla",
+"Valencia",
+"Espanyol"
+],
+"x": "The final was played at Valencia's Mestalla."
+},
+{
+"id": "ll166",
+"l": "ll",
+"d": 3,
+"q": "Real Betis won the 2005 Copa del Rey after extra time. Who did they beat in the final?",
+"a": "Osasuna",
+"w": [
+"Espanyol",
+"Getafe",
+"Valencia"
+],
+"x": "It was Betis's first Copa del Rey win since 1977."
+},
+{
+"id": "ll167",
+"l": "ll",
+"d": 3,
+"q": "Getafe reached Copa del Rey finals in 2007 and 2008 but lost both. Who beat them in 2008?",
+"a": "Valencia",
+"w": [
+"Sevilla",
+"Real Madrid",
+"Barcelona"
+],
+"x": "Sevilla had beaten them in 2007; Valencia won 3-1 in 2008."
+},
+{
+"id": "ll168",
+"l": "ll",
+"d": 3,
+"q": "Who coached Real Sociedad to second place in La Liga in 2002-03, two points behind Real Madrid?",
+"a": "Raynald Denoueix",
+"w": [
+"John Toshack",
+"Javier Clemente",
+"Jupp Heynckes"
+],
+"x": "Darko Kovačević and Nihat Kahveci scored most of their goals."
+},
+{
+"id": "ll169",
+"l": "ll",
+"d": 3,
+"q": "How many La Liga titles did Barcelona win in Pep Guardiola's four seasons as coach?",
+"a": "3",
+"w": [
+"2",
+"4",
+"1"
+],
+"x": "2008-09, 2009-10 and 2010-11; Real Madrid won in 2011-12."
+},
+{
+"id": "ll170",
+"l": "ll",
+"d": 3,
+"q": "Barcelona beat PSG 6-1 in March 2017 after losing the first leg 4-0. Who scored the 95th-minute winner?",
+"a": "Sergi Roberto",
+"w": [
+"Neymar",
+"Lionel Messi",
+"Luis Suárez"
+],
+"x": "It was the first time a team had overturned a four-goal first-leg deficit in the Champions League."
+},
+{
+"id": "sa157",
+"l": "sa",
+"d": 3,
+"q": "Who was Serie A's top scorer in 2000-01, his first season at Lazio?",
+"a": "Hernán Crespo",
+"w": [
+"Gabriel Batistuta",
+"Andriy Shevchenko",
+"David Trezeguet"
+],
+"x": "He scored 26 league goals."
+},
+{
+"id": "sa158",
+"l": "sa",
+"d": 3,
+"q": "Which two strikers shared the 2017-18 Serie A top-scorer title on 29 goals?",
+"a": "Mauro Icardi and Ciro Immobile",
+"w": [
+"Mauro Icardi and Paulo Dybala",
+"Ciro Immobile and Gonzalo Higuaín",
+"Dries Mertens and Gonzalo Higuaín"
+],
+"x": "Icardi played for Inter, Immobile for Lazio."
+},
+{
+"id": "sa159",
+"l": "sa",
+"d": 3,
+"q": "Which Livorno striker was Serie A's top scorer in 2004-05?",
+"a": "Cristiano Lucarelli",
+"w": [
+"Alberto Gilardino",
+"Vincenzo Montella",
+"Andriy Shevchenko"
+],
+"x": "He scored 24 for his hometown club."
+},
+{
+"id": "sa160",
+"l": "sa",
+"d": 3,
+"q": "Lazio won the 2019 Coppa Italia final 2-0. Who did they beat?",
+"a": "Atalanta",
+"w": [
+"Milan",
+"Juventus",
+"Fiorentina"
+],
+"x": "Sergej Milinković-Savić and Joaquín Correa scored late in Rome."
+},
+{
+"id": "sa161",
+"l": "sa",
+"d": 3,
+"q": "Who scored the only goal as Juventus beat Atalanta in the 2024 Coppa Italia final?",
+"a": "Dušan Vlahović",
+"w": [
+"Federico Chiesa",
+"Adrien Rabiot",
+"Arkadiusz Milik"
+],
+"x": "It was Massimiliano Allegri's last game in charge before he was sacked."
+},
+{
+"id": "sa162",
+"l": "sa",
+"d": 3,
+"q": "Inter and Roma met in four Coppa Italia finals in a row, 2005 to 2008. How many did Inter win?",
+"a": "2",
+"w": [
+"1",
+"3",
+"4"
+],
+"x": "Inter won in 2005 and 2006, Roma in 2007 and 2008."
+},
+{
+"id": "eu111",
+"l": "eu",
+"d": 3,
+"q": "Who headed the only goal of the 2011 Europa League final, Porto against Braga?",
+"a": "Radamel Falcao",
+"w": [
+"Hulk",
+"James Rodríguez",
+"Fernando Belluschi"
+],
+"x": "It was his 17th goal of that Europa League campaign, a record."
+},
+{
+"id": "eu112",
+"l": "eu",
+"d": 3,
+"q": "Middlesbrough twice came back from 3-0 down on aggregate in the 2005-06 UEFA Cup. Who did they beat in the semi-final?",
+"a": "Steaua Bucharest",
+"w": [
+"Basel",
+"Roma",
+"Schalke"
+],
+"x": "They had done the same to Basel in the quarter-finals."
+},
+{
+"id": "eu113",
+"l": "eu",
+"d": 3,
+"q": "Who coached Monaco to the 2004 Champions League final?",
+"a": "Didier Deschamps",
+"w": [
+"Arsène Wenger",
+"Claude Puel",
+"Laurent Blanc"
+],
+"x": "Monaco knocked out Real Madrid and Chelsea before losing to Porto."
+},
+{
+"id": "eu114",
+"l": "eu",
+"d": 3,
+"q": "Who scored Barcelona's opening goal in the 2011 Champions League final at Wembley?",
+"a": "Pedro",
+"w": [
+"Lionel Messi",
+"David Villa",
+"Xavi"
+],
+"x": "Barcelona beat Manchester United 3-1."
+},
+{
+"id": "eu115",
+"l": "eu",
+"d": 3,
+"q": "Who scored Barcelona's second goal, a header, in the 2009 Champions League final in Rome?",
+"a": "Lionel Messi",
+"w": [
+"Samuel Eto'o",
+"Thierry Henry",
+"Gerard Piqué"
+],
+"x": "Eto'o had scored first in a 2-0 win over Manchester United."
+},
+{
+"id": "eu116",
+"l": "eu",
+"d": 3,
+"q": "Whose stoppage-time header completed Liverpool's 4-3 comeback against Borussia Dortmund in the 2016 Europa League quarter-final?",
+"a": "Dejan Lovren",
+"w": [
+"Mamadou Sakho",
+"Divock Origi",
+"Daniel Sturridge"
+],
+"x": "Liverpool had been 3-1 down at Anfield, against Jürgen Klopp's old club."
+},
+{
+"id": "in087",
+"l": "in",
+"d": 3,
+"q": "Who won the Golden Ball at the 2002 World Cup, the only goalkeeper to do so?",
+"a": "Oliver Kahn",
+"w": [
+"Gianluigi Buffon",
+"Rüştü Reçber",
+"Marcos"
+],
+"x": "Kahn conceded once before the final, where his spill let in Ronaldo for the opener."
+},
+{
+"id": "in088",
+"l": "in",
+"d": 3,
+"q": "Who won the Golden Ball at the 2010 World Cup?",
+"a": "Diego Forlán",
+"w": [
+"Wesley Sneijder",
+"Andrés Iniesta",
+"Thomas Müller"
+],
+"x": "He scored five goals as Uruguay finished fourth."
+},
+{
+"id": "in089",
+"l": "in",
+"d": 3,
+"q": "Hakan Şükür scored the fastest World Cup goal, after 11 seconds, in the 2002 third-place play-off. Who were the opponents?",
+"a": "South Korea",
+"w": [
+"USA",
+"Brazil",
+"Senegal"
+],
+"x": "Turkey won 3-2."
+},
+{
+"id": "in090",
+"l": "in",
+"d": 3,
+"q": "Which hosts knocked Spain out of the 2018 World Cup on penalties in the last 16?",
+"a": "Russia",
+"w": [
+"Croatia",
+"Morocco",
+"Portugal"
+],
+"x": "Igor Akinfeev saved from Koke and Iago Aspas."
+},
+{
+"id": "in091",
+"l": "in",
+"d": 3,
+"q": "Who scored Brazil's stoppage-time equaliser against Argentina in the 2004 Copa América final?",
+"a": "Adriano",
+"w": [
+"Luís Fabiano",
+"Ronaldinho",
+"Kaká"
+],
+"x": "It finished 2-2 and Brazil won the shoot-out 4-2."
+},
+{
+"id": "in092",
+"l": "in",
+"d": 3,
+"q": "Which country won the 2019 Africa Cup of Nations, beating Senegal 1-0 in the final?",
+"a": "Algeria",
+"w": [
+"Nigeria",
+"Tunisia",
+"Egypt"
+],
+"x": "Baghdad Bounedjah's deflected shot in the second minute won it in Cairo."
+},
+{
+"id": "in093",
+"l": "in",
+"d": 3,
+"q": "Zambia won the 2012 Africa Cup of Nations on penalties. Who did they beat in the final?",
+"a": "Ivory Coast",
+"w": [
+"Ghana",
+"Mali",
+"Senegal"
+],
+"x": "The shoot-out finished 8-7, near the site of Zambia's 1993 air disaster in Gabon."
+},
+{
+"id": "in094",
+"l": "in",
+"d": 3,
+"q": "Which country won three Africa Cup of Nations in a row, in 2006, 2008 and 2010?",
+"a": "Egypt",
+"w": [
+"Cameroon",
+"Ghana",
+"Nigeria"
+],
+"x": "Hassan Shehata was the coach for all three."
+},
+{
+"id": "in095",
+"l": "in",
+"d": 3,
+"q": "Who scored as Senegal beat holders France 1-0 in the opening game of the 2002 World Cup?",
+"a": "Papa Bouba Diop",
+"w": [
+"El Hadji Diouf",
+"Henri Camara",
+"Khalilou Fadiga"
+],
+"x": "France went out in the group stage without scoring a goal."
+},
+{
+"id": "in096",
+"l": "in",
+"d": 3,
+"q": "Whose goal knocked Brazil out of the 2006 World Cup in the quarter-finals?",
+"a": "Thierry Henry",
+"w": [
+"Zinedine Zidane",
+"Franck Ribéry",
+"Patrick Vieira"
+],
+"x": "He volleyed in Zidane's free kick for a 1-0 win."
+},
+{
+"id": "in097",
+"l": "in",
+"d": 3,
+"q": "Which country knocked Brazil out of the 2018 World Cup in the quarter-finals?",
+"a": "Belgium",
+"w": [
+"France",
+"Croatia",
+"Uruguay"
+],
+"x": "Belgium won 2-1 in Kazan, with Kevin De Bruyne scoring the second."
+},
+{
+"id": "in098",
+"l": "in",
+"d": 3,
+"q": "Who knocked Brazil out of the 2022 World Cup on penalties in the quarter-finals?",
+"a": "Croatia",
+"w": [
+"Argentina",
+"Morocco",
+"Netherlands"
+],
+"x": "Bruno Petković equalised late in extra time after Neymar had scored."
 }
 ]

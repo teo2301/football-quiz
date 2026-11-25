@@ -1,8 +1,8 @@
 """Daily quiz picker. MUST stay identical to docs/js/daily-gen.js
 (server/test_leaderboard.py checks both give the same ids).
 
-Every UK date gets 7 questions: 2 Easy, 4 Medium, 1 Hard (the bank only has
-~100 Hard ones, so 2 a day would repeat inside 60 days). Each day is picked
+Every UK date gets 7 questions: 2 Easy, 3 Medium, 2 Hard (2 Hard a day needs
+at least 121 Hard questions for the 60-day no-repeat rule; the test checks it). Each day is picked
 with mulberry32 seeded by the date as YYYYMMDD, from the questions not used in
 the previous 60 days, walking forward from SEQ_START so the history is the same
 everywhere. Pools are sorted by id so file order doesn't matter.
@@ -11,7 +11,7 @@ from datetime import date, datetime, timedelta, timezone
 
 SEQ_START = date(2026, 11, 1)   # history starts here (gives a pre-launch preview)
 EPOCH = date(2026, 11, 30)      # number = days since this, so 2026-12-01 is #1
-PLAN = (1, 1, 2, 2, 2, 2, 3)
+PLAN = (1, 1, 2, 2, 2, 3, 3)
 NO_REPEAT = 60
 M = 0xFFFFFFFF
 
