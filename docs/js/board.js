@@ -30,10 +30,11 @@ function boardChips(el, map, key, seg) {
   });
 }
 
-function row(pos, name, meta, pts, mine) {
+function row(pos, name, meta, pts, mine, badges) {
+  var b = badgeRow(badges);
   return h("li", {className: "tile" + (mine ? " me" : "")},
     h("span", {className: "pos"}, pos < 4 ? ["🥇", "🥈", "🥉"][pos - 1] : String(pos)),
-    h("span", {className: "nm"}, h("span", {className: "n"}, name), meta),
+    h("span", {className: "nm"}, b ? h("span", {className: "nmrow"}, h("span", {className: "n"}, name), b) : h("span", {className: "n"}, name), meta),
     h("span", {className: "pts"}, pts));
 }
 
@@ -85,7 +86,7 @@ async function loadBoard() {
         meta = h("span", {className: "meta"}, r.correct + "/" + r.total + " · " + LEAGUES[r.league] + " · " + DIFFS[r.diff] + (r.timer ? " · " + r.timer + " s" : ""));
         pts = String(r.points);
       }
-      ul.appendChild(row(i + 1, r.name, meta, pts, mine));
+      ul.appendChild(row(i + 1, r.name, meta, pts, mine, r.badges));
     });
   } catch (e) {
     if (seq !== boardSeq) return;

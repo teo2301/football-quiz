@@ -15,7 +15,9 @@
 <link rel="stylesheet" href="app.css">
 <script defer src="js/daily-gen.js"></script>
 <script defer src="js/match.js"></script>
+<script defer src="js/ach-defs.js"></script>
 <script defer src="js/core.js"></script>
+<script defer src="js/achievements.js"></script>
 <script defer src="js/quiz.js"></script>
 <script defer src="js/social.js"></script>
 <script defer src="js/modes.js"></script>
@@ -339,6 +341,16 @@
     <div class="stat tile"><b id="bHilo">–</b><span>hi-lo</span></div>
     <div class="stat tile"><b id="bCareer">–</b><span>career</span></div>
   </div>
+  <div class="achhead"><h2 class="sec">Achievements</h2><span id="achCount"></span></div>
+  <div class="achgrid" id="achGrid"></div>
+  <p class="small">Earned on this phone. Your best three show next to your name on the boards.</p>
+  <h2 class="sec">Settings</h2>
+  <div class="tile" style="padding-top:4px;padding-bottom:4px">
+    <div class="setrow" id="hapticsRow"><span class="stx"><b>Vibrate</b><span>A buzz when you're right, two when you're wrong</span></span>
+      <button class="switch" id="setHaptics" role="switch" aria-checked="true" aria-label="Vibrate"></button></div>
+    <div class="setrow"><span class="stx"><b>Sounds</b><span>Crowd cheers, groans and the final whistle</span></span>
+      <button class="switch" id="setSound" role="switch" aria-checked="false" aria-label="Sounds"></button></div>
+  </div>
   <h2 class="sec">About</h2>
   <div class="tile">
     <p style="margin:0">No accounts, no ads, no tracking. Your name and scores are only used for the boards.</p>
@@ -356,5 +368,14 @@
   <button data-tab="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Me</button>
 </nav>
 <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+<div class="achtoast hidden" id="achToast" role="status" aria-live="polite">
+  <span class="badge big" id="atIc" aria-hidden="true"></span>
+  <span class="tx"><span class="lbl">Achievement unlocked</span><b id="atName"></b><span class="ds" id="atDesc"></span></span>
+</div>
+<div class="goal hidden" id="goal" aria-live="polite">
+  <div class="frame" aria-hidden="true"><div class="net"></div></div>
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+  <div class="gtx"><b id="goalText">Goal!</b><span id="goalSub">Perfect score</span></div>
+</div>
 </body>
 </html>

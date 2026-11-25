@@ -145,6 +145,8 @@ function finishDaily(g, date) {
   $("chBox").classList.add("hidden");
   renderMissed(g);
   show("done");
+  achCheck({k: "daily", correct: rec.correct, total: rec.total});
+  if (rec.correct === rec.total) celebrate("Goal!", rec.total + " out of " + rec.total);
   submitResult("daily", {date: date, answers: g.answers}, function (r, name) {
     var l = dailyLog(); if (l[date]) { l[date].rank = r.rank_today; l[date].players = r.players_today; store.set("daily", l); }
     postMsg("Posted as " + name + ": " + ordinal(r.rank_today) + " of " + r.players_today + " today · 🔥 " + r.streak + " day streak.",
@@ -227,6 +229,9 @@ function finishClassic(g) {
   offerChallenge(g);
   renderMissed(g);
   show("done");
+  var full = [10, 20, 50].indexOf(n) >= 0 && n === Number(settings.len);
+  achCheck({k: "classic", correct: r, total: full ? n : 0, timer: Number(settings.timer)});
+  if (r === n && full) celebrate("Goal!", n + " out of " + n);
   // Only whole quizzes of 10/20/50 count; a short pool (e.g. Hard + one league) doesn't.
   if (!([10, 20, 50].indexOf(n) >= 0 && n === Number(settings.len))) {
     postMsg("Leaderboard scores need a full 10, 20 or 50-question quiz.");

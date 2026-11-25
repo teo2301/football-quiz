@@ -30,7 +30,7 @@ class Handler(SimpleHTTPRequestHandler):
             n = int(self.headers.get("Content-Length") or 0)
             body = self.rfile.read(min(n, 65536))
         req = urllib.request.Request(UPSTREAM + self.path, data=body, method=self.command,
-                                     headers={"X-Forwarded-For": self.client_address[0],
+                                     headers={"X-Forwarded-For": self.headers.get("X-Preview-Client") or self.client_address[0],
                                               "Content-Type": self.headers.get("Content-Type", "text/plain")})
         try:
             with urllib.request.urlopen(req, timeout=10) as r:

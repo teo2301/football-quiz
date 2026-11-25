@@ -37,11 +37,14 @@
   $("nameIn").addEventListener("keydown", function (e) { if (e.key === "Enter") savePostName(); });
   $("meSave").onclick = saveMeName;
   $("meName").addEventListener("keydown", function (e) { if (e.key === "Enter") saveMeName(); });
-  window.addEventListener("online", flushPending);
+  window.addEventListener("online", function () { flushPending(); syncBadges(); });
+  wireFeel();
+  $("goal").onclick = endCelebrate;
   wireCompete();
   setInterval(tickCountdown, 1000);
 
   playerId();
+  achInit();
   renderHome();
   loadBank().then(function () { renderHome(); flushPending(); handleHash(); }).catch(function () {
     $("subtitle").textContent = "Couldn't load the questions. Check your connection and reload.";

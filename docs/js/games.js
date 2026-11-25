@@ -71,6 +71,7 @@ function finishSurvival(g) {
     (n >= 20 ? " Iron man." : n >= 10 ? " Proper staying power." : ""), best);
   renderMissed(g);
   show("done");
+  achCheck({k: "run"});
   if (!g.answers.length) return;
   postRun("survival", g.answers, function (r) { return r.score + " in a row"; });
 }
@@ -90,6 +91,7 @@ function finishBlitz(g) {
     (n >= 20 ? " Lightning." : n >= 12 ? " Sharp." : ""), best);
   renderMissed(g);
   show("done");
+  achCheck({k: "run"});
   if (!tot) { postMsg("Answer at least one question to get on the board."); return; }
   postRun("blitz", g.answers, function (r) { return r.score + " correct"; });
 }
@@ -163,6 +165,7 @@ function hiloGuess(g) {
   hilo.log.push({a: a, b: b, ok: ok});
   if (ok) hilo.streak++; else hilo.over = true;
   statCard(b, $("hiB"), false, ok ? "good" : "bad");
+  answerFeel(ok);
   $("hiStreak").textContent = hilo.streak;
   $("hiAsk").textContent = (ok ? "Yes! " : "No. ") + b.n + ": " + fmtStat(b) + (b.v > a.v ? ", higher than " : ", lower than ") + fmtStat(a) + ".";
   $("hiNote").textContent = b.note + ".";
@@ -180,6 +183,7 @@ function hiloNext() {
 
 function finishHilo() {
   var hl = hilo; hilo = null;
+  sfx("whistle");
   var n = hl.streak, best = saveBest("hilo", n);
   runResult("Higher or lower", String(n), (n === 1 ? "1 right call" : n + " right calls") + " in a row." +
     (n >= 15 ? " Walking almanac." : n >= 8 ? " Strong instincts." : ""), best);
@@ -192,6 +196,7 @@ function finishHilo() {
     h("div", {className: "ans"}, "✓ " + fmtStat(miss.b) + " vs " + fmtStat(miss.a) + " · " + STATS.cats[miss.b.c].name),
     h("div", {className: "yours"}, "✗ You said " + (miss.b.v > miss.a.v ? "lower" : "higher"))));
   show("done");
+  achCheck({k: "run"});
   if (!hl.answers.length) return;
   postRun("hilo", hl.answers, function (r) { return r.score + " in a row"; });
 }
@@ -253,6 +258,7 @@ function careerSettle(ok, guess) {
   c.points += pts; c.done = true;
   c.answers.push({id: p.id, guess: guess, clues: c.clue});
   c.log.push({p: p, pts: pts, clue: c.clue});
+  answerFeel(ok);
   var cs = store.get("cseen", []); if (cs.indexOf(p.id) < 0) { cs.push(p.id); store.set("cseen", cs); }
   $("cResName").textContent = p.n;
   $("cResLine").textContent = ok ? "Got him with " + c.clue + (c.clue === 1 ? " clue" : " clues") + ": +" + pts + (pts === 1 ? " point" : " points") : "Not this time: 0 points";
@@ -290,6 +296,7 @@ function careerNext() {
   if (!c) return;
   if (c.i + 1 < CAREER_LEN) { c.i++; careerAsk(); return; }
   career = null;
+  sfx("whistle");
   var best = saveBest("career", c.points), right = c.log.filter(function (x) { return x.pts; }).length;
   runResult("Career path", c.points + "/" + CAREER_LEN * 5, right + " of " + CAREER_LEN + " players named." +
     (c.points >= 20 ? " Scout of the year." : c.points >= 12 ? " Knows the game." : ""), best);
@@ -302,5 +309,7 @@ function careerNext() {
       h("div", {className: "path"}, x.p.clubs.join(" → "))));
   });
   show("done");
+  achCheck({k: "career", firstClub: c.log.some(function (x) { return x.pts && x.clue === 1; })});
+  if (c.points === CAREER_LEN * 5) celebrate("Goal!", "Every player from his first club");
   postRun("career", c.answers, function (r) { return r.score + " pts"; });
 }

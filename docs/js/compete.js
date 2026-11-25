@@ -199,6 +199,7 @@ async function finishChallenge(g, c) {
   chalRemember({code: c.code, role: "played", from: c.from, total: c.total, league: c.league,
                 you: g.right, them: c.their.correct, at: Date.now()});
   showVs(null, {g: g, c: c});
+  if (g.right === g.qs.length) celebrate("Goal!", g.right + " out of " + g.right);
   msg("vsMsg", "Sending your score…");
   try {
     var r = await api("/challenge/play", body);
@@ -250,6 +251,7 @@ function showVs(r, local) {
     v = r.plays.length ? plural(r.plays.length, "mate has", "mates have") + " played it." : "Nobody has played it yet. Send it to a mate!";
   } else if (res) {
     v = res.outcome === "win" ? "You win! 🏆" : res.outcome === "draw" ? "A draw. Honours even." : themName + " wins this one.";
+    achCheck({k: "chal", res: res});
     hh = "Head to head v " + themName + ": won " + res.h2h.won + ", drawn " + res.h2h.drawn + ", lost " + res.h2h.lost;
   } else {
     var a = [you.points, you.correct], b = [them.points, them.correct];
@@ -323,6 +325,7 @@ async function loadDivision(force) {
     d.fetched = Date.now();
     divCache = {data: d, at: Date.now()};
     store.set("div", d);
+    achCheck();
     return d;
   } catch (e) {
     return c && c.week ? c : null;      // last known (offline)
@@ -381,7 +384,7 @@ function renderDivCard(d) {
   var ul = $("dvTable"); ul.innerHTML = "";
   d.rows.forEach(function (r, i) {
     var pos = i + 1, up = d.up && pos <= d.up, dn = d.down && pos > d.size - d.down;
-    var li = row(pos, r.name, h("span", {className: "meta"}, up ? "▲ promotion" : dn ? "▼ relegation" : ""), fmtPts(r.points), r.me);
+    var li = row(pos, r.name, h("span", {className: "meta"}, up ? "▲ promotion" : dn ? "▼ relegation" : ""), fmtPts(r.points), r.me, r.badges);
     if (up) li.classList.add("zup");
     if (dn) li.classList.add("zdown");
     ul.appendChild(li);
@@ -496,7 +499,7 @@ async function showLeague(code, period) {
     var key = leaguePeriod === "week" ? "week" : "total", other = leaguePeriod === "week" ? "total" : "week";
     r.rows.forEach(function (x, i) {
       var meta = h("span", {className: "meta"}, (other === "total" ? "All time " : "This week ") + fmtPts(x[other]));
-      ul.appendChild(row(i + 1, x.name, meta, fmtPts(x[key]), x.me));
+      ul.appendChild(row(i + 1, x.name, meta, fmtPts(x[key]), x.me, x.badges));
     });
     if (!r.rows.length) $("lMsg").textContent = "Nobody here yet.";
   } catch (e) {

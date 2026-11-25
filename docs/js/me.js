@@ -15,6 +15,8 @@ function renderMe() {
   $("bBlitz").textContent = b.blitz || "–";
   $("bHilo").textContent = b.hilo || "–";
   $("bCareer").textContent = b.career || "–";
+  renderAchGrid();
+  renderFeel();
   $("version").textContent = "Football Quiz v2 · " + BANK.length + " questions";
 }
 

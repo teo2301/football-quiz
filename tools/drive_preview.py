@@ -171,6 +171,61 @@ async def new_modes(tab):
     await tab.shot("32-career-result")
 
 
+async def achievements_and_feel(tab):
+    """Phase 4: haptics/sound settings, a perfect Classic (goal celebration + achievement toast),
+    the Me grid, badges on the board, the reduced-motion celebration."""
+    # record vibrations instead of buzzing
+    await tab.js("window.__buzz=[];navigator.vibrate=function(p){window.__buzz.push(p);return true};true")
+    # a real (CDP) tap on the Me tab: browsers only allow vibration after the user has tapped
+    xy = await tab.js("(function(){var r=document.querySelector('[data-tab=me]').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]})()")
+    for t in ("mousePressed", "mouseReleased"):
+        await tab.send("Input.dispatchMouseEvent", {"type": t, "x": xy[0], "y": xy[1], "button": "left", "clickCount": 1})
+    await tab.wait(VISIBLE % "me")
+    await tab.js("document.getElementById('setSound').click()")
+    assert await tab.js("feel.sound === true && feel.haptics === true"), "sound toggle / haptics default"
+    await tab.js("window.scrollTo(0, document.getElementById('setSound').getBoundingClientRect().top + scrollY - 500)")
+    await tab.shot("50-me-settings", full=False)
+    for f in ("cheer", "groan", "whistle"):
+        st = await tab.js("fetch('sounds/%s.mp3').then(function(r){return r.status + ' ' + r.headers.get('content-type')})" % f)
+        print(tab.tag, "sound", f, st)
+    # a perfect Classic: 10 from 10
+    await tab.js("document.querySelector('[data-tab=home]').click()")
+    await tab.js("document.querySelector('[data-mode=classic]').click()")
+    await tab.js("[].slice.call(document.querySelectorAll('#lengths .chip')).filter(function(b){return b.textContent==='10'})[0].click()")
+    await tab.js("document.getElementById('start').click()")
+    await play(tab, [True] * 9 + [False])
+    buzz = await tab.js("JSON.stringify(window.__buzz.slice(-2))")
+    print(tab.tag, "vibrate calls (right, wrong):", buzz)
+    await tab.js("document.getElementById('again').click()")
+    await play(tab, [True] * 10)
+    await tab.wait(VISIBLE % "goal")
+    await asyncio.sleep(0.5)
+    await tab.shot("51-goal", full=False)
+    await tab.wait("document.getElementById('achToast').classList.contains('in')", 8)
+    await asyncio.sleep(0.4)
+    await tab.shot("52-ach-toast", full=False)
+    got = await tab.js("Object.keys(achHave())")
+    print(tab.tag, "achievements:", got)
+    assert "perfect10" in got, got
+    await tab.wait("!!store.get('achSynced', '')", 10)
+    await tab.js("document.querySelector('[data-tab=me]').click()")
+    await tab.js("window.scrollTo(0, document.getElementById('achGrid').getBoundingClientRect().top + scrollY - 80)")
+    await tab.shot("53-me-achievements", full=False)
+    await tab.js("document.querySelector('[data-tab=boards]').click()")
+    await tab.js("document.querySelectorAll('#bKind button')[1].click()")
+    await tab.wait(LOADED % "bMsg")
+    await tab.wait("document.querySelectorAll('#lb .badge').length > 0", 8)
+    await tab.shot("54-board-badges")
+    await tab.send("Emulation.setEmulatedMedia", {"features": [
+        {"name": "prefers-color-scheme", "value": tab.tag}, {"name": "prefers-reduced-motion", "value": "reduce"}]})
+    await tab.js("celebrate('Goal!', '7 out of 7'); true")
+    await tab.shot("55-goal-reduced-motion", full=False)
+    n = await tab.js("document.querySelectorAll('#confetti i').length")
+    print(tab.tag, "reduced motion confetti pieces:", n)
+    await tab.js("document.getElementById('goal').click()")
+    await tab.send("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-color-scheme", "value": tab.tag}]})
+
+
 LOADED = "document.getElementById('%s').textContent !== 'Loading…'"
 VISIBLE = "!document.getElementById('%s').classList.contains('hidden')"
 
@@ -192,7 +247,7 @@ async def social_maker(tab, shared):
 
 async def social_player(tab, shared):
     """Dark run: open the challenge link, play it, then the league invite link, join."""
-    await tab.goto(URL + "#c=" + shared["challenge"])
+    await tab.goto(tab.base + "#c=" + shared["challenge"])
     await tab.wait("BANK.length > 0")
     await tab.wait(VISIBLE % "ciPlay")
     await tab.shot("41-challenge-invite")
@@ -201,7 +256,7 @@ async def social_player(tab, shared):
     await tab.wait(VISIBLE % "vs")
     await tab.wait("!!chal && !!chal.result", 10)
     await tab.shot("43-challenge-vs")
-    await tab.goto(URL + "#j=" + shared["league"])
+    await tab.goto(tab.base + "#j=" + shared["league"])
     await tab.wait(VISIBLE % "lgInvite")
     await tab.shot("44-league-invite")
     await tab.js("document.getElementById('lgInviteJoin').click()")
@@ -230,15 +285,20 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
                 time.sleep(0.2)
         async with websockets.connect(ws_url, max_size=100_000_000) as ws:
             tab = Tab(ws, scheme)
+            tab.base = URL
             reader = asyncio.ensure_future(tab.reader())
-            for m in ("Runtime.enable", "Log.enable", "Page.enable"):
+            for m in ("Runtime.enable", "Log.enable", "Page.enable", "Network.enable"):
                 await tab.send(m)
+            # each player gets its own 20-posts-per-10-minutes budget on the test API (preview.py
+            # passes this on as the client IP; everything else here comes from 127.0.0.1)
+            await tab.send("Network.setExtraHTTPHeaders", {"headers": {
+                "X-Preview-Client": "10.97.0.%d" % (int(time.time()) % 200 + (1 if scheme == "light" else 2))}})
             await tab.send("Emulation.setDeviceMetricsOverride", {"width": 390, "height": 844, "deviceScaleFactor": 2, "mobile": True})
             await tab.send("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-color-scheme", "value": scheme}]})
-            await tab.goto(URL)
+            await tab.goto(tab.base)
             await tab.wait("BANK.length > 0 && document.fonts.status === 'loaded'")
             if shared.get("creator_view"):     # reopen the light profile: the sender's view of their challenge
-                await tab.goto(URL + "#c=" + shared["challenge"])
+                await tab.goto(tab.base + "#c=" + shared["challenge"])
                 await tab.wait("!!chal && chal.mine && chal.plays.length > 0", 10)
                 await tab.shot("47-challenge-sender-view")
                 await tab.js("document.getElementById('vsHome').click()")
@@ -319,10 +379,11 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
             await tab.shot("13c-challenge-hub")
             await tab.js("document.querySelector('[data-tab=me]').click()")
             await tab.shot("14-me")
-            await tab.goto(URL + "privacy.html")
+            await achievements_and_feel(tab)
+            await tab.goto(tab.base + "privacy.html")
             await tab.shot("15-privacy")
             # Reload the app: daily must still say done (one attempt) and SW must be active
-            await tab.goto(URL)
+            await tab.goto(tab.base)
             await tab.wait("BANK.length > 0")
             sw = await tab.js("navigator.serviceWorker.getRegistration().then(function(r){return !!(r && r.active)})")
             done = await tab.js("!document.getElementById('dDone').classList.contains('hidden')")

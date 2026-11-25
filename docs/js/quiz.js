@@ -130,6 +130,8 @@ function answer(choice) {
     if (game.suddenDeath) game.over = true;
     if (game.clockSecs) game.deadline -= BLITZ_PENALTY;
   }
+  if (ok) tallyCorrect(q);
+  answerFeel(ok, !!game.clockSecs);      // Blitz is too quick for crowd noise: buzz only
   var seen = store.get("seen", []);
   if (seen.indexOf(q.id) < 0) { seen.push(q.id); store.set("seen", seen); }
   renderBoardStrip();
@@ -163,6 +165,7 @@ function finishGame() {
   game.secs = Math.round((Date.now() - game.started) / 1000);
   var g = game;
   game = null;
+  sfx("whistle");
   g.onFinish(g);
 }
 
