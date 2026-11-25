@@ -1,0 +1,1449 @@
+{
+"about": "Higher or lower data. Numbers are well-known, stable figures: final totals for retired players, fixed historical fees, approximate 2025 capacities.",
+"cats": {
+"plgoals": {
+"name": "Premier League goals",
+"unit": "Premier League goals"
+},
+"caps": {
+"name": "International caps",
+"unit": "caps"
+},
+"intgoals": {
+"name": "International goals",
+"unit": "international goals"
+},
+"lgoals": {
+"name": "League goals in Spain and Italy",
+"unit": "league goals"
+},
+"fees": {
+"name": "Transfer fees",
+"unit": "fee",
+"money": true
+},
+"stadiums": {
+"name": "Stadium capacity",
+"unit": "capacity",
+"approx": true
+}
+},
+"items": [
+{
+"id": "pl01",
+"c": "plgoals",
+"n": "Alan Shearer",
+"v": 260,
+"d": "Blackburn, Newcastle",
+"note": "Final Premier League total"
+},
+{
+"id": "pl02",
+"c": "plgoals",
+"n": "Harry Kane",
+"v": 213,
+"d": "Tottenham",
+"note": "Total when he left for Bayern in 2023"
+},
+{
+"id": "pl03",
+"c": "plgoals",
+"n": "Wayne Rooney",
+"v": 208,
+"d": "Everton, Manchester United",
+"note": "Final Premier League total"
+},
+{
+"id": "pl04",
+"c": "plgoals",
+"n": "Andy Cole",
+"v": 187,
+"d": "Newcastle, Manchester United and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl05",
+"c": "plgoals",
+"n": "Sergio Agüero",
+"v": 184,
+"d": "Manchester City",
+"note": "Final Premier League total"
+},
+{
+"id": "pl06",
+"c": "plgoals",
+"n": "Frank Lampard",
+"v": 177,
+"d": "West Ham, Chelsea, Manchester City",
+"note": "Final Premier League total"
+},
+{
+"id": "pl07",
+"c": "plgoals",
+"n": "Thierry Henry",
+"v": 175,
+"d": "Arsenal",
+"note": "Final Premier League total"
+},
+{
+"id": "pl08",
+"c": "plgoals",
+"n": "Robbie Fowler",
+"v": 163,
+"d": "Liverpool and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl09",
+"c": "plgoals",
+"n": "Jermain Defoe",
+"v": 162,
+"d": "Tottenham and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl10",
+"c": "plgoals",
+"n": "Michael Owen",
+"v": 150,
+"d": "Liverpool and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl11",
+"c": "plgoals",
+"n": "Les Ferdinand",
+"v": 149,
+"d": "QPR, Newcastle and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl12",
+"c": "plgoals",
+"n": "Teddy Sheringham",
+"v": 146,
+"d": "Tottenham, Manchester United and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl13",
+"c": "plgoals",
+"n": "Robin van Persie",
+"v": 144,
+"d": "Arsenal, Manchester United",
+"note": "Final Premier League total"
+},
+{
+"id": "pl14",
+"c": "plgoals",
+"n": "Jimmy Floyd Hasselbaink",
+"v": 127,
+"d": "Leeds, Chelsea and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl15",
+"c": "plgoals",
+"n": "Robbie Keane",
+"v": 126,
+"d": "Tottenham and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl16",
+"c": "plgoals",
+"n": "Nicolas Anelka",
+"v": 125,
+"d": "Arsenal, Chelsea and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl17",
+"c": "plgoals",
+"n": "Dwight Yorke",
+"v": 123,
+"d": "Aston Villa, Manchester United and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl18",
+"c": "plgoals",
+"n": "Steven Gerrard",
+"v": 120,
+"d": "Liverpool",
+"note": "Final Premier League total"
+},
+{
+"id": "pl19",
+"c": "plgoals",
+"n": "Ian Wright",
+"v": 113,
+"d": "Arsenal, West Ham",
+"note": "Final Premier League total"
+},
+{
+"id": "pl20",
+"c": "plgoals",
+"n": "Dion Dublin",
+"v": 111,
+"d": "Coventry, Aston Villa and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl21",
+"c": "plgoals",
+"n": "Emile Heskey",
+"v": 110,
+"d": "Leicester, Liverpool and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl22",
+"c": "plgoals",
+"n": "Ryan Giggs",
+"v": 109,
+"d": "Manchester United",
+"note": "Final Premier League total"
+},
+{
+"id": "pl23",
+"c": "plgoals",
+"n": "Peter Crouch",
+"v": 108,
+"d": "Liverpool, Stoke and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl24",
+"c": "plgoals",
+"n": "Paul Scholes",
+"v": 107,
+"d": "Manchester United",
+"note": "Final Premier League total"
+},
+{
+"id": "pl25",
+"c": "plgoals",
+"n": "Darren Bent",
+"v": 106,
+"d": "Charlton, Sunderland and others",
+"note": "Final Premier League total"
+},
+{
+"id": "pl26",
+"c": "plgoals",
+"n": "Didier Drogba",
+"v": 104,
+"d": "Chelsea",
+"note": "Final Premier League total"
+},
+{
+"id": "pl27",
+"c": "plgoals",
+"n": "Matt Le Tissier",
+"v": 100,
+"d": "Southampton",
+"note": "Final Premier League total"
+},
+{
+"id": "ca01",
+"c": "caps",
+"n": "Sergio Ramos",
+"v": 180,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca02",
+"c": "caps",
+"n": "Gianluigi Buffon",
+"v": 176,
+"d": "Italy",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca03",
+"c": "caps",
+"n": "Iker Casillas",
+"v": 167,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca04",
+"c": "caps",
+"n": "Javier Mascherano",
+"v": 147,
+"d": "Argentina",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca05",
+"c": "caps",
+"n": "Robbie Keane",
+"v": 146,
+"d": "Republic of Ireland",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca06",
+"c": "caps",
+"n": "Hugo Lloris",
+"v": 145,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca07",
+"c": "caps",
+"n": "Sergio Busquets",
+"v": 143,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca08",
+"c": "caps",
+"n": "Javier Zanetti",
+"v": 143,
+"d": "Argentina",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca09",
+"c": "caps",
+"n": "Lilian Thuram",
+"v": 142,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca10",
+"c": "caps",
+"n": "Cafu",
+"v": 142,
+"d": "Brazil",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca11",
+"c": "caps",
+"n": "Steven Davis",
+"v": 140,
+"d": "Northern Ireland",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca12",
+"c": "caps",
+"n": "Miroslav Klose",
+"v": 137,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca13",
+"c": "caps",
+"n": "Olivier Giroud",
+"v": 137,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca14",
+"c": "caps",
+"n": "Antoine Griezmann",
+"v": 137,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca15",
+"c": "caps",
+"n": "Fabio Cannavaro",
+"v": 136,
+"d": "Italy",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca16",
+"c": "caps",
+"n": "Wesley Sneijder",
+"v": 134,
+"d": "Netherlands",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca17",
+"c": "caps",
+"n": "Shay Given",
+"v": 134,
+"d": "Republic of Ireland",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca18",
+"c": "caps",
+"n": "Xavi",
+"v": 133,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca19",
+"c": "caps",
+"n": "Andrés Iniesta",
+"v": 131,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca20",
+"c": "caps",
+"n": "Thomas Müller",
+"v": 131,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca21",
+"c": "caps",
+"n": "Lukas Podolski",
+"v": 130,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca22",
+"c": "caps",
+"n": "Edwin van der Sar",
+"v": 130,
+"d": "Netherlands",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca23",
+"c": "caps",
+"n": "Paolo Maldini",
+"v": 126,
+"d": "Italy",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca24",
+"c": "caps",
+"n": "David Silva",
+"v": 125,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca25",
+"c": "caps",
+"n": "Roberto Carlos",
+"v": 125,
+"d": "Brazil",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca26",
+"c": "caps",
+"n": "Manuel Neuer",
+"v": 124,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca27",
+"c": "caps",
+"n": "Thierry Henry",
+"v": 123,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca28",
+"c": "caps",
+"n": "Bastian Schweinsteiger",
+"v": 121,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca29",
+"c": "caps",
+"n": "Leonardo Bonucci",
+"v": 121,
+"d": "Italy",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca30",
+"c": "caps",
+"n": "Wayne Rooney",
+"v": 120,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca31",
+"c": "caps",
+"n": "Daniele De Rossi",
+"v": 117,
+"d": "Italy",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca32",
+"c": "caps",
+"n": "Giorgio Chiellini",
+"v": 117,
+"d": "Italy",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca33",
+"c": "caps",
+"n": "Andrea Pirlo",
+"v": 116,
+"d": "Italy",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca34",
+"c": "caps",
+"n": "Marcel Desailly",
+"v": 116,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca35",
+"c": "caps",
+"n": "David Beckham",
+"v": 115,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca36",
+"c": "caps",
+"n": "Steven Gerrard",
+"v": 114,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca37",
+"c": "caps",
+"n": "Xabi Alonso",
+"v": 114,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca38",
+"c": "caps",
+"n": "Toni Kroos",
+"v": 114,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca39",
+"c": "caps",
+"n": "Philipp Lahm",
+"v": 113,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca40",
+"c": "caps",
+"n": "Gareth Bale",
+"v": 111,
+"d": "Wales",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca41",
+"c": "caps",
+"n": "Fernando Torres",
+"v": 110,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca42",
+"c": "caps",
+"n": "Cesc Fàbregas",
+"v": 110,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca43",
+"c": "caps",
+"n": "Zinedine Zidane",
+"v": 108,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca44",
+"c": "caps",
+"n": "Ashley Cole",
+"v": 107,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca45",
+"c": "caps",
+"n": "Patrick Vieira",
+"v": 107,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca46",
+"c": "caps",
+"n": "Frank Lampard",
+"v": 106,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca47",
+"c": "caps",
+"n": "Gerard Piqué",
+"v": 102,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca48",
+"c": "caps",
+"n": "Robin van Persie",
+"v": 102,
+"d": "Netherlands",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca49",
+"c": "caps",
+"n": "David Villa",
+"v": 98,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "ca50",
+"c": "caps",
+"n": "Ronaldo",
+"v": 98,
+"d": "Brazil",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in01",
+"c": "intgoals",
+"n": "Ali Daei",
+"v": 108,
+"d": "Iran",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in02",
+"c": "intgoals",
+"n": "Miroslav Klose",
+"v": 71,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in03",
+"c": "intgoals",
+"n": "Luis Suárez",
+"v": 69,
+"d": "Uruguay",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in04",
+"c": "intgoals",
+"n": "Robbie Keane",
+"v": 68,
+"d": "Republic of Ireland",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in05",
+"c": "intgoals",
+"n": "Didier Drogba",
+"v": 65,
+"d": "Ivory Coast",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in06",
+"c": "intgoals",
+"n": "Ronaldo",
+"v": 62,
+"d": "Brazil",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in07",
+"c": "intgoals",
+"n": "Zlatan Ibrahimović",
+"v": 62,
+"d": "Sweden",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in08",
+"c": "intgoals",
+"n": "David Villa",
+"v": 59,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in09",
+"c": "intgoals",
+"n": "Edinson Cavani",
+"v": 58,
+"d": "Uruguay",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in10",
+"c": "intgoals",
+"n": "Olivier Giroud",
+"v": 57,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in11",
+"c": "intgoals",
+"n": "Samuel Eto'o",
+"v": 56,
+"d": "Cameroon",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in12",
+"c": "intgoals",
+"n": "Wayne Rooney",
+"v": 53,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in13",
+"c": "intgoals",
+"n": "Thierry Henry",
+"v": 51,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in14",
+"c": "intgoals",
+"n": "Robin van Persie",
+"v": 50,
+"d": "Netherlands",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in15",
+"c": "intgoals",
+"n": "Lukas Podolski",
+"v": 49,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in16",
+"c": "intgoals",
+"n": "Thomas Müller",
+"v": 45,
+"d": "Germany",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in17",
+"c": "intgoals",
+"n": "Raúl",
+"v": 44,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in18",
+"c": "intgoals",
+"n": "Antoine Griezmann",
+"v": 44,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in19",
+"c": "intgoals",
+"n": "Gareth Bale",
+"v": 41,
+"d": "Wales",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in20",
+"c": "intgoals",
+"n": "Michael Owen",
+"v": 40,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in21",
+"c": "intgoals",
+"n": "Fernando Torres",
+"v": 38,
+"d": "Spain",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in22",
+"c": "intgoals",
+"n": "Zinedine Zidane",
+"v": 31,
+"d": "France",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in23",
+"c": "intgoals",
+"n": "Alan Shearer",
+"v": 30,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in24",
+"c": "intgoals",
+"n": "Frank Lampard",
+"v": 29,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in25",
+"c": "intgoals",
+"n": "Steven Gerrard",
+"v": 21,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "in26",
+"c": "intgoals",
+"n": "David Beckham",
+"v": 17,
+"d": "England",
+"note": "Final total (retired from international football)"
+},
+{
+"id": "lg01",
+"c": "lgoals",
+"n": "Lionel Messi",
+"v": 474,
+"d": "La Liga, Barcelona",
+"note": "Final total in that league"
+},
+{
+"id": "lg02",
+"c": "lgoals",
+"n": "Cristiano Ronaldo",
+"v": 311,
+"d": "La Liga, Real Madrid",
+"note": "Final total in that league"
+},
+{
+"id": "lg03",
+"c": "lgoals",
+"n": "Karim Benzema",
+"v": 238,
+"d": "La Liga, Real Madrid",
+"note": "Final total in that league"
+},
+{
+"id": "lg04",
+"c": "lgoals",
+"n": "Raúl",
+"v": 228,
+"d": "La Liga, Real Madrid",
+"note": "Final total in that league"
+},
+{
+"id": "lg05",
+"c": "lgoals",
+"n": "Francesco Totti",
+"v": 250,
+"d": "Serie A, Roma",
+"note": "Final total in that league"
+},
+{
+"id": "lg06",
+"c": "lgoals",
+"n": "Antonio Di Natale",
+"v": 209,
+"d": "Serie A, Empoli and Udinese",
+"note": "Final total in that league"
+},
+{
+"id": "lg07",
+"c": "lgoals",
+"n": "Roberto Baggio",
+"v": 205,
+"d": "Serie A, six clubs",
+"note": "Final total in that league"
+},
+{
+"id": "lg08",
+"c": "lgoals",
+"n": "Alessandro Del Piero",
+"v": 188,
+"d": "Serie A, Juventus",
+"note": "Final total in that league"
+},
+{
+"id": "lg09",
+"c": "lgoals",
+"n": "Gabriel Batistuta",
+"v": 184,
+"d": "Serie A, Fiorentina, Roma and Inter",
+"note": "Final total in that league"
+},
+{
+"id": "fe01",
+"c": "fees",
+"n": "Neymar",
+"v": 198,
+"d": "Barcelona to PSG, 2017",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe02",
+"c": "fees",
+"n": "Kylian Mbappé",
+"v": 166,
+"d": "Monaco to PSG, 2018",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe03",
+"c": "fees",
+"n": "Alexander Isak",
+"v": 125,
+"d": "Newcastle to Liverpool, 2025",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe04",
+"c": "fees",
+"n": "João Félix",
+"v": 113,
+"d": "Benfica to Atlético Madrid, 2019",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe05",
+"c": "fees",
+"n": "Antoine Griezmann",
+"v": 107,
+"d": "Atlético Madrid to Barcelona, 2019",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe06",
+"c": "fees",
+"n": "Enzo Fernández",
+"v": 106.8,
+"d": "Benfica to Chelsea, 2023",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe07",
+"c": "fees",
+"n": "Declan Rice",
+"v": 105,
+"d": "West Ham to Arsenal, 2023",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe08",
+"c": "fees",
+"n": "Jack Grealish",
+"v": 100,
+"d": "Aston Villa to Manchester City, 2021",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe09",
+"c": "fees",
+"n": "Romelu Lukaku",
+"v": 97.5,
+"d": "Inter to Chelsea, 2021",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe10",
+"c": "fees",
+"n": "Paul Pogba",
+"v": 89,
+"d": "Juventus to Manchester United, 2016",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe11",
+"c": "fees",
+"n": "Gareth Bale",
+"v": 85.3,
+"d": "Tottenham to Real Madrid, 2013",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe12",
+"c": "fees",
+"n": "Harry Maguire",
+"v": 80,
+"d": "Leicester to Manchester United, 2019",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe13",
+"c": "fees",
+"n": "Cristiano Ronaldo",
+"v": 80,
+"d": "Manchester United to Real Madrid, 2009",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe14",
+"c": "fees",
+"n": "Virgil van Dijk",
+"v": 75,
+"d": "Southampton to Liverpool, 2018",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe15",
+"c": "fees",
+"n": "Romelu Lukaku",
+"v": 75,
+"d": "Everton to Manchester United, 2017",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe16",
+"c": "fees",
+"n": "Luis Suárez",
+"v": 75,
+"d": "Liverpool to Barcelona, 2014",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe17",
+"c": "fees",
+"n": "Jadon Sancho",
+"v": 73,
+"d": "Borussia Dortmund to Manchester United, 2021",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe18",
+"c": "fees",
+"n": "Nicolas Pépé",
+"v": 72,
+"d": "Lille to Arsenal, 2019",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe19",
+"c": "fees",
+"n": "Kepa Arrizabalaga",
+"v": 71.6,
+"d": "Athletic Club to Chelsea, 2018",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe20",
+"c": "fees",
+"n": "Riyad Mahrez",
+"v": 60,
+"d": "Leicester to Manchester City, 2018",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe21",
+"c": "fees",
+"n": "Ángel Di María",
+"v": 59.7,
+"d": "Real Madrid to Manchester United, 2014",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe22",
+"c": "fees",
+"n": "Kaká",
+"v": 56,
+"d": "Milan to Real Madrid, 2009",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe23",
+"c": "fees",
+"n": "Kevin De Bruyne",
+"v": 55,
+"d": "Wolfsburg to Manchester City, 2015",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe24",
+"c": "fees",
+"n": "Fernando Torres",
+"v": 50,
+"d": "Liverpool to Chelsea, 2011",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe25",
+"c": "fees",
+"n": "Sergio Agüero",
+"v": 38,
+"d": "Atlético Madrid to Manchester City, 2011",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe26",
+"c": "fees",
+"n": "Luís Figo",
+"v": 37,
+"d": "Barcelona to Real Madrid, 2000",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe27",
+"c": "fees",
+"n": "Andy Carroll",
+"v": 35,
+"d": "Newcastle to Liverpool, 2011",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe28",
+"c": "fees",
+"n": "Robinho",
+"v": 32.5,
+"d": "Real Madrid to Manchester City, 2008",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe29",
+"c": "fees",
+"n": "Andriy Shevchenko",
+"v": 30.8,
+"d": "Milan to Chelsea, 2006",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe30",
+"c": "fees",
+"n": "Dimitar Berbatov",
+"v": 30.75,
+"d": "Tottenham to Manchester United, 2008",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe31",
+"c": "fees",
+"n": "Juan Sebastián Verón",
+"v": 28.1,
+"d": "Lazio to Manchester United, 2001",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe32",
+"c": "fees",
+"n": "Michael Essien",
+"v": 24.4,
+"d": "Lyon to Chelsea, 2005",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe33",
+"c": "fees",
+"n": "Didier Drogba",
+"v": 24,
+"d": "Marseille to Chelsea, 2004",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "fe34",
+"c": "fees",
+"n": "Rio Ferdinand",
+"v": 18,
+"d": "West Ham to Leeds, 2000",
+"note": "Fee at the time as widely reported in the UK, in £ millions"
+},
+{
+"id": "st01",
+"c": "stadiums",
+"n": "Wembley Stadium",
+"v": 90000,
+"d": "London",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st02",
+"c": "stadiums",
+"n": "Signal Iduna Park",
+"v": 81300,
+"d": "Borussia Dortmund",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st03",
+"c": "stadiums",
+"n": "Stade de France",
+"v": 81300,
+"d": "Saint-Denis, Paris",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st04",
+"c": "stadiums",
+"n": "Maracanã",
+"v": 78800,
+"d": "Rio de Janeiro",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st05",
+"c": "stadiums",
+"n": "San Siro",
+"v": 75800,
+"d": "Milan and Inter",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st06",
+"c": "stadiums",
+"n": "Allianz Arena",
+"v": 75000,
+"d": "Bayern Munich",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st07",
+"c": "stadiums",
+"n": "Olympiastadion",
+"v": 74500,
+"d": "Berlin, Hertha BSC",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st08",
+"c": "stadiums",
+"n": "Principality Stadium",
+"v": 74500,
+"d": "Cardiff",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st09",
+"c": "stadiums",
+"n": "Old Trafford",
+"v": 74000,
+"d": "Manchester United",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st10",
+"c": "stadiums",
+"n": "Stadio Olimpico",
+"v": 70600,
+"d": "Roma and Lazio",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st11",
+"c": "stadiums",
+"n": "Metropolitano",
+"v": 70500,
+"d": "Atlético Madrid",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st12",
+"c": "stadiums",
+"n": "Estádio da Luz",
+"v": 64600,
+"d": "Benfica",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st13",
+"c": "stadiums",
+"n": "Tottenham Hotspur Stadium",
+"v": 62800,
+"d": "Tottenham",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st14",
+"c": "stadiums",
+"n": "London Stadium",
+"v": 62500,
+"d": "West Ham",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st15",
+"c": "stadiums",
+"n": "Veltins-Arena",
+"v": 62300,
+"d": "Schalke 04",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st16",
+"c": "stadiums",
+"n": "Anfield",
+"v": 61000,
+"d": "Liverpool",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st17",
+"c": "stadiums",
+"n": "Emirates Stadium",
+"v": 60700,
+"d": "Arsenal",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st18",
+"c": "stadiums",
+"n": "Celtic Park",
+"v": 60400,
+"d": "Celtic",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st19",
+"c": "stadiums",
+"n": "Johan Cruyff Arena",
+"v": 55500,
+"d": "Ajax",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st20",
+"c": "stadiums",
+"n": "Stadio Diego Armando Maradona",
+"v": 54700,
+"d": "Napoli",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st21",
+"c": "stadiums",
+"n": "St James' Park",
+"v": 52300,
+"d": "Newcastle",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st22",
+"c": "stadiums",
+"n": "Hampden Park",
+"v": 51800,
+"d": "Glasgow, Scotland's national stadium",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st23",
+"c": "stadiums",
+"n": "Aviva Stadium",
+"v": 51700,
+"d": "Dublin",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st24",
+"c": "stadiums",
+"n": "Ibrox",
+"v": 50800,
+"d": "Rangers",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st25",
+"c": "stadiums",
+"n": "Estádio do Dragão",
+"v": 50000,
+"d": "Porto",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st26",
+"c": "stadiums",
+"n": "Mestalla",
+"v": 49400,
+"d": "Valencia",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st27",
+"c": "stadiums",
+"n": "Stadium of Light",
+"v": 49000,
+"d": "Sunderland",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st28",
+"c": "stadiums",
+"n": "Parc des Princes",
+"v": 47900,
+"d": "Paris Saint-Germain",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st29",
+"c": "stadiums",
+"n": "Villa Park",
+"v": 42600,
+"d": "Aston Villa",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st30",
+"c": "stadiums",
+"n": "Allianz Stadium",
+"v": 41500,
+"d": "Juventus",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+},
+{
+"id": "st31",
+"c": "stadiums",
+"n": "Stamford Bridge",
+"v": 40300,
+"d": "Chelsea",
+"note": "Approximate capacity as of 2025; figures vary a little by source"
+}
+]
+}

@@ -6,9 +6,12 @@ everyone sees the same board. It runs in the `football-quiz-scores` container
 on 127.0.0.1:8093 and is reached publicly through Tailscale Funnel on :10000.
 
     POST /api/scores   classic quiz. New shape:
-                       {name, player_id, total, league, diff, timer, answers: [{id, choice}]}
+                       {name, player_id, total, league, diff, timer, answers: [{id, choice, fifty?}]}
                        Old shape (still accepted): {name, total, right: {"1": n, ...}, league, diff, timer, streak}
+                       Other modes: {mode: survival|blitz|hilo|career, name, player_id, answers}
+                       (see modes.py for each mode's answers)
     GET  /api/board    ?len=10|20|50 &period=week|all   -> best game per player, top 25
+                       ?mode=survival|blitz|hilo|career &period=week|all
     POST /api/name     {name, player_id}                 -> claim / rename
     GET  /api/daily    ?date=YYYY-MM-DD                  -> {date, number, ids}
     POST /api/daily    {name, player_id, date, answers}  -> one attempt per player per day
@@ -16,7 +19,8 @@ on 127.0.0.1:8093 and is reached publicly through Tailscale Funnel on :10000.
     GET  /api/health
 
 Points are computed HERE: 1/2/3 per correct Easy/Medium/Hard answer, x1.25
-with the 20 s timer, x1.5 with 10 s. With the new shape the server marks every
+with the 20 s timer, x1.5 with 10 s; the one question you used the 50/50 on
+scores half. With the new shape the server marks every
 answer itself against questions.json, so made-up points are ignored. A name
 belongs to the first player_id (a random id the app keeps in localStorage)
 that uses it; nobody else can post under it.
@@ -36,21 +40,26 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import daily_gen  # noqa: E402
+import modes  # noqa: E402
 
 DB = os.environ.get("QUIZ_DB", "/data/leaderboard.db")
 QUESTIONS_PATH = os.environ.get("QUESTIONS_PATH") or os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "docs", "questions.json")
+DATA_DIR = os.path.dirname(os.path.abspath(QUESTIONS_PATH))
+STATS_PATH = os.environ.get("STATS_PATH") or os.path.join(DATA_DIR, "stats.json")
+CAREERS_PATH = os.environ.get("CAREERS_PATH") or os.path.join(DATA_DIR, "careers.json")
 ORIGINS = {o.strip() for o in os.environ.get(
     "QUIZ_ORIGINS",
     "https://teo2301.github.io,https://riccioserver.tail0d3eb6.ts.net:8445,http://127.0.0.1:8097,http://localhost:8097",
 ).split(",") if o.strip()}
 LENGTHS = {10, 20, 50}
 LEAGUES = {"all", "pl", "ll", "sa", "eu", "in"}
+RUN_MODES = {"survival", "blitz", "hilo", "career"}
 TIMER_MULT = {0: 1.0, 20: 1.25, 10: 1.5}
 NAME_RE = re.compile(r"^[\w .'\-]{2,16}$", re.UNICODE)
 PID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 RATE = (20, 600)            # at most 20 posts per IP per 10 minutes
-MAX_BODY = 16384
+MAX_BODY = 65536           # a long survival run is ~60 bytes per answer
 TAKEN = "That name is taken — pick another"
 
 _hits = defaultdict(deque)
@@ -131,6 +140,15 @@ def init():
             created_utc TEXT NOT NULL,
             UNIQUE(player_id, date))""")
         c.execute("CREATE INDEX IF NOT EXISTS daily_date ON daily(date)")
+        c.execute("""CREATE TABLE IF NOT EXISTS runs (
+            id INTEGER PRIMARY KEY,
+            player_id TEXT NOT NULL,
+            mode TEXT NOT NULL,
+            score REAL NOT NULL,
+            correct INTEGER NOT NULL,
+            total INTEGER NOT NULL,
+            created_utc TEXT NOT NULL)""")
+        c.execute("CREATE INDEX IF NOT EXISTS runs_board ON runs(mode, created_utc)")
 
 
 def now_utc():
@@ -285,6 +303,11 @@ def log_answers(c, pid, marks, mode, now):
 
 
 def add_score(data):
+    mode = data.get("mode", "classic")
+    if mode in RUN_MODES:
+        return add_run(data, mode)
+    if mode != "classic":
+        raise ValueError("bad mode")
     name = clean_name(data.get("name"))
     pid = clean_pid(data["player_id"]) if data.get("player_id") is not None else None
     total = data.get("total")
@@ -297,13 +320,18 @@ def add_score(data):
     if league not in LEAGUES:
         raise ValueError("bad league")
     diff = as_int(data.get("diff", 0), 0, 3, "diff")
-    marks = None
+    marks, fifty = None, 0.0
     if "answers" in data:
         def check(q):
             if (league != "all" and q["l"] != league) or (diff and q["d"] != diff):
                 raise ValueError("question doesn't match the quiz settings")
         by, streak, marks = mark(data["answers"], total, check)
         correct = sum(by.values())
+        used = [i for i, a in enumerate(data["answers"]) if a.get("fifty")]
+        if len(used) > 1:
+            raise ValueError("the 50/50 can only be used once per quiz")
+        if used and marks[used[0]][1]:
+            fifty = bank()[0][marks[used[0]][0]]["d"] / 2      # that question scores half
     else:                                       # old clients
         right = data.get("right") or {}
         if not isinstance(right, dict):
@@ -315,7 +343,7 @@ def add_score(data):
         streak = as_int(data.get("streak", 0), 0, total, "streak")
         if streak > correct:
             raise ValueError("bad streak")
-    points = round((by[1] + 2 * by[2] + 3 * by[3]) * TIMER_MULT[timer], 1)
+    points = round((by[1] + 2 * by[2] + 3 * by[3] - fifty) * TIMER_MULT[timer], 1)
     now = now_utc()
     with db() as c:
         if pid:
@@ -355,6 +383,58 @@ def rank(name, total, period):
         if r["name"].lower() == name.lower():
             return i
     return None
+
+
+# ---------------------------------------------------------------- other modes
+
+def add_run(data, mode):
+    """Survival / blitz / higher or lower / career path: marked here, best run per player on the board."""
+    name = clean_name(data.get("name"))
+    pid = clean_pid(data.get("player_id"))
+    answers = data.get("answers")
+    if mode in ("survival", "blitz"):
+        hi = modes.SURVIVAL_MAX if mode == "survival" else modes.BLITZ_MAX
+        modes.as_list(answers, 1, hi)
+        _, _, marks = mark(answers, len(answers))
+        score, correct, total = (modes.survival if mode == "survival" else modes.blitz)(marks)
+        qmarks = marks
+    elif mode == "hilo":
+        score, correct, total, qmarks = modes.hilo(answers, STATS_PATH)
+    else:
+        score, correct, total, qmarks = modes.career(answers, CAREERS_PATH)
+    now = now_utc()
+    with db() as c:
+        bind_name(c, name, pid)
+        c.execute("INSERT INTO runs (player_id, mode, score, correct, total, created_utc) VALUES (?,?,?,?,?,?)",
+                  (pid, mode, score, correct, total, now))
+        log_answers(c, pid, qmarks, mode, now)
+    return {"ok": True, "mode": mode, "score": score, "correct": correct, "total": total,
+            "rank_week": run_rank(pid, mode, "week"), "rank_all": run_rank(pid, mode, "all")}
+
+
+def run_board(mode, period, limit=25):
+    sql = """SELECT player_id, name, score, correct, total, created_utc FROM (
+               SELECT r.*, p.name, ROW_NUMBER() OVER (PARTITION BY r.player_id
+                                                      ORDER BY r.score DESC, r.created_utc ASC) AS rn
+               FROM runs r JOIN players p ON p.player_id = r.player_id
+               WHERE r.mode = ? AND r.created_utc >= ?)
+             WHERE rn = 1 ORDER BY score DESC, created_utc ASC LIMIT ?"""
+    with db() as c:
+        return [dict(r) for r in c.execute(sql, (mode, since(period), limit))]
+
+
+def run_rank(pid, mode, period):
+    for i, r in enumerate(run_board(mode, period, limit=100000), 1):
+        if r["player_id"] == pid:
+            return i
+    return None
+
+
+def public_run_board(mode, period):
+    rows = run_board(mode, period)
+    for r in rows:
+        del r["player_id"]
+    return {"mode": mode, "rows": rows}
 
 
 # ---------------------------------------------------------------- daily
@@ -491,6 +571,11 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if path == "/api/health":
                 return self._send(200, {"ok": True})
+            if path == "/api/board" and params.get("mode", "classic") != "classic":
+                period = params.get("period", "week")
+                if params["mode"] not in RUN_MODES or period not in ("week", "all"):
+                    return self._send(400, {"error": "bad mode or period"})
+                return self._send(200, public_run_board(params["mode"], period))
             if path == "/api/board":
                 try:
                     total = int(params.get("len", "10"))

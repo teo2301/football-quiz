@@ -1,0 +1,1978 @@
+{
+"about": "Career path data. Senior clubs in order, up to the start of the 2025-26 season. Loans are marked; a return from a loan isn't listed again; loans that became permanent are shown once; reserve and B teams are left out.",
+"players": [
+{
+"id": "c001",
+"n": "Cristiano Ronaldo",
+"al": [
+"Cristiano",
+"CR7"
+],
+"nat": "Portugal",
+"pos": "Forward",
+"clubs": [
+"Sporting CP",
+"Manchester United",
+"Real Madrid",
+"Juventus",
+"Manchester United",
+"Al Nassr"
+]
+},
+{
+"id": "c002",
+"n": "Zlatan Ibrahimović",
+"al": [
+"Zlatan",
+"Ibra"
+],
+"nat": "Sweden",
+"pos": "Forward",
+"clubs": [
+"Malmö FF",
+"Ajax",
+"Juventus",
+"Inter",
+"Barcelona",
+"AC Milan",
+"Paris Saint-Germain",
+"Manchester United",
+"LA Galaxy",
+"AC Milan"
+]
+},
+{
+"id": "c003",
+"n": "Thierry Henry",
+"al": [],
+"nat": "France",
+"pos": "Forward",
+"clubs": [
+"Monaco",
+"Juventus",
+"Arsenal",
+"Barcelona",
+"New York Red Bulls",
+"Arsenal (loan)"
+]
+},
+{
+"id": "c004",
+"n": "Nicolas Anelka",
+"al": [],
+"nat": "France",
+"pos": "Forward",
+"clubs": [
+"Paris Saint-Germain",
+"Arsenal",
+"Real Madrid",
+"Paris Saint-Germain",
+"Liverpool (loan)",
+"Manchester City",
+"Fenerbahçe",
+"Bolton Wanderers",
+"Chelsea",
+"Shanghai Shenhua",
+"Juventus (loan)",
+"West Bromwich Albion",
+"Mumbai City"
+]
+},
+{
+"id": "c005",
+"n": "David Beckham",
+"al": [
+"Becks"
+],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"Manchester United",
+"Preston North End (loan)",
+"Real Madrid",
+"LA Galaxy",
+"AC Milan (loan)",
+"Paris Saint-Germain"
+]
+},
+{
+"id": "c006",
+"n": "Wayne Rooney",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"Everton",
+"Manchester United",
+"Everton",
+"DC United",
+"Derby County"
+]
+},
+{
+"id": "c007",
+"n": "Steven Gerrard",
+"al": [],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"Liverpool",
+"LA Galaxy"
+]
+},
+{
+"id": "c008",
+"n": "Frank Lampard",
+"al": [],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"West Ham United",
+"Swansea City (loan)",
+"Chelsea",
+"Manchester City",
+"New York City FC"
+]
+},
+{
+"id": "c009",
+"n": "Didier Drogba",
+"al": [],
+"nat": "Ivory Coast",
+"pos": "Forward",
+"clubs": [
+"Le Mans",
+"Guingamp",
+"Marseille",
+"Chelsea",
+"Shanghai Shenhua",
+"Galatasaray",
+"Chelsea",
+"Montreal Impact",
+"Phoenix Rising"
+]
+},
+{
+"id": "c010",
+"n": "Andrea Pirlo",
+"al": [],
+"nat": "Italy",
+"pos": "Midfielder",
+"clubs": [
+"Brescia",
+"Inter",
+"Reggina (loan)",
+"Brescia (loan)",
+"AC Milan",
+"Juventus",
+"New York City FC"
+]
+},
+{
+"id": "c011",
+"n": "Gianluigi Buffon",
+"al": [
+"Gigi Buffon"
+],
+"nat": "Italy",
+"pos": "Goalkeeper",
+"clubs": [
+"Parma",
+"Juventus",
+"Paris Saint-Germain",
+"Juventus",
+"Parma"
+]
+},
+{
+"id": "c012",
+"n": "Luis Suárez",
+"al": [],
+"nat": "Uruguay",
+"pos": "Forward",
+"clubs": [
+"Nacional",
+"Groningen",
+"Ajax",
+"Liverpool",
+"Barcelona",
+"Atlético Madrid",
+"Nacional",
+"Grêmio",
+"Inter Miami"
+]
+},
+{
+"id": "c013",
+"n": "Gareth Bale",
+"al": [],
+"nat": "Wales",
+"pos": "Forward",
+"clubs": [
+"Southampton",
+"Tottenham Hotspur",
+"Real Madrid",
+"Tottenham Hotspur (loan)",
+"Los Angeles FC"
+]
+},
+{
+"id": "c014",
+"n": "Luka Modrić",
+"al": [],
+"nat": "Croatia",
+"pos": "Midfielder",
+"clubs": [
+"Dinamo Zagreb",
+"Zrinjski Mostar (loan)",
+"Inter Zaprešić (loan)",
+"Tottenham Hotspur",
+"Real Madrid",
+"AC Milan"
+]
+},
+{
+"id": "c015",
+"n": "Kevin De Bruyne",
+"al": [
+"KDB"
+],
+"nat": "Belgium",
+"pos": "Midfielder",
+"clubs": [
+"Genk",
+"Chelsea",
+"Genk (loan)",
+"Werder Bremen (loan)",
+"Wolfsburg",
+"Manchester City",
+"Napoli"
+]
+},
+{
+"id": "c016",
+"n": "Mohamed Salah",
+"al": [
+"Mo Salah"
+],
+"nat": "Egypt",
+"pos": "Forward",
+"clubs": [
+"El Mokawloon",
+"Basel",
+"Chelsea",
+"Fiorentina (loan)",
+"Roma",
+"Liverpool"
+]
+},
+{
+"id": "c017",
+"n": "Sadio Mané",
+"al": [],
+"nat": "Senegal",
+"pos": "Forward",
+"clubs": [
+"Metz",
+"Red Bull Salzburg",
+"Southampton",
+"Liverpool",
+"Bayern Munich",
+"Al Nassr"
+]
+},
+{
+"id": "c018",
+"n": "Virgil van Dijk",
+"al": [
+"VVD"
+],
+"nat": "Netherlands",
+"pos": "Defender",
+"clubs": [
+"Groningen",
+"Celtic",
+"Southampton",
+"Liverpool"
+]
+},
+{
+"id": "c019",
+"n": "Robin van Persie",
+"al": [
+"RVP"
+],
+"nat": "Netherlands",
+"pos": "Forward",
+"clubs": [
+"Feyenoord",
+"Arsenal",
+"Manchester United",
+"Fenerbahçe",
+"Feyenoord"
+]
+},
+{
+"id": "c020",
+"n": "Ruud van Nistelrooy",
+"al": [
+"Van Nistelrooij"
+],
+"nat": "Netherlands",
+"pos": "Forward",
+"clubs": [
+"Den Bosch",
+"Heerenveen",
+"PSV Eindhoven",
+"Manchester United",
+"Real Madrid",
+"Hamburg",
+"Málaga"
+]
+},
+{
+"id": "c021",
+"n": "Arjen Robben",
+"al": [],
+"nat": "Netherlands",
+"pos": "Forward",
+"clubs": [
+"Groningen",
+"PSV Eindhoven",
+"Chelsea",
+"Real Madrid",
+"Bayern Munich",
+"Groningen"
+]
+},
+{
+"id": "c022",
+"n": "Wesley Sneijder",
+"al": [],
+"nat": "Netherlands",
+"pos": "Midfielder",
+"clubs": [
+"Ajax",
+"Real Madrid",
+"Inter",
+"Galatasaray",
+"Nice",
+"Al-Gharafa"
+]
+},
+{
+"id": "c023",
+"n": "Patrick Vieira",
+"al": [],
+"nat": "France",
+"pos": "Midfielder",
+"clubs": [
+"Cannes",
+"AC Milan",
+"Arsenal",
+"Juventus",
+"Inter",
+"Manchester City"
+]
+},
+{
+"id": "c024",
+"n": "Cesc Fàbregas",
+"al": [
+"Cesc",
+"Fabregas"
+],
+"nat": "Spain",
+"pos": "Midfielder",
+"clubs": [
+"Arsenal",
+"Barcelona",
+"Chelsea",
+"Monaco",
+"Como"
+]
+},
+{
+"id": "c025",
+"n": "Fernando Torres",
+"al": [
+"El Niño"
+],
+"nat": "Spain",
+"pos": "Forward",
+"clubs": [
+"Atlético Madrid",
+"Liverpool",
+"Chelsea",
+"AC Milan (loan)",
+"Atlético Madrid",
+"Sagan Tosu"
+]
+},
+{
+"id": "c026",
+"n": "David Villa",
+"al": [],
+"nat": "Spain",
+"pos": "Forward",
+"clubs": [
+"Sporting Gijón",
+"Real Zaragoza",
+"Valencia",
+"Barcelona",
+"Atlético Madrid",
+"New York City FC",
+"Melbourne City (loan)",
+"Vissel Kobe"
+]
+},
+{
+"id": "c027",
+"n": "Xabi Alonso",
+"al": [],
+"nat": "Spain",
+"pos": "Midfielder",
+"clubs": [
+"Real Sociedad",
+"Eibar (loan)",
+"Liverpool",
+"Real Madrid",
+"Bayern Munich"
+]
+},
+{
+"id": "c028",
+"n": "Sergio Agüero",
+"al": [
+"Kun Agüero"
+],
+"nat": "Argentina",
+"pos": "Forward",
+"clubs": [
+"Independiente",
+"Atlético Madrid",
+"Manchester City",
+"Barcelona"
+]
+},
+{
+"id": "c029",
+"n": "Carlos Tevez",
+"al": [],
+"nat": "Argentina",
+"pos": "Forward",
+"clubs": [
+"Boca Juniors",
+"Corinthians",
+"West Ham United",
+"Manchester United",
+"Manchester City",
+"Juventus",
+"Boca Juniors",
+"Shanghai Shenhua",
+"Boca Juniors"
+]
+},
+{
+"id": "c030",
+"n": "Ángel Di María",
+"al": [],
+"nat": "Argentina",
+"pos": "Forward",
+"clubs": [
+"Rosario Central",
+"Benfica",
+"Real Madrid",
+"Manchester United",
+"Paris Saint-Germain",
+"Juventus",
+"Benfica",
+"Rosario Central"
+]
+},
+{
+"id": "c031",
+"n": "Gonzalo Higuaín",
+"al": [
+"Pipita"
+],
+"nat": "Argentina",
+"pos": "Forward",
+"clubs": [
+"River Plate",
+"Real Madrid",
+"Napoli",
+"Juventus",
+"AC Milan (loan)",
+"Chelsea (loan)",
+"Inter Miami"
+]
+},
+{
+"id": "c032",
+"n": "Edinson Cavani",
+"al": [],
+"nat": "Uruguay",
+"pos": "Forward",
+"clubs": [
+"Danubio",
+"Palermo",
+"Napoli",
+"Paris Saint-Germain",
+"Manchester United",
+"Valencia",
+"Boca Juniors"
+]
+},
+{
+"id": "c033",
+"n": "Romelu Lukaku",
+"al": [],
+"nat": "Belgium",
+"pos": "Forward",
+"clubs": [
+"Anderlecht",
+"Chelsea",
+"West Bromwich Albion (loan)",
+"Everton",
+"Manchester United",
+"Inter",
+"Chelsea",
+"Inter (loan)",
+"Roma (loan)",
+"Napoli"
+]
+},
+{
+"id": "c034",
+"n": "Eden Hazard",
+"al": [],
+"nat": "Belgium",
+"pos": "Forward",
+"clubs": [
+"Lille",
+"Chelsea",
+"Real Madrid"
+]
+},
+{
+"id": "c035",
+"n": "Riyad Mahrez",
+"al": [],
+"nat": "Algeria",
+"pos": "Forward",
+"clubs": [
+"Quimper",
+"Le Havre",
+"Leicester City",
+"Manchester City",
+"Al-Ahli"
+]
+},
+{
+"id": "c036",
+"n": "Jamie Vardy",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"Stocksbridge Park Steels",
+"FC Halifax Town",
+"Fleetwood Town",
+"Leicester City",
+"Cremonese"
+]
+},
+{
+"id": "c037",
+"n": "Harry Kane",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"Tottenham Hotspur",
+"Leyton Orient (loan)",
+"Millwall (loan)",
+"Norwich City (loan)",
+"Leicester City (loan)",
+"Bayern Munich"
+]
+},
+{
+"id": "c038",
+"n": "Paul Pogba",
+"al": [],
+"nat": "France",
+"pos": "Midfielder",
+"clubs": [
+"Manchester United",
+"Juventus",
+"Manchester United",
+"Juventus",
+"Monaco"
+]
+},
+{
+"id": "c039",
+"n": "Zinedine Zidane",
+"al": [
+"Zizou"
+],
+"nat": "France",
+"pos": "Midfielder",
+"clubs": [
+"Cannes",
+"Bordeaux",
+"Juventus",
+"Real Madrid"
+]
+},
+{
+"id": "c040",
+"n": "Ronaldo Nazário",
+"al": [
+"Ronaldo",
+"R9",
+"Il Fenomeno",
+"Ronaldo Luís Nazário de Lima"
+],
+"nat": "Brazil",
+"pos": "Forward",
+"clubs": [
+"Cruzeiro",
+"PSV Eindhoven",
+"Barcelona",
+"Inter",
+"Real Madrid",
+"AC Milan",
+"Corinthians"
+]
+},
+{
+"id": "c041",
+"n": "Ronaldinho",
+"al": [
+"Ronaldinho Gaúcho"
+],
+"nat": "Brazil",
+"pos": "Forward",
+"clubs": [
+"Grêmio",
+"Paris Saint-Germain",
+"Barcelona",
+"AC Milan",
+"Flamengo",
+"Atlético Mineiro",
+"Querétaro",
+"Fluminense"
+]
+},
+{
+"id": "c042",
+"n": "Kaká",
+"al": [
+"Ricardo Kaká"
+],
+"nat": "Brazil",
+"pos": "Midfielder",
+"clubs": [
+"São Paulo",
+"AC Milan",
+"Real Madrid",
+"AC Milan",
+"Orlando City",
+"São Paulo (loan)"
+]
+},
+{
+"id": "c043",
+"n": "Andriy Shevchenko",
+"al": [
+"Sheva"
+],
+"nat": "Ukraine",
+"pos": "Forward",
+"clubs": [
+"Dynamo Kyiv",
+"AC Milan",
+"Chelsea",
+"AC Milan (loan)",
+"Dynamo Kyiv"
+]
+},
+{
+"id": "c044",
+"n": "Michael Owen",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"Liverpool",
+"Real Madrid",
+"Newcastle United",
+"Manchester United",
+"Stoke City"
+]
+},
+{
+"id": "c045",
+"n": "Alan Shearer",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"Southampton",
+"Blackburn Rovers",
+"Newcastle United"
+]
+},
+{
+"id": "c046",
+"n": "Robbie Keane",
+"al": [],
+"nat": "Republic of Ireland",
+"pos": "Forward",
+"clubs": [
+"Wolverhampton Wanderers",
+"Coventry City",
+"Inter",
+"Leeds United",
+"Tottenham Hotspur",
+"Liverpool",
+"Tottenham Hotspur",
+"Celtic (loan)",
+"West Ham United (loan)",
+"LA Galaxy",
+"Aston Villa (loan)",
+"ATK"
+]
+},
+{
+"id": "c047",
+"n": "Jermain Defoe",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"West Ham United",
+"AFC Bournemouth (loan)",
+"Tottenham Hotspur",
+"Portsmouth",
+"Tottenham Hotspur",
+"Toronto FC",
+"Sunderland",
+"AFC Bournemouth",
+"Rangers",
+"Sunderland"
+]
+},
+{
+"id": "c048",
+"n": "Dimitar Berbatov",
+"al": [],
+"nat": "Bulgaria",
+"pos": "Forward",
+"clubs": [
+"CSKA Sofia",
+"Bayer Leverkusen",
+"Tottenham Hotspur",
+"Manchester United",
+"Fulham",
+"Monaco",
+"PAOK",
+"Kerala Blasters"
+]
+},
+{
+"id": "c049",
+"n": "Lionel Messi",
+"al": [
+"Leo Messi"
+],
+"nat": "Argentina",
+"pos": "Forward",
+"clubs": [
+"Barcelona",
+"Paris Saint-Germain",
+"Inter Miami"
+]
+},
+{
+"id": "c050",
+"n": "Neymar",
+"al": [
+"Neymar Jr",
+"Neymar Junior"
+],
+"nat": "Brazil",
+"pos": "Forward",
+"clubs": [
+"Santos",
+"Barcelona",
+"Paris Saint-Germain",
+"Al-Hilal",
+"Santos"
+]
+},
+{
+"id": "c051",
+"n": "Kylian Mbappé",
+"al": [],
+"nat": "France",
+"pos": "Forward",
+"clubs": [
+"Monaco",
+"Paris Saint-Germain",
+"Real Madrid"
+]
+},
+{
+"id": "c052",
+"n": "Karim Benzema",
+"al": [],
+"nat": "France",
+"pos": "Forward",
+"clubs": [
+"Lyon",
+"Real Madrid",
+"Al-Ittihad"
+]
+},
+{
+"id": "c053",
+"n": "Antoine Griezmann",
+"al": [],
+"nat": "France",
+"pos": "Forward",
+"clubs": [
+"Real Sociedad",
+"Atlético Madrid",
+"Barcelona",
+"Atlético Madrid"
+]
+},
+{
+"id": "c054",
+"n": "Erling Haaland",
+"al": [],
+"nat": "Norway",
+"pos": "Forward",
+"clubs": [
+"Bryne",
+"Molde",
+"Red Bull Salzburg",
+"Borussia Dortmund",
+"Manchester City"
+]
+},
+{
+"id": "c055",
+"n": "Mesut Özil",
+"al": [],
+"nat": "Germany",
+"pos": "Midfielder",
+"clubs": [
+"Schalke 04",
+"Werder Bremen",
+"Real Madrid",
+"Arsenal",
+"Fenerbahçe",
+"İstanbul Başakşehir"
+]
+},
+{
+"id": "c056",
+"n": "Toni Kroos",
+"al": [],
+"nat": "Germany",
+"pos": "Midfielder",
+"clubs": [
+"Bayern Munich",
+"Bayer Leverkusen (loan)",
+"Real Madrid"
+]
+},
+{
+"id": "c057",
+"n": "Bastian Schweinsteiger",
+"al": [
+"Schweini"
+],
+"nat": "Germany",
+"pos": "Midfielder",
+"clubs": [
+"Bayern Munich",
+"Manchester United",
+"Chicago Fire"
+]
+},
+{
+"id": "c058",
+"n": "Michael Ballack",
+"al": [],
+"nat": "Germany",
+"pos": "Midfielder",
+"clubs": [
+"Chemnitzer FC",
+"Kaiserslautern",
+"Bayer Leverkusen",
+"Bayern Munich",
+"Chelsea",
+"Bayer Leverkusen"
+]
+},
+{
+"id": "c059",
+"n": "Andrés Iniesta",
+"al": [],
+"nat": "Spain",
+"pos": "Midfielder",
+"clubs": [
+"Barcelona",
+"Vissel Kobe",
+"Emirates Club"
+]
+},
+{
+"id": "c060",
+"n": "Sergio Ramos",
+"al": [],
+"nat": "Spain",
+"pos": "Defender",
+"clubs": [
+"Sevilla",
+"Real Madrid",
+"Paris Saint-Germain",
+"Sevilla",
+"Monterrey"
+]
+},
+{
+"id": "c061",
+"n": "Gerard Piqué",
+"al": [],
+"nat": "Spain",
+"pos": "Defender",
+"clubs": [
+"Manchester United",
+"Real Zaragoza (loan)",
+"Barcelona"
+]
+},
+{
+"id": "c062",
+"n": "Fabio Cannavaro",
+"al": [],
+"nat": "Italy",
+"pos": "Defender",
+"clubs": [
+"Napoli",
+"Parma",
+"Inter",
+"Juventus",
+"Real Madrid",
+"Juventus",
+"Al-Ahli"
+]
+},
+{
+"id": "c063",
+"n": "Alessandro Del Piero",
+"al": [],
+"nat": "Italy",
+"pos": "Forward",
+"clubs": [
+"Padova",
+"Juventus",
+"Sydney FC",
+"Delhi Dynamos"
+]
+},
+{
+"id": "c064",
+"n": "Gabriel Batistuta",
+"al": [
+"Batigol"
+],
+"nat": "Argentina",
+"pos": "Forward",
+"clubs": [
+"Newell's Old Boys",
+"River Plate",
+"Boca Juniors",
+"Fiorentina",
+"Roma",
+"Inter (loan)",
+"Al-Arabi"
+]
+},
+{
+"id": "c065",
+"n": "Dennis Bergkamp",
+"al": [],
+"nat": "Netherlands",
+"pos": "Forward",
+"clubs": [
+"Ajax",
+"Inter",
+"Arsenal"
+]
+},
+{
+"id": "c066",
+"n": "Edwin van der Sar",
+"al": [],
+"nat": "Netherlands",
+"pos": "Goalkeeper",
+"clubs": [
+"Ajax",
+"Juventus",
+"Fulham",
+"Manchester United"
+]
+},
+{
+"id": "c067",
+"n": "Petr Čech",
+"al": [],
+"nat": "Czech Republic",
+"pos": "Goalkeeper",
+"clubs": [
+"Chmel Blšany",
+"Sparta Prague",
+"Rennes",
+"Chelsea",
+"Arsenal"
+]
+},
+{
+"id": "c068",
+"n": "Ashley Cole",
+"al": [],
+"nat": "England",
+"pos": "Defender",
+"clubs": [
+"Arsenal",
+"Crystal Palace (loan)",
+"Chelsea",
+"Roma",
+"LA Galaxy",
+"Derby County"
+]
+},
+{
+"id": "c069",
+"n": "John Terry",
+"al": [],
+"nat": "England",
+"pos": "Defender",
+"clubs": [
+"Chelsea",
+"Nottingham Forest (loan)",
+"Aston Villa"
+]
+},
+{
+"id": "c070",
+"n": "Rio Ferdinand",
+"al": [],
+"nat": "England",
+"pos": "Defender",
+"clubs": [
+"West Ham United",
+"AFC Bournemouth (loan)",
+"Leeds United",
+"Manchester United",
+"Queens Park Rangers"
+]
+},
+{
+"id": "c071",
+"n": "Sol Campbell",
+"al": [],
+"nat": "England",
+"pos": "Defender",
+"clubs": [
+"Tottenham Hotspur",
+"Arsenal",
+"Portsmouth",
+"Notts County",
+"Arsenal",
+"Newcastle United"
+]
+},
+{
+"id": "c072",
+"n": "James Milner",
+"al": [],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"Leeds United",
+"Swindon Town (loan)",
+"Newcastle United",
+"Aston Villa (loan)",
+"Aston Villa",
+"Manchester City",
+"Liverpool",
+"Brighton & Hove Albion"
+]
+},
+{
+"id": "c073",
+"n": "Ivan Rakitić",
+"al": [],
+"nat": "Croatia",
+"pos": "Midfielder",
+"clubs": [
+"Basel",
+"Schalke 04",
+"Sevilla",
+"Barcelona",
+"Sevilla",
+"Al-Shabab",
+"Hajduk Split"
+]
+},
+{
+"id": "c074",
+"n": "Mateo Kovačić",
+"al": [],
+"nat": "Croatia",
+"pos": "Midfielder",
+"clubs": [
+"Dinamo Zagreb",
+"Inter",
+"Real Madrid",
+"Chelsea",
+"Manchester City"
+]
+},
+{
+"id": "c075",
+"n": "Thibaut Courtois",
+"al": [],
+"nat": "Belgium",
+"pos": "Goalkeeper",
+"clubs": [
+"Genk",
+"Chelsea",
+"Atlético Madrid (loan)",
+"Real Madrid"
+]
+},
+{
+"id": "c076",
+"n": "Jordan Henderson",
+"al": [],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"Sunderland",
+"Coventry City (loan)",
+"Liverpool",
+"Al-Ettifaq",
+"Ajax",
+"Brentford"
+]
+},
+{
+"id": "c077",
+"n": "Emile Heskey",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"Leicester City",
+"Liverpool",
+"Birmingham City",
+"Wigan Athletic",
+"Aston Villa",
+"Newcastle Jets",
+"Bolton Wanderers"
+]
+},
+{
+"id": "c078",
+"n": "Joe Hart",
+"al": [],
+"nat": "England",
+"pos": "Goalkeeper",
+"clubs": [
+"Shrewsbury Town",
+"Manchester City",
+"Tranmere Rovers (loan)",
+"Blackpool (loan)",
+"Birmingham City (loan)",
+"Torino (loan)",
+"West Ham United (loan)",
+"Burnley",
+"Tottenham Hotspur",
+"Celtic"
+]
+},
+{
+"id": "c079",
+"n": "Gianluigi Donnarumma",
+"al": [
+"Gigio Donnarumma"
+],
+"nat": "Italy",
+"pos": "Goalkeeper",
+"clubs": [
+"AC Milan",
+"Paris Saint-Germain",
+"Manchester City"
+]
+},
+{
+"id": "c080",
+"n": "Dani Alves",
+"al": [
+"Daniel Alves"
+],
+"nat": "Brazil",
+"pos": "Defender",
+"clubs": [
+"Bahia",
+"Sevilla",
+"Barcelona",
+"Juventus",
+"Paris Saint-Germain",
+"São Paulo",
+"Barcelona",
+"Pumas UNAM"
+]
+},
+{
+"id": "c081",
+"n": "Santi Cazorla",
+"al": [
+"Santiago Cazorla"
+],
+"nat": "Spain",
+"pos": "Midfielder",
+"clubs": [
+"Villarreal",
+"Recreativo de Huelva",
+"Villarreal",
+"Málaga",
+"Arsenal",
+"Villarreal",
+"Al Sadd",
+"Real Oviedo"
+]
+},
+{
+"id": "c082",
+"n": "David Silva",
+"al": [],
+"nat": "Spain",
+"pos": "Midfielder",
+"clubs": [
+"Valencia",
+"Eibar (loan)",
+"Celta Vigo (loan)",
+"Manchester City",
+"Real Sociedad"
+]
+},
+{
+"id": "c083",
+"n": "Juan Mata",
+"al": [],
+"nat": "Spain",
+"pos": "Midfielder",
+"clubs": [
+"Valencia",
+"Chelsea",
+"Manchester United",
+"Galatasaray",
+"Vissel Kobe",
+"Western Sydney Wanderers"
+]
+},
+{
+"id": "c084",
+"n": "Raúl",
+"al": [
+"Raúl González"
+],
+"nat": "Spain",
+"pos": "Forward",
+"clubs": [
+"Real Madrid",
+"Schalke 04",
+"Al Sadd",
+"New York Cosmos"
+]
+},
+{
+"id": "c085",
+"n": "Luís Figo",
+"al": [],
+"nat": "Portugal",
+"pos": "Midfielder",
+"clubs": [
+"Sporting CP",
+"Barcelona",
+"Real Madrid",
+"Inter"
+]
+},
+{
+"id": "c086",
+"n": "Gianfranco Zola",
+"al": [],
+"nat": "Italy",
+"pos": "Forward",
+"clubs": [
+"Nuorese",
+"Torres",
+"Napoli",
+"Parma",
+"Chelsea",
+"Cagliari"
+]
+},
+{
+"id": "c087",
+"n": "Jimmy Floyd Hasselbaink",
+"al": [
+"Hasselbaink"
+],
+"nat": "Netherlands",
+"pos": "Forward",
+"clubs": [
+"Telstar",
+"AZ",
+"Campomaiorense",
+"Boavista",
+"Leeds United",
+"Atlético Madrid",
+"Chelsea",
+"Middlesbrough",
+"Charlton Athletic",
+"Cardiff City"
+]
+},
+{
+"id": "c088",
+"n": "Teddy Sheringham",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"Millwall",
+"Aldershot (loan)",
+"Djurgården (loan)",
+"Nottingham Forest",
+"Tottenham Hotspur",
+"Manchester United",
+"Tottenham Hotspur",
+"Portsmouth",
+"West Ham United",
+"Colchester United"
+]
+},
+{
+"id": "c089",
+"n": "Ole Gunnar Solskjær",
+"al": [
+"Solskjaer"
+],
+"nat": "Norway",
+"pos": "Forward",
+"clubs": [
+"Clausenengen",
+"Molde",
+"Manchester United"
+]
+},
+{
+"id": "c090",
+"n": "Marco Reus",
+"al": [],
+"nat": "Germany",
+"pos": "Forward",
+"clubs": [
+"Rot Weiss Ahlen",
+"Borussia Mönchengladbach",
+"Borussia Dortmund",
+"LA Galaxy"
+]
+},
+{
+"id": "c091",
+"n": "Mario Götze",
+"al": [],
+"nat": "Germany",
+"pos": "Midfielder",
+"clubs": [
+"Borussia Dortmund",
+"Bayern Munich",
+"Borussia Dortmund",
+"PSV Eindhoven",
+"Eintracht Frankfurt"
+]
+},
+{
+"id": "c092",
+"n": "Mats Hummels",
+"al": [],
+"nat": "Germany",
+"pos": "Defender",
+"clubs": [
+"Bayern Munich",
+"Borussia Dortmund",
+"Bayern Munich",
+"Borussia Dortmund",
+"Roma"
+]
+},
+{
+"id": "c093",
+"n": "İlkay Gündoğan",
+"al": [],
+"nat": "Germany",
+"pos": "Midfielder",
+"clubs": [
+"VfL Bochum",
+"1. FC Nürnberg",
+"Borussia Dortmund",
+"Manchester City",
+"Barcelona",
+"Manchester City",
+"Galatasaray"
+]
+},
+{
+"id": "c094",
+"n": "Son Heung-min",
+"al": [
+"Sonny",
+"Heung-min Son"
+],
+"nat": "South Korea",
+"pos": "Forward",
+"clubs": [
+"Hamburg",
+"Bayer Leverkusen",
+"Tottenham Hotspur",
+"Los Angeles FC"
+]
+},
+{
+"id": "c095",
+"n": "Olivier Giroud",
+"al": [],
+"nat": "France",
+"pos": "Forward",
+"clubs": [
+"Grenoble",
+"Istres (loan)",
+"Tours",
+"Montpellier",
+"Arsenal",
+"Chelsea",
+"AC Milan",
+"Los Angeles FC",
+"Lille"
+]
+},
+{
+"id": "c096",
+"n": "Franck Ribéry",
+"al": [],
+"nat": "France",
+"pos": "Forward",
+"clubs": [
+"Boulogne",
+"Alès",
+"Brest",
+"Metz",
+"Galatasaray",
+"Marseille",
+"Bayern Munich",
+"Fiorentina",
+"Salernitana"
+]
+},
+{
+"id": "c097",
+"n": "Robert Pirès",
+"al": [],
+"nat": "France",
+"pos": "Midfielder",
+"clubs": [
+"Metz",
+"Marseille",
+"Arsenal",
+"Villarreal",
+"Aston Villa",
+"FC Goa"
+]
+},
+{
+"id": "c098",
+"n": "Louis Saha",
+"al": [],
+"nat": "France",
+"pos": "Forward",
+"clubs": [
+"Metz",
+"Newcastle United (loan)",
+"Fulham",
+"Manchester United",
+"Everton",
+"Tottenham Hotspur",
+"Sunderland",
+"Lazio"
+]
+},
+{
+"id": "c099",
+"n": "Thomas Müller",
+"al": [],
+"nat": "Germany",
+"pos": "Forward",
+"clubs": [
+"Bayern Munich",
+"Vancouver Whitecaps"
+]
+},
+{
+"id": "c100",
+"n": "Gennaro Gattuso",
+"al": [
+"Rino Gattuso"
+],
+"nat": "Italy",
+"pos": "Midfielder",
+"clubs": [
+"Perugia",
+"Rangers",
+"Salernitana",
+"AC Milan",
+"Sion"
+]
+},
+{
+"id": "c101",
+"n": "Filippo Inzaghi",
+"al": [
+"Pippo Inzaghi"
+],
+"nat": "Italy",
+"pos": "Forward",
+"clubs": [
+"Piacenza",
+"Leffe (loan)",
+"Verona (loan)",
+"Parma",
+"Atalanta",
+"Juventus",
+"AC Milan"
+]
+},
+{
+"id": "c102",
+"n": "Roberto Baggio",
+"al": [],
+"nat": "Italy",
+"pos": "Forward",
+"clubs": [
+"Vicenza",
+"Fiorentina",
+"Juventus",
+"AC Milan",
+"Bologna",
+"Inter",
+"Brescia"
+]
+},
+{
+"id": "c103",
+"n": "Alessandro Nesta",
+"al": [],
+"nat": "Italy",
+"pos": "Defender",
+"clubs": [
+"Lazio",
+"AC Milan",
+"Montreal Impact",
+"Chennaiyin"
+]
+},
+{
+"id": "c104",
+"n": "Clarence Seedorf",
+"al": [],
+"nat": "Netherlands",
+"pos": "Midfielder",
+"clubs": [
+"Ajax",
+"Sampdoria",
+"Real Madrid",
+"Inter",
+"AC Milan",
+"Botafogo"
+]
+},
+{
+"id": "c105",
+"n": "Patrick Kluivert",
+"al": [],
+"nat": "Netherlands",
+"pos": "Forward",
+"clubs": [
+"Ajax",
+"AC Milan",
+"Barcelona",
+"Newcastle United",
+"Valencia",
+"PSV Eindhoven",
+"Lille"
+]
+},
+{
+"id": "c106",
+"n": "Jaap Stam",
+"al": [],
+"nat": "Netherlands",
+"pos": "Defender",
+"clubs": [
+"FC Zwolle",
+"Cambuur",
+"Willem II",
+"PSV Eindhoven",
+"Manchester United",
+"Lazio",
+"AC Milan",
+"Ajax"
+]
+},
+{
+"id": "c107",
+"n": "Edgar Davids",
+"al": [],
+"nat": "Netherlands",
+"pos": "Midfielder",
+"clubs": [
+"Ajax",
+"AC Milan",
+"Juventus",
+"Barcelona (loan)",
+"Inter",
+"Tottenham Hotspur",
+"Ajax",
+"Crystal Palace",
+"Barnet"
+]
+},
+{
+"id": "c108",
+"n": "Rui Costa",
+"al": [],
+"nat": "Portugal",
+"pos": "Midfielder",
+"clubs": [
+"Benfica",
+"Fafe (loan)",
+"Fiorentina",
+"AC Milan",
+"Benfica"
+]
+},
+{
+"id": "c109",
+"n": "Pavel Nedvěd",
+"al": [],
+"nat": "Czech Republic",
+"pos": "Midfielder",
+"clubs": [
+"Dukla Prague",
+"Sparta Prague",
+"Lazio",
+"Juventus"
+]
+},
+{
+"id": "c110",
+"n": "Yaya Touré",
+"al": [],
+"nat": "Ivory Coast",
+"pos": "Midfielder",
+"clubs": [
+"Beveren",
+"Metalurh Donetsk",
+"Olympiacos",
+"Monaco",
+"Barcelona",
+"Manchester City",
+"Olympiacos",
+"Qingdao Huanghai"
+]
+},
+{
+"id": "c111",
+"n": "Kolo Touré",
+"al": [],
+"nat": "Ivory Coast",
+"pos": "Defender",
+"clubs": [
+"ASEC Mimosas",
+"Arsenal",
+"Manchester City",
+"Liverpool",
+"Celtic"
+]
+},
+{
+"id": "c112",
+"n": "Gareth Barry",
+"al": [],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"Aston Villa",
+"Manchester City",
+"Everton",
+"West Bromwich Albion"
+]
+},
+{
+"id": "c113",
+"n": "Javier Mascherano",
+"al": [
+"Masche"
+],
+"nat": "Argentina",
+"pos": "Midfielder",
+"clubs": [
+"River Plate",
+"Corinthians",
+"West Ham United",
+"Liverpool",
+"Barcelona",
+"Hebei China Fortune",
+"Estudiantes"
+]
+},
+{
+"id": "c114",
+"n": "Juan Román Riquelme",
+"al": [
+"Riquelme",
+"Román Riquelme"
+],
+"nat": "Argentina",
+"pos": "Midfielder",
+"clubs": [
+"Boca Juniors",
+"Barcelona",
+"Villarreal",
+"Boca Juniors",
+"Argentinos Juniors"
+]
+},
+{
+"id": "c115",
+"n": "Diego Forlán",
+"al": [],
+"nat": "Uruguay",
+"pos": "Forward",
+"clubs": [
+"Independiente",
+"Manchester United",
+"Villarreal",
+"Atlético Madrid",
+"Inter",
+"Internacional",
+"Cerezo Osaka",
+"Peñarol",
+"Mumbai City",
+"Kitchee"
+]
+},
+{
+"id": "c116",
+"n": "Jordi Alba",
+"al": [],
+"nat": "Spain",
+"pos": "Defender",
+"clubs": [
+"Valencia",
+"Gimnàstic (loan)",
+"Barcelona",
+"Inter Miami"
+]
+},
+{
+"id": "c117",
+"n": "Diego Godín",
+"al": [],
+"nat": "Uruguay",
+"pos": "Defender",
+"clubs": [
+"Cerro",
+"Nacional",
+"Villarreal",
+"Atlético Madrid",
+"Inter",
+"Cagliari",
+"Atlético Mineiro",
+"Vélez Sarsfield"
+]
+},
+{
+"id": "c118",
+"n": "Leroy Sané",
+"al": [],
+"nat": "Germany",
+"pos": "Forward",
+"clubs": [
+"Schalke 04",
+"Manchester City",
+"Bayern Munich",
+"Galatasaray"
+]
+},
+{
+"id": "c119",
+"n": "Michael Carrick",
+"al": [],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"West Ham United",
+"Swindon Town (loan)",
+"Birmingham City (loan)",
+"Tottenham Hotspur",
+"Manchester United"
+]
+},
+{
+"id": "c120",
+"n": "Owen Hargreaves",
+"al": [],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"Bayern Munich",
+"Manchester United",
+"Manchester City"
+]
+},
+{
+"id": "c121",
+"n": "Joe Cole",
+"al": [],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"West Ham United",
+"Chelsea",
+"Liverpool",
+"Lille (loan)",
+"West Ham United",
+"Aston Villa",
+"Coventry City",
+"Tampa Bay Rowdies"
+]
+},
+{
+"id": "c122",
+"n": "Shaun Wright-Phillips",
+"al": [
+"SWP"
+],
+"nat": "England",
+"pos": "Midfielder",
+"clubs": [
+"Manchester City",
+"Chelsea",
+"Manchester City",
+"Queens Park Rangers",
+"New York Red Bulls",
+"Phoenix Rising"
+]
+},
+{
+"id": "c123",
+"n": "Robbie Fowler",
+"al": [],
+"nat": "England",
+"pos": "Forward",
+"clubs": [
+"Liverpool",
+"Leeds United",
+"Manchester City",
+"Liverpool",
+"Cardiff City",
+"Blackburn Rovers",
+"North Queensland Fury",
+"Perth Glory",
+"Muangthong United"
+]
+},
+{
+"id": "c124",
+"n": "Michael Essien",
+"al": [],
+"nat": "Ghana",
+"pos": "Midfielder",
+"clubs": [
+"Bastia",
+"Lyon",
+"Chelsea",
+"Real Madrid (loan)",
+"AC Milan",
+"Panathinaikos",
+"Persib Bandung",
+"Sabail"
+]
+},
+{
+"id": "c125",
+"n": "Claude Makélélé",
+"al": [],
+"nat": "France",
+"pos": "Midfielder",
+"clubs": [
+"Nantes",
+"Marseille",
+"Celta Vigo",
+"Real Madrid",
+"Chelsea",
+"Paris Saint-Germain"
+]
+},
+{
+"id": "c126",
+"n": "Hugo Lloris",
+"al": [],
+"nat": "France",
+"pos": "Goalkeeper",
+"clubs": [
+"Nice",
+"Lyon",
+"Tottenham Hotspur",
+"Los Angeles FC"
+]
+},
+{
+"id": "c127",
+"n": "Iker Casillas",
+"al": [
+"San Iker"
+],
+"nat": "Spain",
+"pos": "Goalkeeper",
+"clubs": [
+"Real Madrid",
+"Porto"
+]
+}
+]
+}
