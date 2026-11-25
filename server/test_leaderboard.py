@@ -17,6 +17,7 @@ os.environ["QUIZ_DB"] = os.path.join(TMP, "test.db")
 os.environ["QUESTIONS_PATH"] = os.path.join(ROOT, "docs", "questions.json")
 sys.path.insert(0, HERE)
 import daily_gen  # noqa: E402
+import divisions as D  # noqa: E402
 import leaderboard as L  # noqa: E402
 import modes as M  # noqa: E402
 
@@ -24,6 +25,9 @@ BANK = json.load(open(os.environ["QUESTIONS_PATH"], encoding="utf-8"))
 BY_ID = {q["id"]: q for q in BANK}
 STATS = json.load(open(os.path.join(ROOT, "docs", "stats.json"), encoding="utf-8"))
 CAREERS = json.load(open(os.path.join(ROOT, "docs", "careers.json"), encoding="utf-8"))["players"]
+
+
+REAL_CLOCK = L.clock
 
 
 def pid():
@@ -40,6 +44,8 @@ class Base(unittest.TestCase):
         if os.path.exists(os.environ["QUIZ_DB"]):
             os.remove(os.environ["QUIZ_DB"])
         L.init()
+        L._settled["week"] = None
+        L.clock = REAL_CLOCK
 
 
 class Classic(Base):
@@ -342,6 +348,275 @@ class Runs(Base):
         self.post_run("blitz", answers(BANK[:3], [True] * 3))
         b = L.public_run_board("blitz", "all")
         self.assertEqual(set(b["rows"][0]), {"name", "score", "correct", "total", "created_utc"})
+
+def fake_clock(dt):
+    L.clock = lambda: dt
+
+
+def classic_body(n=10, right=None, league="all", name="Maker", player=None, timer=0):
+    qs = [q for q in BANK if league == "all" or q["l"] == league][:n]
+    right = right if right is not None else [True] * n
+    return {"name": name, "player_id": player or pid(), "league": league, "diff": 0, "timer": timer,
+            "answers": answers(qs, right)}, qs
+
+
+class Challenges(Base):
+    def test_round_trip_and_head_to_head(self):
+        a, b = pid(), pid()
+        body, qs = classic_body(right=[True] * 7 + [False] * 3, player=a, name="Alice")
+        r = L.create_challenge(body)
+        code = r["code"]
+        self.assertRegex(code, r"^[A-HJ-NP-Z2-9]{6}$")
+        self.assertEqual(r["correct"], 7)
+        g = L.get_challenge(code)
+        self.assertEqual((g["from"], g["ids"], g["result"]), ("Alice", [q["id"] for q in qs], None))
+        self.assertNotIn("choices", g["their"])          # no peeking at their answers before you play
+        self.assertNotIn("grid", g["their"])
+        # friend plays the identical set, better
+        res = L.play_challenge({"code": code.lower(), "name": "Bob", "player_id": b,
+                                "answers": answers(qs, [True] * 9 + [False])})
+        self.assertEqual(res["result"]["outcome"], "win")
+        self.assertEqual(res["result"]["you"]["grid"], "1111111110")
+        self.assertEqual(res["result"]["them"]["grid"], "1111111000")
+        self.assertEqual(res["result"]["h2h"], {"won": 1, "drawn": 0, "lost": 0})
+        self.assertEqual([p["name"] for p in res["plays"]], ["Bob"])
+        # one go each; can't play your own
+        with self.assertRaises(L.Conflict):
+            L.play_challenge({"code": code, "name": "Bob", "player_id": b, "answers": answers(qs, [True] * 10)})
+        with self.assertRaises(L.Conflict):
+            L.play_challenge({"code": code, "name": "Alice", "player_id": a, "answers": answers(qs, [True] * 10)})
+        # Bob challenges back, Alice draws: record from each side
+        body2, qs2 = classic_body(n=5, right=[True, False, True, False, True], player=b, name="Bob", league="sa")
+        code2 = L.create_challenge(body2)["code"]
+        L.play_challenge({"code": code2, "name": "Alice", "player_id": a,
+                          "answers": answers(qs2, [True, False, True, False, True])})
+        self.assertEqual(L.h2h_list(a)["rows"], [{"name": "Bob", "won": 0, "drawn": 1, "lost": 1}])
+        self.assertEqual(L.h2h_list(b)["rows"], [{"name": "Alice", "won": 1, "drawn": 1, "lost": 0}])
+        # creator sees their own answers + who played
+        mine = L.get_challenge(code, a)
+        self.assertTrue(mine["mine"])
+        self.assertEqual(mine["their"]["grid"], "1111111000")
+
+    def test_must_be_the_same_questions_in_order(self):
+        body, qs = classic_body()
+        code = L.create_challenge(body)["code"]
+        with self.assertRaises(ValueError):
+            L.play_challenge({"code": code, "name": "Cheat", "player_id": pid(),
+                              "answers": answers(list(reversed(qs)), [True] * 10)})
+        with self.assertRaises(L.NotFound):
+            L.play_challenge({"code": "ZZZZZZ", "name": "Lost", "player_id": pid(), "answers": []})
+        with self.assertRaises(ValueError):
+            L.get_challenge("BAD!")
+
+    def test_forged_creator_points_ignored(self):
+        body, qs = classic_body(right=[False] * 10)
+        body["points"], body["correct"] = 999, 10
+        r = L.create_challenge(body)
+        self.assertEqual((r["correct"], r["points"]), (0, 0))
+
+    def test_settings_must_match_and_timer_counts(self):
+        body, _ = classic_body(league="pl")
+        body["league"] = "ll"
+        with self.assertRaises(ValueError):
+            L.create_challenge(body)
+        body, qs = classic_body(league="pl", timer=10)
+        r = L.create_challenge(body)
+        self.assertAlmostEqual(r["points"], round(sum(q["d"] for q in qs) * 1.5, 1))
+
+
+class Leagues(Base):
+    def test_create_join_leave_and_table(self):
+        a, b, c = pid(), pid(), pid()
+        r = L.create_league({"name": "Alice", "player_id": a, "league_name": "Sunday  Lads"})
+        code = r["code"]
+        self.assertEqual(r["name"], "Sunday Lads")
+        self.assertRegex(code, r"^[A-HJ-NP-Z2-9]{6}$")
+        self.assertFalse(L.join_league({"name": "Bob", "player_id": b, "code": code.lower()})["already"])
+        self.assertTrue(L.join_league({"name": "Bob", "player_id": b, "code": code})["already"])
+        L.join_league({"name": "Cat", "player_id": c, "code": code})
+        # points from different modes all count
+        L.add_score(classic_body(player=b, name="Bob")[0] | {"total": 10})                 # classic
+        L.add_score({"mode": "survival", "name": "Alice", "player_id": a,
+                     "answers": answers(BANK[:4], [True] * 3 + [False])})                     # 3
+        t = L.league_view(code, a, "week")
+        self.assertEqual([x["name"] for x in t["rows"]], ["Bob", "Alice", "Cat"])
+        self.assertEqual(t["rows"][1], {"name": "Alice", "week": 3, "total": 3, "me": True})
+        self.assertTrue(t["member"] and t["owner"])
+        self.assertEqual(L.my_leagues(b)["rows"][0]["rank_week"], 1)
+        L.leave_league({"player_id": c, "code": code})
+        self.assertEqual(L.league_view(code, c, "all")["members"], 2)
+        self.assertEqual(L.my_leagues(c)["rows"], [])
+        with self.assertRaises(L.NotFound):
+            L.join_league({"name": "Dan", "player_id": pid(), "code": "ZZZZZZ"})
+
+    def test_league_name_rules(self):
+        for bad in ("x", "<script>", "Shit FC", "a" * 25):
+            with self.assertRaises(ValueError):
+                L.create_league({"name": "Alice", "player_id": pid(), "league_name": bad})
+
+    def test_league_cap(self):
+        me = pid()
+        for i in range(L.MAX_LEAGUES):
+            L.create_league({"name": "Busy", "player_id": me, "league_name": "League %d" % i})
+        with self.assertRaises(ValueError):
+            L.create_league({"name": "Busy", "player_id": me, "league_name": "One too many"})
+
+
+class Divisions(Base):
+    def post_points(self, player, name, n):
+        """n points via survival (1 per correct answer)."""
+        L.add_score({"mode": "survival", "name": name, "player_id": player,
+                     "answers": answers(BANK[:n + 1], [True] * n + [False])})
+
+    def test_week_boundaries_are_uk_monday(self):
+        from datetime import datetime as dt
+        self.assertEqual(D.week_key(dt(2026, 11, 29, 23, 59, tzinfo=timezone.utc)), "2026-11-23")   # Sun, GMT
+        self.assertEqual(D.week_key(dt(2026, 11, 30, 0, 0, tzinfo=timezone.utc)), "2026-11-30")
+        self.assertEqual(D.week_key(dt(2026, 6, 28, 23, 30, tzinfo=timezone.utc)), "2026-06-29")    # Mon 00:30 BST
+        self.assertEqual(D.week_end_utc("2026-06-22"), dt(2026, 6, 28, 23, 0, tzinfo=timezone.utc))
+        self.assertEqual(D.week_end_utc("2026-11-23"), dt(2026, 11, 30, 0, 0, tzinfo=timezone.utc))
+        self.assertEqual(D.moves(20), (3, 3))
+        self.assertEqual(D.moves(6), (2, 2))
+        self.assertEqual(D.moves(2), (1, 0))
+        self.assertEqual(D.moves(1), (0, 0))
+
+    def test_new_players_start_bottom_and_groups_of_20(self):
+        fake_clock(datetime(2026, 12, 2, 12, 0, tzinfo=timezone.utc))
+        ids = [pid() for _ in range(23)]
+        for i, p in enumerate(ids):
+            self.post_points(p, "P%02d" % i, 1 + i % 5)
+        v = L.division_view(ids[0])
+        self.assertEqual((v["tier"], v["tier_name"], v["size"]), (5, "Sunday League", 20))
+        self.assertEqual(L.division_view(ids[22])["size"], 3)
+        fresh = L.division_view(pid())
+        self.assertFalse(fresh["in_table"])
+        self.assertEqual(fresh["tier"], 5)
+        self.assertEqual(fresh["secs_left"], int((datetime(2026, 12, 7, 0, 0, tzinfo=timezone.utc) -
+                                                  datetime(2026, 12, 2, 12, 0, tzinfo=timezone.utc)).total_seconds()))
+
+    def test_rollover_on_first_request_of_the_week(self):
+        week1 = datetime(2026, 12, 1, 10, 0, tzinfo=timezone.utc)       # Tue 1 Dec
+        fake_clock(week1)
+        ids = [pid() for _ in range(12)]
+        for i, p in enumerate(ids):                     # P00 scores most, P11 least
+            self.post_points(p, "P%02d" % i, 24 - 2 * i)
+        v = L.division_view(ids[3])
+        self.assertEqual((v["rank"], v["size"], v["up"], v["down"]), (4, 12, 3, 0))     # bottom tier: no drop
+        # Sunday 23:59 UK: still week 1, nothing settled
+        fake_clock(datetime(2026, 12, 6, 23, 59, tzinfo=timezone.utc))
+        self.assertEqual(L.division_view(ids[0])["tier"], 5)
+        with L.db() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM division_weeks").fetchone()[0], 0)
+        # Monday 00:00 UK: the first request settles week 1
+        fake_clock(datetime(2026, 12, 7, 0, 0, 5, tzinfo=timezone.utc))
+        v0 = L.division_view(ids[0])
+        self.assertEqual((v0["tier"], v0["tier_name"], v0["in_table"]), (4, "League Two", False))
+        self.assertEqual(v0["last"], {"week": "2026-11-30", "from": 5, "from_name": "Sunday League", "moved": 1})
+        self.assertEqual(L.division_view(ids[3])["tier"], 5)
+        self.assertEqual(L.division_view(ids[3])["last"]["moved"], 0)
+        # promoted players play into League Two; a newcomer goes to the bottom
+        for i in (0, 1, 2):
+            self.post_points(ids[i], "P%02d" % i, 5 - i)
+        newbie = pid()
+        self.post_points(newbie, "Newbie", 9)
+        self.assertEqual(L.division_view(ids[2])["size"], 3)
+        self.assertEqual(L.division_view(ids[2])["rows"][0]["name"], "P00")
+        self.assertEqual(L.division_view(newbie)["tier"], 5)
+        # settled once only, even with more requests
+        with L.db() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM division_weeks").fetchone()[0], 1)
+        # week 2 -> 3: in League Two (3 players) top 1 up, bottom 1 down; skipped-week player keeps their tier
+        fake_clock(datetime(2026, 12, 15, 9, 0, tzinfo=timezone.utc))
+        self.assertEqual(L.division_view(ids[0])["tier"], 3)
+        self.assertEqual(L.division_view(ids[1])["tier"], 4)
+        self.assertEqual(L.division_view(ids[2])["tier"], 5)
+        self.assertEqual(L.division_view(ids[2])["last"]["moved"], -1)
+        self.assertEqual(L.division_view(ids[5])["tier"], 5)
+        self.assertIsNone(L.division_view(ids[5])["last"])     # didn't play last week
+
+    def test_relegation_from_a_middle_tier(self):
+        fake_clock(datetime(2026, 12, 1, 10, 0, tzinfo=timezone.utc))
+        ids = [pid() for _ in range(10)]
+        with L.db() as c:
+            for p in ids:
+                c.execute("INSERT INTO player_tier VALUES (?, 3, '')", (p,))
+        for i, p in enumerate(ids):
+            self.post_points(p, "M%02d" % i, 20 - i)
+        fake_clock(datetime(2026, 12, 8, 10, 0, tzinfo=timezone.utc))
+        tiers = [L.division_view(p)["tier"] for p in ids]
+        self.assertEqual(tiers, [2, 2, 2, 3, 3, 3, 3, 4, 4, 4])
+
+    def test_zero_point_posts_dont_join(self):
+        p = pid()
+        L.add_score({"mode": "survival", "name": "Zero", "player_id": p, "answers": answers(BANK[:1], [False])})
+        self.assertFalse(L.division_view(p)["in_table"])
+
+
+class Http(Base):
+    """The real handler on a random port: routes, status codes, the creation rate limit."""
+    @classmethod
+    def setUpClass(cls):
+        import threading
+        from http.server import ThreadingHTTPServer
+        class Quiet(L.Handler):
+            def log_message(self, *a):
+                pass
+        cls.srv = ThreadingHTTPServer(("127.0.0.1", 0), Quiet)
+        cls.port = cls.srv.server_address[1]
+        threading.Thread(target=cls.srv.serve_forever, daemon=True).start()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.srv.shutdown()
+
+    def setUp(self):
+        super().setUp()
+        L._hits.clear()
+
+    def call(self, path, body=None, ip="10.0.0.1"):
+        import urllib.request
+        import urllib.error
+        req = urllib.request.Request("http://127.0.0.1:%d/api%s" % (self.port, path),
+                                     data=json.dumps(body).encode() if body is not None else None,
+                                     headers={"X-Forwarded-For": ip, "Content-Type": "application/json"})
+        try:
+            with urllib.request.urlopen(req) as r:
+                return r.status, json.loads(r.read())
+        except urllib.error.HTTPError as e:
+            with e:
+                return e.code, json.loads(e.read())
+
+    def test_routes(self):
+        me = pid()
+        st, r = self.call("/leagues", {"name": "Web", "player_id": me, "league_name": "Web League"})
+        self.assertEqual(st, 200)
+        self.assertEqual(self.call("/league?code=%s&player_id=%s" % (r["code"], me))[1]["rows"][0]["name"], "Web")
+        self.assertEqual(self.call("/leagues?player_id=" + me)[1]["rows"][0]["code"], r["code"])
+        self.assertEqual(self.call("/league?code=ZZZZZZ")[0], 404)
+        self.assertEqual(self.call("/challenge?code=ZZZZZZ")[0], 404)
+        self.assertEqual(self.call("/division?player_id=nope")[0], 400)
+        self.assertEqual(self.call("/division")[0], 400)
+        self.assertEqual(self.call("/division?player_id=" + me)[1]["tier_name"], "Sunday League")
+        self.assertEqual(self.call("/h2h?player_id=" + me)[1], {"rows": []})
+        body, qs = classic_body(player=me, name="Web")
+        st, ch = self.call("/challenges", body)
+        self.assertEqual(st, 200)
+        st, g = self.call("/challenge?code=" + ch["code"])
+        self.assertEqual((st, g["total"]), (200, 10))
+        st, e = self.call("/challenge/play", {"code": ch["code"], "name": "Web", "player_id": me,
+                                              "answers": body["answers"]})
+        self.assertEqual(st, 409)
+
+    def test_creation_rate_limit_per_ip(self):
+        me = pid()
+        for i in range(L.CREATE_RATE[0]):
+            self.assertEqual(self.call("/leagues", {"name": "Spam", "player_id": me,
+                                                    "league_name": "Spam %d" % i}, ip="10.0.0.9")[0], 200)
+        st, e = self.call("/leagues", {"name": "Spam", "player_id": me, "league_name": "Spam x"}, ip="10.0.0.9")
+        self.assertEqual(st, 429)
+        # another IP is fine, and joining isn't a creation
+        self.assertEqual(self.call("/leagues", {"name": "Other", "player_id": pid(), "league_name": "Fine"},
+                                   ip="10.0.0.10")[0], 200)
 
 
 class Content(unittest.TestCase):
