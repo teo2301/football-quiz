@@ -448,3 +448,15 @@ input.code::placeholder{letter-spacing:.18em}
 @keyframes fall{0%{transform:translate3d(0,0,0) rotate(0);opacity:1}100%{transform:translate3d(30px,110vh,0) rotate(540deg);opacity:1}}
 /* reduced motion: the overlay still shows (static net + text), nothing moves */
 @media (prefers-reduced-motion:reduce){.goal .net{opacity:.75}.confetti{display:none}}
+
+/* ---------- Phase 5: report a question */
+.reportlink{display:block;margin:8px auto 0;color:var(--chalk2);font-size:14px}
+.reportlink:disabled{text-decoration:none;cursor:default;color:var(--chalk3)}
+#reportSheet .rpq{color:var(--ink);font-size:15px;margin-top:8px}
+#reportSheet .chips{margin-top:10px}
+.card .chip{background:transparent;color:var(--ink);border-color:rgba(16,35,26,.2)}
+.card .chip[aria-pressed=true]{background:var(--yellow);border-color:var(--yellow);color:#10231a}
+.rpnote{display:block;width:100%;margin-top:10px;min-height:76px;border:1px solid rgba(16,35,26,.2);border-radius:12px;padding:10px 12px;
+  background:transparent;color:var(--ink);font:inherit;font-size:16px;resize:vertical}
+@media (prefers-color-scheme:dark){.rpnote,.card .chip{border-color:rgba(238,243,236,.3)}}
+.rpnote::placeholder{color:var(--ink2)}

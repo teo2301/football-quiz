@@ -83,7 +83,23 @@ class Tab:
         await self.wait("document.readyState === 'complete'")
 
 
-async def play(tab, rights, snap_first=None, fifty_at=None, auto=False):
+async def report_flow(tab):
+    """On an answered question: open the report sheet, try 'Something else' with no note, then send a typo report."""
+    await tab.wait(VISIBLE % "reportBtn")
+    await tab.js("document.getElementById('reportBtn').click()")
+    await tab.wait(VISIBLE % "reportSheet")
+    await tab.shot("60-report-sheet", full=False)
+    await tab.js("document.querySelector('#rpWhy [data-r=other]').click();document.getElementById('rpSend').click()")
+    await tab.wait("/box/.test(document.getElementById('rpMsg').textContent)")
+    await tab.shot("61-report-needs-note", full=False)
+    await tab.js("document.querySelector('#rpWhy [data-r=typo]').click();"
+                 "document.getElementById('rpNote').value='Preview test report - please ignore';"
+                 "document.getElementById('rpSend').click()")
+    await tab.wait("document.getElementById('reportSheet').classList.contains('hidden') && document.getElementById('reportBtn').disabled")
+    await tab.shot("62-report-sent", full=False)
+
+
+async def play(tab, rights, snap_first=None, fifty_at=None, auto=False, report_at=None):
     """Answer the current game: rights[i] True = pick the right answer.
     fifty_at: use the 50:50 before answering that question. auto: the game moves on by itself (blitz)."""
     for i, ok in enumerate(rights):
@@ -97,6 +113,8 @@ async def play(tab, rights, snap_first=None, fifty_at=None, auto=False):
         await tab.js("(function(){var v=%s;var b=[].slice.call(document.querySelectorAll('#opts .opt')).filter(function(x){return x.getAttribute('data-v')===v})[0];b.click();return true})()" % pick)
         if snap_first is not None and i in (0, 1):
             await tab.shot("%s-answer%d-%s" % (snap_first, i + 1, "right" if ok else "wrong"), full=False)
+        if i == report_at:
+            await report_flow(tab)
         if auto:
             await tab.wait("!game || game.answers.length === %d && !game.locked" % (i + 1))
         else:
@@ -346,7 +364,7 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
             # Daily
             await tab.js("document.getElementById('menu').click()")
             await tab.js("document.getElementById('dPlay').click()")
-            await play(tab, [True, True, False, True, True, False, True], snap_first="07-daily")
+            await play(tab, [True, True, False, True, True, False, True], snap_first="07-daily", report_at=2)
             await tab.wait("/Posted as/.test(document.getElementById('postMsg').textContent)", 10)
             await tab.shot("08-daily-result")
             await tab.js("document.getElementById('menu').click()")

@@ -80,6 +80,7 @@ function ask() {
   $("qtext").textContent = q.q;
   $("fact").classList.add("hidden");
   $("next").classList.add("hidden");
+  hideReportLink();
   var ff = $("fifty");
   ff.classList.toggle("hidden", !game.fifty);
   ff.disabled = game.fifty !== "ready";
@@ -149,6 +150,7 @@ function answer(choice) {
   var n = $("next");
   n.textContent = game.over || game.i + 1 >= game.qs.length ? "Full time" : "Next question";
   n.classList.remove("hidden");
+  showReportLink(q);
   try { n.focus({preventScroll: true}); } catch (e) { /* old browsers */ }
 }
 

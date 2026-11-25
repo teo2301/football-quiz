@@ -20,6 +20,7 @@
 <script defer src="js/achievements.js"></script>
 <script defer src="js/quiz.js"></script>
 <script defer src="js/social.js"></script>
+<script defer src="js/report.js"></script>
 <script defer src="js/modes.js"></script>
 <script defer src="js/games.js"></script>
 <script defer src="js/compete.js"></script>
@@ -111,6 +112,7 @@
   <div class="opts" id="opts"></div>
   <div class="fact hidden" id="fact"><b>Did you know</b><p id="factText"></p></div>
   <button class="btn hidden" id="next">Next</button>
+  <button class="linkbtn reportlink hidden" id="reportBtn" type="button">Something wrong with this question?</button>
 </section>
 
 <!-- ============ Higher or lower ============ -->
@@ -312,6 +314,20 @@
     <div class="namerow incard"><input id="nsName" maxlength="16" placeholder="Your name" autocomplete="nickname" autocapitalize="words"><button class="btn" id="nsSave">Save</button></div>
     <p class="msg hidden" id="nsMsg"></p>
     <button class="linkbtn" id="nsCancel">Cancel</button>
+  </div>
+</div>
+
+<!-- ============ Report sheet (answer screen) ============ -->
+<div class="sheet hidden" id="reportSheet" role="dialog" aria-modal="true" aria-labelledby="rpTitle">
+  <div class="card">
+    <h2 class="ctitle" id="rpTitle">Report this question</h2>
+    <p class="cmeta rpq" id="rpQ"></p>
+    <p class="cmeta" id="rpA"></p>
+    <div class="chips incard" id="rpWhy" data-r=""></div>
+    <textarea class="rpnote" id="rpNote" maxlength="300" rows="3" placeholder="Anything to add? (optional)"></textarea>
+    <p class="msg hidden" id="rpMsg"></p>
+    <button class="btn" id="rpSend" type="button">Send report</button>
+    <button class="linkbtn" id="rpCancel" type="button">Cancel</button>
   </div>
 </div>
 
