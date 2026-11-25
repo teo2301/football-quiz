@@ -1,0 +1,4 @@
+Inter (Rasmus Andersson) and Oswald (Vernon Adams et al.) are licensed under the
+SIL Open Font License 1.1 (https://openfontlicense.org). Latin and Latin-Extended
+subsets, downloaded once from Google Fonts and self-hosted so the app works offline
+and never contacts Google.

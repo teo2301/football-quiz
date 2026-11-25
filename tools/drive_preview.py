@@ -1,0 +1,194 @@
+#!/usr/bin/env python3
+"""Drive the preview (:8197) in headless Chromium at 390x844, light + dark,
+and save screenshots to preview-shots/. Prints console errors.
+
+    python3 tools/drive_preview.py [light|dark|both]
+"""
+import asyncio
+import base64
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+import urllib.request
+
+import websockets
+
+CHROME = os.path.expanduser("~/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome")
+URL = "http://127.0.0.1:8197/"
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "preview-shots")
+PORT = 9333
+
+
+class Tab:
+    def __init__(self, ws, tag):
+        self.ws, self.tag, self.i, self.errors, self.waiting = ws, tag, 0, [], {}
+
+    async def reader(self):
+        async for raw in self.ws:
+            m = json.loads(raw)
+            if "id" in m and m["id"] in self.waiting:
+                self.waiting.pop(m["id"]).set_result(m)
+            meth, p = m.get("method", ""), m.get("params", {})
+            if meth == "Runtime.exceptionThrown":
+                self.errors.append("EXC " + json.dumps(p["exceptionDetails"])[:400])
+            elif meth == "Runtime.consoleAPICalled" and p.get("type") in ("error", "warning"):
+                self.errors.append("CON %s %s" % (p["type"], [a.get("value", a.get("description")) for a in p["args"]][:3]))
+            elif meth == "Log.entryAdded" and p["entry"]["level"] in ("error", "warning"):
+                self.errors.append("LOG " + p["entry"]["text"][:300] + " " + p["entry"].get("url", ""))
+
+    async def send(self, method, params=None):
+        self.i += 1
+        fut = asyncio.get_event_loop().create_future()
+        self.waiting[self.i] = fut
+        await self.ws.send(json.dumps({"id": self.i, "method": method, "params": params or {}}))
+        m = await asyncio.wait_for(fut, 30)
+        if "error" in m:
+            raise RuntimeError(m["error"])
+        return m.get("result", {})
+
+    async def js(self, expr):
+        r = await self.send("Runtime.evaluate", {"expression": expr, "returnByValue": True, "awaitPromise": True})
+        if "exceptionDetails" in r:
+            raise RuntimeError("JS error: " + json.dumps(r["exceptionDetails"])[:500])
+        return r.get("result", {}).get("value")
+
+    async def wait(self, expr, timeout=10):
+        end = time.time() + timeout
+        while time.time() < end:
+            if await self.js(expr):
+                return True
+            await asyncio.sleep(0.15)
+        raise RuntimeError("timeout waiting for " + expr)
+
+    async def shot(self, name, full=True):
+        await asyncio.sleep(0.35)
+        params = {"format": "png"}
+        if full:
+            hgt = await self.js("Math.max(document.documentElement.scrollHeight, 844)")
+            params["clip"] = {"x": 0, "y": 0, "width": 390, "height": hgt, "scale": 1}
+            params["captureBeyondViewport"] = True
+        r = await self.send("Page.captureScreenshot", params)
+        path = os.path.join(OUT, "%s-%s.png" % (self.tag, name))
+        with open(path, "wb") as f:
+            f.write(base64.b64decode(r["data"]))
+        print("shot", path)
+
+    async def goto(self, url):
+        await self.send("Page.navigate", {"url": url})
+        await asyncio.sleep(0.5)
+        await self.wait("document.readyState === 'complete'")
+
+
+async def play(tab, rights, snap_first=None):
+    """Answer the current game: rights[i] True = pick the right answer."""
+    for i, ok in enumerate(rights):
+        await tab.wait("!!game && !game.locked && document.querySelectorAll('#opts .opt').length === 4")
+        pick = ("game.qs[game.i].a" if ok else "game.qs[game.i].w[0]")
+        if snap_first is not None and i == 0:
+            await tab.shot(snap_first + "-question", full=False)
+        await tab.js("(function(){var v=%s;var b=[].slice.call(document.querySelectorAll('#opts .opt')).filter(function(x){return x.getAttribute('data-v')===v})[0];b.click();return true})()" % pick)
+        if snap_first is not None and i in (0, 1):
+            await tab.shot("%s-answer%d-%s" % (snap_first, i + 1, "right" if ok else "wrong"), full=False)
+        await tab.js("document.getElementById('next').click()")
+
+
+async def run(scheme, name, taken_name=None):
+    prof = tempfile.mkdtemp(prefix="fq-chrome-")
+    port = PORT + (1 if scheme == "dark" else 0)
+    proc = subprocess.Popen([CHROME, "--headless=new", "--remote-debugging-port=%d" % port, "--user-data-dir=" + prof,
+                             "--no-sandbox", "--no-first-run", "--hide-scrollbars", "--disable-gpu", "about:blank"],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        for _ in range(50):
+            try:
+                tabs = json.load(urllib.request.urlopen("http://127.0.0.1:%d/json" % port))
+                ws_url = [t for t in tabs if t["type"] == "page"][0]["webSocketDebuggerUrl"]
+                break
+            except Exception:
+                time.sleep(0.2)
+        async with websockets.connect(ws_url, max_size=100_000_000) as ws:
+            tab = Tab(ws, scheme)
+            reader = asyncio.ensure_future(tab.reader())
+            for m in ("Runtime.enable", "Log.enable", "Page.enable"):
+                await tab.send(m)
+            await tab.send("Emulation.setDeviceMetricsOverride", {"width": 390, "height": 844, "deviceScaleFactor": 2, "mobile": True})
+            await tab.send("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-color-scheme", "value": scheme}]})
+            await tab.goto(URL)
+            await tab.wait("BANK.length > 0 && document.fonts.status === 'loaded'")
+            fonts = await tab.js("Array.from(document.fonts).filter(function(f){return f.status==='loaded'}).map(function(f){return f.family+' '+f.weight})")
+            print(scheme, "fonts loaded:", fonts)
+            await tab.shot("01-home")
+
+            # Classic: 10 questions, right/wrong mix, first answers captured
+            await tab.js("document.querySelector('.mode.active').click()")
+            await tab.shot("02-classic-setup")
+            if scheme == "dark":    # timer on in dark run, to see the clock
+                await tab.js("[].slice.call(document.querySelectorAll('#timers .chip')).filter(function(b){return b.textContent==='20 s'})[0].click()")
+            await tab.js("document.getElementById('start').click()")
+            await play(tab, [False, True, True, False, True, True, True, False, True, True], snap_first="03-classic")
+            await tab.wait("!document.getElementById('done').classList.contains('hidden')")
+            await tab.shot("04-classic-result-askname")
+            if taken_name:      # name already claimed by the light run -> must be refused
+                await tab.js("document.getElementById('nameIn').value=%s;document.getElementById('postBtn').click()" % json.dumps(taken_name))
+                await tab.wait("/taken/.test(document.getElementById('postMsg').textContent)")
+                await tab.shot("05-name-taken")
+            await tab.js("document.getElementById('nameIn').value=%s;document.getElementById('postBtn').click()" % json.dumps(name))
+            await tab.wait("/Posted as/.test(document.getElementById('postMsg').textContent)", 10)
+            await tab.shot("06-classic-posted")
+
+            # Daily
+            await tab.js("document.getElementById('menu').click()")
+            await tab.js("document.getElementById('dPlay').click()")
+            await play(tab, [True, True, False, True, True, False, True], snap_first="07-daily")
+            await tab.wait("/Posted as/.test(document.getElementById('postMsg').textContent)", 10)
+            await tab.shot("08-daily-result")
+            await tab.js("document.getElementById('menu').click()")
+            await tab.shot("09-home-daily-done")
+
+            # Boards
+            await tab.js("document.querySelector('[data-tab=boards]').click()")
+            await tab.wait("document.getElementById('bMsg').textContent !== 'Loading…'")
+            await tab.shot("10-board-daily-today")
+            await tab.js("document.querySelectorAll('#bPeriod .chip')[1].click()")
+            await tab.wait("document.getElementById('bMsg').textContent !== 'Loading…'")
+            await tab.shot("11-board-daily-week")
+            await tab.js("document.querySelectorAll('#bKind button')[1].click()")
+            await tab.wait("document.getElementById('bMsg').textContent !== 'Loading…'")
+            await tab.shot("12-board-classic")
+            await tab.js("document.querySelector('[data-tab=leaguesTab]').click()")
+            await tab.shot("13-leagues")
+            await tab.js("document.querySelector('[data-tab=me]').click()")
+            await tab.shot("14-me")
+            await tab.goto(URL + "privacy.html")
+            await tab.shot("15-privacy")
+            # Reload the app: daily must still say done (one attempt) and SW must be active
+            await tab.goto(URL)
+            await tab.wait("BANK.length > 0")
+            sw = await tab.js("navigator.serviceWorker.getRegistration().then(function(r){return !!(r && r.active)})")
+            done = await tab.js("!document.getElementById('dDone').classList.contains('hidden')")
+            print(scheme, "service worker active:", sw, "| daily shows done after reload:", done)
+            reader.cancel()
+            return tab.errors
+    finally:
+        proc.terminate()
+        proc.wait()
+        shutil.rmtree(prof, ignore_errors=True)
+
+
+async def main(which):
+    os.makedirs(OUT, exist_ok=True)
+    errs, tag = {}, time.strftime("%H%M%S")      # fresh browser = fresh player id, so fresh names
+    if which in ("light", "both"):
+        errs["light"] = await run("light", "Light " + tag)
+    if which in ("dark", "both"):
+        errs["dark"] = await run("dark", "Dark " + tag, taken_name="light " + tag if which == "both" else None)
+    for k, v in errs.items():
+        print(k, "console errors/warnings:", v or "none")
+
+
+if __name__ == "__main__":
+    asyncio.run(main(sys.argv[1] if len(sys.argv) > 1 else "both"))

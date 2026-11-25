@@ -4,433 +4,182 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Football Quiz</title>
-<meta name="description" content="General knowledge football quiz, 1999 to today: Premier League, La Liga, Serie A.">
-<meta name="theme-color" content="#0f7a3d">
+<meta name="description" content="Football general knowledge quiz, 1999 to today: a daily quiz plus classic games across the Premier League, La Liga, Serie A, Europe and international football.">
+<meta name="theme-color" content="#136637" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#08170e" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<style>
-:root{--bg:#f4f6f3;--card:#fff;--ink:#16201a;--muted:#5d6a61;--line:#dde3de;--accent:#0f7a3d;--accent-ink:#fff;--good:#1d8a47;--good-bg:#e3f4e9;--bad:#c23a2b;--bad-bg:#fbe6e3;--chip:#e9eee9}
-@media (prefers-color-scheme:dark){:root{--bg:#0e1411;--card:#18211c;--ink:#e8efe9;--muted:#9aa89e;--line:#2a362f;--accent:#2fb36a;--accent-ink:#06130b;--good:#4cc77e;--good-bg:#173323;--bad:#ef6a5b;--bad-bg:#3a1c18;--chip:#223029}}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-main{max-width:560px;margin:0 auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
-h1{font-size:1.6rem;margin:8px 0 2px}
-h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:22px 0 8px}
-.sub{color:var(--muted);margin:0 0 8px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:9px 14px;font:inherit;font-size:.95rem;cursor:pointer}
-.chip[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-weight:650;font-size:1.05rem;background:var(--accent);color:var(--accent-ink);cursor:pointer;margin-top:22px}
-.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--line);margin-top:10px}
-.btn:disabled{opacity:.5}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
-.stat b{display:block;font-size:1.3rem}
-.stat span{font-size:.75rem;color:var(--muted)}
-.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.9rem;color:var(--muted)}
-.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:10px 0 16px}
-.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
-.timer i{transition:width 1s linear}
-.tag{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted);margin-bottom:8px}
-.q{font-size:1.18rem;font-weight:600;margin:0 0 16px}
-.opts{display:grid;gap:10px}
-.opt{text-align:left;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:14px;font:inherit;cursor:pointer}
-.opt:disabled{cursor:default}
-.opt.right{border-color:var(--good);background:var(--good-bg)}
-.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
-.fact{margin-top:14px;padding:12px;border-radius:12px;background:var(--chip);font-size:.95rem}
-.fact b.ok{color:var(--good)} .fact b.no{color:var(--bad)}
-.big{font-size:3rem;font-weight:750;text-align:center;margin:8px 0 0}
-.center{text-align:center}
-.review{list-style:none;padding:0;margin:0;display:grid;gap:10px}
-.review li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:.92rem}
-.review .ans{color:var(--good);font-weight:600}
-.review .yours{color:var(--bad)}
-.hidden{display:none!important}
-.lb{list-style:none;padding:0;margin:0;display:grid;gap:8px}
-.lb li{display:grid;grid-template-columns:2.2em 1fr auto;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-.lb li.me{border-color:var(--accent);border-width:2px}
-.lb .pos{font-weight:750;color:var(--muted);text-align:center}
-.lb .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lb .meta{font-size:.75rem;color:var(--muted);font-weight:400}
-.lb .pts{font-weight:750;text-align:right}
-.post{margin-top:18px}
-.row{display:flex;gap:8px}
-.row input{flex:1;min-width:0;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px;font:inherit}
-.row .btn{width:auto;margin:0;padding:12px 18px}
-.linkbtn{background:none;border:0;color:var(--accent);font:inherit;font-size:.85rem;padding:4px;cursor:pointer;text-decoration:underline}
-.small{font-size:.8rem;color:var(--muted)}
-</style>
+<link rel="preload" href="fonts/oswald-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="app.css">
+<script defer src="js/daily-gen.js"></script>
+<script defer src="js/core.js"></script>
+<script defer src="js/quiz.js"></script>
+<script defer src="js/social.js"></script>
+<script defer src="js/modes.js"></script>
+<script defer src="js/board.js"></script>
+<script defer src="js/me.js"></script>
+<script defer src="js/app.js"></script>
 </head>
 <body>
 <main>
 
+<!-- ============ PLAY tab ============ -->
 <section id="home">
-  <h1>⚽ Football Quiz</h1>
-  <p class="sub">1999 to today · Premier League, La Liga, Serie A and more</p>
+  <header class="pitchhead">
+    <svg viewBox="0 0 390 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#f4f7f1" stroke-opacity=".28" stroke-width="2.5">
+        <line x1="-20" y1="100" x2="410" y2="100"/>
+        <circle cx="195" cy="100" r="86"/>
+      </g>
+      <circle cx="195" cy="100" r="4" fill="#f4f7f1" fill-opacity=".28"/>
+    </svg>
+    <div class="ttl">
+      <h1>Football Quiz</h1>
+      <p id="subtitle">1999 to today</p>
+    </div>
+  </header>
 
-  <h2>Competition</h2>
-  <div class="chips" id="leagues"></div>
+  <div class="card daily" id="dailyCard">
+    <div class="row1"><span class="lbl" id="dLabel">Daily quiz</span><span class="flame" id="dFlame"></span></div>
+    <div id="dTodo">
+      <h2>Today's 7</h2>
+      <p class="meta">Same questions for everyone · new quiz in <span class="countdown" id="dCount1">--:--:--</span></p>
+      <button class="btn" id="dPlay">Play today's quiz</button>
+    </div>
+    <div id="dDone" class="hidden">
+      <div class="doneRow"><span class="score" id="dScore"></span><div class="grid7" id="dGrid"></div></div>
+      <p class="meta" id="dRank" style="margin-top:8px"></p>
+      <p class="meta">Come back tomorrow · next quiz in <span class="countdown" id="dCount2">--:--:--</span></p>
+      <div class="btns"><button class="btn" id="dShare">Share</button><button class="btn ghost" id="dBoard">Daily board</button></div>
+    </div>
+  </div>
 
-  <h2>Difficulty</h2>
-  <div class="chips" id="diffs"></div>
+  <h2 class="sec">Play</h2>
+  <div class="modes" id="modes"></div>
 
-  <h2>Questions</h2>
-  <div class="chips" id="lengths"></div>
-
-  <h2>Timer</h2>
-  <div class="chips" id="timers"></div>
-
-  <button class="btn" id="start">Start quiz</button>
-  <p class="small center" id="pool"></p>
-  <button class="btn ghost" id="openBoard">🏆 Leaderboard</button>
-
-  <h2>Your record</h2>
+  <h2 class="sec">Your record</h2>
   <div class="stats">
-    <div class="stat"><b id="sPlayed">0</b><span>quizzes</span></div>
-    <div class="stat"><b id="sPct">–</b><span>correct</span></div>
-    <div class="stat"><b id="sStreak">0</b><span>best streak</span></div>
+    <div class="stat tile"><b id="sPlayed">0</b><span>quizzes</span></div>
+    <div class="stat tile"><b id="sPct">–</b><span>correct</span></div>
+    <div class="stat tile"><b id="sStreak">0</b><span>best run</span></div>
   </div>
   <p class="small center" id="seenNote"></p>
 </section>
 
+<!-- ============ Classic setup ============ -->
+<section id="setup" class="hidden">
+  <div class="pagehead"><h1>Classic</h1><button class="iconbtn" id="setupBack">Back</button></div>
+  <h2 class="sec">Competition</h2>
+  <div class="chips" id="leagues"></div>
+  <h2 class="sec">Difficulty</h2>
+  <div class="chips" id="diffs"></div>
+  <h2 class="sec">Questions</h2>
+  <div class="chips" id="lengths"></div>
+  <h2 class="sec">Timer</h2>
+  <div class="chips" id="timers"></div>
+  <button class="btn" id="start">Kick off</button>
+  <p class="small center" id="pool"></p>
+</section>
+
+<!-- ============ Playing ============ -->
 <section id="play" class="hidden">
-  <div class="top"><span id="qnum"></span><span id="score"></span><button class="chip" id="quit">Quit</button></div>
-  <div class="bar"><i id="prog"></i></div>
-  <div class="card">
+  <div class="playtop"><span class="mname" id="mname">Classic</span><button class="iconbtn" id="quit">Quit</button></div>
+  <div class="scoreboard">
+    <div><span>Question</span><b id="sbQ">1/10</b></div>
+    <div><span>Points</span><b id="sbP">0</b></div>
+    <div><span id="sbClockL">Clock</span><b id="sbC">0:00</b></div>
+  </div>
+  <div class="segs" id="segs"></div>
+  <div class="card qcard">
     <span class="tag" id="qtag"></span>
     <p class="q" id="qtext"></p>
-    <div class="bar timer hidden" id="timerbar"><i id="tleft"></i></div>
-    <div class="opts" id="opts"></div>
-    <div class="fact hidden" id="fact"></div>
   </div>
+  <div class="opts" id="opts"></div>
+  <div class="fact hidden" id="fact"><b>Did you know</b><p id="factText"></p></div>
   <button class="btn hidden" id="next">Next</button>
 </section>
 
+<!-- ============ Result ============ -->
 <section id="done" class="hidden">
-  <h1 class="center">Full time</h1>
-  <p class="big" id="final"></p>
-  <p class="center sub" id="verdict"></p>
-  <div class="card post">
-    <div id="postAsk">
-      <p style="margin:0 0 10px">Put your score on the leaderboard? Pick a name:</p>
-      <div class="row"><input id="nameIn" maxlength="16" placeholder="Your name" autocomplete="nickname"><button class="btn" id="postBtn">Post</button></div>
+  <div class="card result">
+    <div class="lbl" id="rLabel">Full time</div>
+    <div class="big" id="final"></div>
+    <p class="verdict" id="verdict"></p>
+    <div class="grid7 hidden" id="rGrid"></div>
+    <p class="flame hidden" id="rFlame"></p>
+    <button class="btn hidden" id="rShare">Share result</button>
+  </div>
+  <div class="postbox">
+    <div id="postAsk" class="hidden">
+      <p>Put your score on the board? Pick a name:</p>
+      <div class="namerow"><input id="nameIn" maxlength="16" placeholder="Your name" autocomplete="nickname" autocapitalize="words"><button class="btn" id="postBtn">Post</button></div>
     </div>
-    <p id="postMsg" class="hidden" style="margin:0"></p>
+    <p id="postMsg" class="msg hidden"></p>
   </div>
   <button class="btn" id="again">Play again</button>
-  <button class="btn ghost" id="menu">Change settings</button>
-  <h2 id="missedH">What you missed</h2>
+  <button class="btn ghost" id="menu">Home</button>
+  <h2 class="sec" id="missedH">What you missed</h2>
   <ul class="review" id="missed"></ul>
 </section>
 
-<section id="board" class="hidden">
-  <div class="top"><h1 style="margin:0">🏆 Leaderboard</h1><button class="chip" id="boardBack">Back</button></div>
-  <p class="sub">Best game per player. Points: 1 / 2 / 3 per correct Easy / Medium / Hard answer, ×1.25 with the 20 s timer, ×1.5 with 10 s.</p>
-  <div class="chips" id="bPeriod"></div>
-  <div class="chips" id="bLen" style="margin-top:8px"></div>
-  <h2 id="bTitle"></h2>
+<!-- ============ BOARDS tab ============ -->
+<section id="boards" class="hidden">
+  <div class="pagehead"><h1>Boards</h1></div>
+  <div class="seg" id="bKind"></div>
+  <div class="chips" id="bPeriod" style="margin-top:10px"></div>
+  <div class="chips" id="bLen"></div>
+  <h2 class="sec" id="bTitle"></h2>
   <ul class="lb" id="lb"></ul>
   <p class="small center" id="bMsg"></p>
-  <p class="small center" id="meLine"></p>
+  <p class="small center" id="bNote"></p>
+</section>
+
+<!-- ============ LEAGUES tab ============ -->
+<section id="leaguesTab" class="hidden">
+  <div class="pagehead"><h1>Leagues</h1></div>
+  <div class="card">
+    <h2 style="font-size:24px;color:var(--ink)">Coming soon</h2>
+    <p style="margin:8px 0 0;color:var(--ink2)">Private leagues for you and your mates: make one, share a join code, and see a weekly table of everyone's points.</p>
+  </div>
+</section>
+
+<!-- ============ ME tab ============ -->
+<section id="me" class="hidden">
+  <div class="pagehead"><h1>Me</h1></div>
+  <div class="tile">
+    <p style="margin:0 0 10px">Your name on the boards</p>
+    <div class="namerow"><input id="meName" maxlength="16" placeholder="Pick a name" autocomplete="nickname" autocapitalize="words"><button class="btn" id="meSave">Save</button></div>
+    <p class="msg hidden" id="meMsg"></p>
+  </div>
+  <h2 class="sec">Your record</h2>
+  <div class="stats">
+    <div class="stat tile"><b id="mDaily">0</b><span>dailies</span></div>
+    <div class="stat tile"><b id="mDStreak">0</b><span>day streak</span></div>
+    <div class="stat tile"><b id="mDBest">0</b><span>best streak</span></div>
+  </div>
+  <div class="stats" style="margin-top:8px">
+    <div class="stat tile"><b id="mPlayed">0</b><span>classic</span></div>
+    <div class="stat tile"><b id="mPct">–</b><span>correct</span></div>
+    <div class="stat tile"><b id="mSeen">0</b><span>seen</span></div>
+  </div>
+  <h2 class="sec">About</h2>
+  <div class="tile">
+    <p style="margin:0">No accounts, no ads, no tracking. Your name and scores are only used for the boards.</p>
+    <p style="margin:10px 0 0"><a href="privacy.html">Privacy policy</a></p>
+  </div>
+  <p class="small center" id="version"></p>
 </section>
 
 </main>
-<script>
-"use strict";
-const LEAGUES = {all:"All", pl:"Premier League", ll:"La Liga", sa:"Serie A", eu:"Europe", in:"International"};
-const DIFFS = {0:"Mixed", 1:"Easy", 2:"Medium", 3:"Hard"};
-const LENGTHS = {10:"10", 20:"20", 50:"50"};
-const TIMERS = {0:"Off", 20:"20 s", 10:"10 s"};
 
-// Leaderboard API on the home server (public via Tailscale Funnel).
-const API = "https://riccioserver.tail0d3eb6.ts.net:10000/api";
-const PERIODS = {week:"This week", all:"All time"};
-const board = {period:"week", len:"10"};
-const store = {
-  get(k, d) { try { const v = localStorage.getItem("fq_" + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
-  set(k, v) { try { localStorage.setItem("fq_" + k, JSON.stringify(v)); } catch {} }
-};
-const settings = Object.assign({league:"all", diff:"0", len:"10", timer:"0"}, store.get("settings", {}));
-let BANK = [];
-let game = null;
-const $ = id => document.getElementById(id);
-
-function chips(el, map, key) {
-  el.innerHTML = "";
-  for (const [v, label] of Object.entries(map)) {
-    const b = document.createElement("button");
-    b.className = "chip"; b.textContent = label;
-    b.setAttribute("aria-pressed", String(settings[key] === v));
-    b.onclick = () => { settings[key] = v; store.set("settings", settings); renderHome(); };
-    el.appendChild(b);
-  }
-}
-
-function pool() {
-  return BANK.filter(q => (settings.league === "all" || q.l === settings.league) &&
-                          (settings.diff === "0" || String(q.d) === settings.diff));
-}
-
-function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
-  return a;
-}
-
-function renderHome() {
-  chips($("leagues"), LEAGUES, "league");
-  chips($("diffs"), DIFFS, "diff");
-  chips($("lengths"), LENGTHS, "len");
-  chips($("timers"), TIMERS, "timer");
-  const p = pool(), seen = new Set(store.get("seen", []));
-  const fresh = p.filter(q => !seen.has(q.id)).length;
-  $("pool").textContent = p.length
-    ? `${p.length} questions match · ${fresh} you haven't seen yet`
-    : "No questions match these settings.";
-  $("start").disabled = !p.length;
-  const st = store.get("stats", {played:0, right:0, asked:0, best:0});
-  $("sPlayed").textContent = st.played;
-  $("sPct").textContent = st.asked ? Math.round(100 * st.right / st.asked) + "%" : "–";
-  $("sStreak").textContent = st.best;
-  $("seenNote").textContent = `You've seen ${seen.size} of ${BANK.length} questions. Unseen ones come up first.`;
-}
-
-function show(id) {
-  for (const s of ["home", "play", "done", "board"]) $(s).classList.toggle("hidden", s !== id);
-  window.scrollTo(0, 0);
-}
-
-function start() {
-  const seen = new Set(store.get("seen", []));
-  const p = pool();
-  // Unseen questions first, so repeats only start once a pool is exhausted.
-  const picked = [...shuffle(p.filter(q => !seen.has(q.id))), ...shuffle(p.filter(q => seen.has(q.id)))]
-                 .slice(0, Number(settings.len));
-  game = {qs: picked, i: 0, right: 0, streak: 0, best: 0, missed: [], byDiff: {1: 0, 2: 0, 3: 0}};
-  show("play");
-  ask();
-}
-
-let timerId = null;
-function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
-
-function ask() {
-  const q = game.qs[game.i];
-  $("qnum").textContent = `Question ${game.i + 1} of ${game.qs.length}`;
-  $("score").textContent = `${game.right} correct${game.streak > 1 ? " · 🔥 " + game.streak : ""}`;
-  $("prog").style.width = (100 * game.i / game.qs.length) + "%";
-  $("qtag").textContent = `${LEAGUES[q.l]} · ${DIFFS[q.d]}`;
-  $("qtext").textContent = q.q;
-  $("fact").classList.add("hidden");
-  $("next").classList.add("hidden");
-  const box = $("opts"); box.innerHTML = "";
-  for (const o of shuffle([q.a, ...q.w])) {
-    const b = document.createElement("button");
-    b.className = "opt"; b.textContent = o;
-    b.onclick = () => answer(o);
-    box.appendChild(b);
-  }
-  const secs = Number(settings.timer);
-  $("timerbar").classList.toggle("hidden", !secs);
-  stopTimer();
-  if (secs) {
-    let left = secs;
-    const bar = $("tleft");
-    bar.style.transition = "none"; bar.style.width = "100%";
-    requestAnimationFrame(() => { bar.style.transition = ""; bar.style.width = (100 * (left - 1) / secs) + "%"; });
-    timerId = setInterval(() => {
-      left--;
-      bar.style.width = Math.max(0, 100 * (left - 1) / secs) + "%";
-      if (left <= 0) answer(null);
-    }, 1000);
-  }
-}
-
-function answer(choice) {
-  stopTimer();
-  const q = game.qs[game.i];
-  const ok = choice === q.a;
-  for (const b of $("opts").children) {
-    b.disabled = true;
-    if (b.textContent === q.a) b.classList.add("right");
-    else if (b.textContent === choice) b.classList.add("wrong");
-  }
-  if (ok) { game.right++; game.byDiff[q.d]++; game.streak++; game.best = Math.max(game.best, game.streak); }
-  else { game.streak = 0; game.missed.push({q, choice}); }
-  const seen = new Set(store.get("seen", [])); seen.add(q.id); store.set("seen", [...seen]);
-  const f = $("fact");
-  f.innerHTML = "";
-  const head = document.createElement("b");
-  head.className = ok ? "ok" : "no";
-  head.textContent = ok ? "Correct! " : (choice === null ? "Time's up. " : "Not quite. ");
-  f.append(head, document.createTextNode(q.x || ""));
-  f.classList.remove("hidden");
-  $("score").textContent = `${game.right} correct${game.streak > 1 ? " · 🔥 " + game.streak : ""}`;
-  const n = $("next");
-  n.textContent = game.i + 1 < game.qs.length ? "Next" : "See result";
-  n.classList.remove("hidden");
-  n.focus({preventScroll: true});
-}
-
-function next() {
-  game.i++;
-  if (game.i < game.qs.length) return ask();
-  finish();
-}
-
-function finish() {
-  const n = game.qs.length, r = game.right, pct = r / n;
-  const st = store.get("stats", {played:0, right:0, asked:0, best:0});
-  st.played++; st.right += r; st.asked += n; st.best = Math.max(st.best, game.best);
-  store.set("stats", st);
-  $("final").textContent = `${r} / ${n}`;
-  $("verdict").textContent = pct === 1 ? "Perfect. Ballon d'Or material." :
-    pct >= .8 ? "World class." : pct >= .6 ? "Solid Champions League level." :
-    pct >= .4 ? "Mid-table. Room to improve." : "Relegation form. Try again!";
-  const ul = $("missed"); ul.innerHTML = "";
-  $("missedH").classList.toggle("hidden", !game.missed.length);
-  for (const m of game.missed) {
-    const li = document.createElement("li");
-    const p1 = document.createElement("div"); p1.textContent = m.q.q;
-    const p2 = document.createElement("div"); p2.className = "ans"; p2.textContent = "✓ " + m.q.a;
-    li.append(p1, p2);
-    if (m.choice !== null) { const p3 = document.createElement("div"); p3.className = "yours"; p3.textContent = "✗ " + m.choice; li.append(p3); }
-    ul.appendChild(li);
-  }
-  game.result = {total: n, right: game.byDiff, league: settings.league, diff: Number(settings.diff),
-                 timer: Number(settings.timer), streak: game.best};
-  const name = store.get("name", "");
-  $("nameIn").value = name;
-  $("postMsg").classList.add("hidden");
-  // Only whole quizzes of 10/20/50 count; a short pool (e.g. Hard + one league) doesn't.
-  const eligible = [10, 20, 50].includes(n) && n === Number(settings.len);
-  $("postAsk").classList.toggle("hidden", !eligible || !!name);
-  if (!eligible) postMsg("Leaderboard scores need a full 10, 20 or 50-question quiz.");
-  else if (name) postScore(name);
-  show("done");
-}
-
-function postMsg(text, link) {
-  const m = $("postMsg"); m.textContent = text; m.classList.remove("hidden");
-  if (link) { const b = document.createElement("button"); b.className = "linkbtn"; b.textContent = link.text; b.onclick = link.fn; m.append(" ", b); }
-}
-
-function points(r) {
-  const mult = {0: 1, 20: 1.25, 10: 1.5}[r.timer];
-  return Math.round((r.right[1] + 2 * r.right[2] + 3 * r.right[3]) * mult * 10) / 10;
-}
-
-async function send(entry) {
-  const res = await fetch(API + "/scores", {method: "POST", body: JSON.stringify(entry)});
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok) { const e = new Error(body.error || "Server error"); e.permanent = res.status === 400; throw e; }
-  return body;
-}
-
-async function postScore(name) {
-  const entry = Object.assign({name}, game.result);
-  postMsg(`Posting ${points(entry)} points as ${name}…`);
-  try {
-    const r = await send(entry);
-    postMsg(`Posted as ${name}: ${r.points} pts · #${r.rank_week} this week · #${r.rank_all} all time.`,
-            {text: "View leaderboard", fn: () => openBoard(String(entry.total))});
-  } catch (e) {
-    if (e.permanent) { $("postAsk").classList.remove("hidden"); postMsg(e.message); return; }
-    const q = store.get("pending", []); q.push(entry); store.set("pending", q.slice(-20));
-    postMsg("You're offline, so your score is saved and will post next time you're online.");
-  }
-}
-
-async function flushPending() {
-  const q = store.get("pending", []);
-  if (!q.length || !navigator.onLine) return;
-  const left = [];
-  for (const e of q) {
-    try { await send(e); } catch (err) { if (!err.permanent) left.push(e); }
-  }
-  store.set("pending", left);
-}
-
-function savePostName() {
-  const name = $("nameIn").value.trim().replace(/\s+/g, " ");
-  if (!/^[\p{L}\p{N} .'\-_]{2,16}$/u.test(name)) { postMsg("Use 2-16 letters, numbers or spaces."); return; }
-  store.set("name", name);
-  $("postAsk").classList.add("hidden");
-  postScore(name);
-}
-
-function boardChips(el, map, key) {
-  el.innerHTML = "";
-  for (const [v, label] of Object.entries(map)) {
-    const b = document.createElement("button");
-    b.className = "chip"; b.textContent = label;
-    b.setAttribute("aria-pressed", String(board[key] === v));
-    b.onclick = () => { board[key] = v; loadBoard(); };
-    el.appendChild(b);
-  }
-}
-
-function openBoard(len) {
-  if (len) board.len = len;
-  show("board");
-  loadBoard();
-}
-
-async function loadBoard() {
-  boardChips($("bPeriod"), PERIODS, "period");
-  boardChips($("bLen"), {10: "10 questions", 20: "20 questions", 50: "50 questions"}, "len");
-  $("bTitle").textContent = `${PERIODS[board.period]} · ${board.len} questions`;
-  const ul = $("lb"); ul.innerHTML = ""; $("bMsg").textContent = "Loading…";
-  const me = store.get("name", "");
-  $("meLine").innerHTML = "";
-  if (me) {
-    $("meLine").textContent = `You post as ${me}. `;
-    const b = document.createElement("button"); b.className = "linkbtn"; b.textContent = "Change name";
-    b.onclick = () => { const n = prompt("Leaderboard name (2-16 characters)", me);
-      if (n && /^[\p{L}\p{N} .'\-_]{2,16}$/u.test(n.trim())) { store.set("name", n.trim()); loadBoard(); } };
-    $("meLine").append(b);
-  }
-  try {
-    const res = await fetch(`${API}/board?len=${board.len}&period=${board.period}`);
-    if (!res.ok) throw new Error();
-    const {rows} = await res.json();
-    $("bMsg").textContent = rows.length ? "" : "No scores yet. Be the first!";
-    rows.forEach((r, i) => {
-      const li = document.createElement("li");
-      if (me && r.name.toLowerCase() === me.toLowerCase()) li.className = "me";
-      const pos = document.createElement("span"); pos.className = "pos";
-      pos.textContent = i < 3 ? ["🥇", "🥈", "🥉"][i] : i + 1;
-      const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = r.name;
-      const meta = document.createElement("div"); meta.className = "meta";
-      meta.textContent = `${r.correct}/${r.total} · ${LEAGUES[r.league]} · ${DIFFS[r.diff]}${r.timer ? " · " + r.timer + " s" : ""}`;
-      nm.append(meta);
-      const pts = document.createElement("span"); pts.className = "pts"; pts.textContent = r.points;
-      li.append(pos, nm, pts); ul.appendChild(li);
-    });
-  } catch {
-    $("bMsg").textContent = "Couldn't reach the leaderboard. Check your connection.";
-  }
-}
-
-$("start").onclick = start;
-$("openBoard").onclick = () => openBoard();
-$("boardBack").onclick = () => { renderHome(); show("home"); };
-$("postBtn").onclick = savePostName;
-$("nameIn").addEventListener("keydown", e => { if (e.key === "Enter") savePostName(); });
-window.addEventListener("online", flushPending);
-flushPending();
-$("next").onclick = next;
-$("again").onclick = start;
-$("menu").onclick = () => { renderHome(); show("home"); };
-$("quit").onclick = () => { stopTimer(); renderHome(); show("home"); };
-
-fetch("questions.json").then(r => r.json()).then(q => { BANK = q; renderHome(); })
-  .catch(() => { $("pool").textContent = "Couldn't load the questions. Check your connection and reload."; $("start").disabled = true; });
-
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
-renderHome();
-</script>
+<nav class="tabbar" id="tabbar">
+  <button data-tab="home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/><path d="M12 7V3M16 10l4-1.5M14.5 15l2.5 3.5M9.5 15L7 18.5M8 10L4 8.5"/></svg>Play</button>
+  <button data-tab="boards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>Boards</button>
+  <button data-tab="leaguesTab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2a5 5 0 0 1 5.5 4.8"/></svg>Leagues</button>
+  <button data-tab="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Me</button>
+</nav>
+<div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
