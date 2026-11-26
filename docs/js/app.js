@@ -42,6 +42,7 @@
   wireAppFeel();
   $("goal").onclick = endCelebrate;
   wireCompete();
+  wireLive();
   wireReport();
   wirePush();
   setInterval(tickCountdown, 1000);
@@ -49,7 +50,7 @@
   playerId();
   achInit();
   renderHome();
-  loadBank().then(function () { renderHome(); flushPending(); handleHash(); }).catch(function () {
+  loadBank().then(function () { renderHome(); flushPending(); handleHash() || handleLiveHash(); }).catch(function () {
     $("subtitle").textContent = "Couldn't load the questions. Check your connection and reload.";
     handleHash();
   });

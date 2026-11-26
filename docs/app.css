@@ -479,6 +479,22 @@ input.code::placeholder{letter-spacing:.18em}
 .getapp b{display:block;font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:17px;color:#f2c230}
 .getapp span{display:block;font-size:13px;color:var(--chalk2);margin-top:2px}
 
+/* ---------- Live 1v1 (identical in every quiz) */
+.lvwait{text-align:center}
+.lvwait .codebig{display:block;font-family:var(--head);font-size:44px;letter-spacing:.12em;margin:4px 0 14px}
+.lvwait .btn{margin-top:10px}
+.lvstatus{margin:0 0 10px;font-weight:600}
+#lvOpts .opt.picked{box-shadow:0 0 0 3px var(--yellow)}
+#lvClock.low{color:var(--segwrong)}
+#lvDone .rev{list-style:none;padding:14px 16px;margin-top:10px;background:var(--tile);border:1px solid var(--tileb);border-radius:14px}
+#lvDone .rev .qh{display:flex}
+#lvDone .rev .qn{font-family:var(--head);font-weight:600;color:var(--yellow);margin-right:10px}
+#lvDone .rev .ans{font-size:14px;margin:6px 0;color:var(--chalk)}
+#lvDone .rev .pk{font-size:13px;color:var(--chalk2)}
+#lvDone .rev .pk.ok{color:var(--chalk);font-weight:600}
+.lvres.win .big{color:var(--right)}
+.lvres.loss .big{color:var(--wrong)}
+
 /* =====================================================================
    App feel (revamp step 1): chunky 3D buttons, app bar, tab pill,
    screen transitions, sheets. Everything raised has a darker bottom

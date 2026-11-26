@@ -33,7 +33,7 @@ class Handler(SimpleHTTPRequestHandler):
                                      headers={"X-Forwarded-For": self.headers.get("X-Preview-Client") or self.client_address[0],
                                               "Content-Type": self.headers.get("Content-Type", "text/plain")})
         try:
-            with urllib.request.urlopen(req, timeout=10) as r:
+            with urllib.request.urlopen(req, timeout=40) as r:
                 code, data, ctype = r.status, r.read(), r.headers.get("Content-Type", "application/json")
         except urllib.error.HTTPError as e:
             code, data, ctype = e.code, e.read(), e.headers.get("Content-Type", "application/json")

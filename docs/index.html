@@ -24,6 +24,7 @@
 <script defer src="js/modes.js"></script>
 <script defer src="js/games.js"></script>
 <script defer src="js/compete.js"></script>
+<script defer src="js/live.js"></script>
 <script defer src="js/board.js"></script>
 <script defer src="js/push.js"></script>
 <script defer src="js/me.js"></script>
@@ -288,6 +289,11 @@
   <ul class="lb divtable" id="dvTable"></ul>
   <p class="small" id="dvNote">Every game you post earns points: Classic, daily and career-path points as scored, 1 per correct answer in Survival, Blitz and Higher or lower. Tables of 20; every Monday at midnight the top 3 go up and the bottom 3 go down.</p>
 
+  <h2 class="sec">Live 1v1 league</h2>
+  <ul class="lb" id="lvTabTable"></ul>
+  <p class="small center" id="lvTabMsg"></p>
+  <button class="btn" id="lvTabPlay">Play a live match</button>
+
   <h2 class="sec">Private leagues</h2>
   <ul class="lb" id="lgList"></ul>
   <p class="small center" id="lgMsg"></p>
@@ -319,6 +325,73 @@
   <p class="small center" id="lMsg"></p>
   <p class="small" id="lNote">Points from every mode, for players who are in the league. The week runs Monday to Sunday (UK time).</p>
   <button class="btn ghost" id="lLeave">Leave league</button>
+</section>
+
+<!-- ============ Live 1v1 ============ -->
+<section id="live" class="hidden">
+  <div id="lvLobby">
+    <div class="pagehead"><button class="back" id="lvBack" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Live 1v1</h1></div>
+    <div class="card">
+      <h2 class="ctitle">Ranked match</h2>
+      <p class="cmeta">10 questions, 15 seconds each, against whoever's online. Quicker right answers score more. Win = 3 league points, draw = 1.</p>
+      <button class="btn" id="lvFind">Find a match</button>
+    </div>
+    <div class="tile form">
+      <b>Play a mate</b>
+      <div class="namerow"><input id="lvCode" class="code" maxlength="7" placeholder="ABC123" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"><button class="btn" id="lvJoin">Join</button></div>
+      <button class="btn ghost" id="lvCreate" style="margin-top:10px">Create a match and send a code</button>
+    </div>
+    <p class="msg hidden" id="lvMsg" aria-live="polite"></p>
+    <h2 class="sec">Live league</h2>
+    <div class="chips" id="lvPeriod"></div>
+    <ul class="lb" id="lvTable"></ul>
+    <p class="small center" id="lvTableMsg"></p>
+    <p class="small">The league only counts ranked matches. Win 3, draw 1, loss 0, then points difference. Weeks run Monday to Sunday (UK time). Only the first 3 results a week against the same player count.</p>
+  </div>
+  <div id="lvWait" class="hidden">
+    <div class="pagehead"><h1>Live 1v1</h1></div>
+    <div class="card lvwait">
+      <h2 class="ctitle" id="lvWaitTitle"></h2>
+      <p class="cmeta" id="lvWaitSub"></p>
+      <div id="lvCodeBox" class="hidden"><span class="lbl">Match code</span><b class="codebig" id="lvWaitCode"></b></div>
+      <button class="btn hidden" id="lvShare">Send to a mate</button>
+      <button class="btn ghost" id="lvCancel">Cancel</button>
+    </div>
+  </div>
+  <div id="lvMatch" class="hidden">
+    <div class="playtop"><span class="mname" id="lvKind">Ranked</span><button class="iconbtn" id="lvQuit">Quit</button></div>
+    <div class="scoreboard">
+      <div><span id="lvYouName">You</span><b id="lvYouPts">0</b></div>
+      <div><span>Clock</span><b id="lvClock">–</b></div>
+      <div><span id="lvOppName">Them</span><b id="lvOppPts">0</b></div>
+    </div>
+    <div class="segs" id="lvSegs"></div>
+    <p class="small center lvstatus" id="lvStatus"></p>
+    <div class="card qcard" id="lvQCard">
+      <span class="tag" id="lvQN"></span>
+      <p class="q" id="lvQText"></p>
+      <img class="qflag hidden" id="lvImg" alt="" width="240" height="180">
+    </div>
+    <div class="opts" id="lvOpts"></div>
+    <div class="fact hidden" id="lvFact"><b>Did you know</b><p id="lvFactText"></p></div>
+  </div>
+  <div id="lvDone" class="hidden">
+    <div class="card result lvres" id="lvRes">
+      <div class="lbl" id="lvResLabel"></div>
+      <div class="big" id="lvResBig"></div>
+      <div class="vsrow">
+        <div class="side"><span class="nm" id="lvResYou"></span><b id="lvResYouPts">0</b></div>
+        <div class="mid">v</div>
+        <div class="side"><span class="nm" id="lvResOpp"></span><b id="lvResOppPts">0</b></div>
+      </div>
+      <p class="verdict" id="lvResLine"></p>
+      <p class="h2h" id="lvResNote"></p>
+    </div>
+    <button class="btn" id="lvAgain">Find another match</button>
+    <button class="btn ghost" id="lvHome">Home</button>
+    <h2 class="sec">Question by question</h2>
+    <ul class="review qq" id="lvReview"></ul>
+  </div>
 </section>
 
 <!-- ============ Name sheet (shared) ============ -->

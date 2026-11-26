@@ -70,6 +70,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import achievements  # noqa: E402
 import daily_gen  # noqa: E402
 import divisions  # noqa: E402
+import live  # noqa: E402
 import modes  # noqa: E402
 import push  # noqa: E402
 
@@ -272,6 +273,7 @@ def init():
             types TEXT NOT NULL,
             created_utc TEXT NOT NULL,
             updated_utc TEXT NOT NULL)""")
+        live.init_db(c)
         c.execute("CREATE INDEX IF NOT EXISTS push_subs_player ON push_subs(player_id)")
         c.execute("""CREATE TABLE IF NOT EXISTS push_log (
             kind TEXT NOT NULL,
@@ -683,6 +685,8 @@ def public_board(period):
 
 CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"      # no I/O/0/1: easy to read out and type
 CODE_RE = re.compile(r"^[A-HJ-NP-Z2-9]{6}$")
+LIVE_RATE = (600, 600)      # live-match posts (queue pings + answers) per IP per 10 minutes
+LIVE_GET_RATE = (3000, 600) # live-match polls
 CREATE_RATE = (10, 3600)    # new challenges + leagues: at most 10 per IP per hour
 _rng = random.SystemRandom()
 _div_lock = threading.Lock()
@@ -1258,6 +1262,14 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(400, {"error": "bad player_id"})
                 fn = {"/api/leagues": my_leagues, "/api/division": division_view, "/api/h2h": h2h_list}[path]
                 return self._send(200, fn(pid))
+            if path == "/api/live/state":
+                if not pid:
+                    return self._send(400, {"error": "bad player_id"})
+                if limited(self._ip(), LIVE_GET_RATE, "livegw:"):
+                    return self._send(429, {"error": "Too many requests"})
+                return self._send(200, live.state(params.get("code"), pid))
+            if path == "/api/live/league":
+                return self._send(200, live.league(params.get("period", "week"), pid))
             if path == "/api/health":
                 return self._send(200, {"ok": True})
             if path == "/api/push/key":
@@ -1298,7 +1310,9 @@ class Handler(BaseHTTPRequestHandler):
                  "/api/challenges": create_challenge, "/api/challenge/play": play_challenge,
                  "/api/leagues": create_league, "/api/leagues/join": join_league,
                  "/api/leagues/leave": leave_league, "/api/badges": set_badges,
-                 "/api/report": add_report, "/api/push": add_push}.get(path)
+                 "/api/report": add_report, "/api/push": add_push,
+                 "/api/live/queue": live.queue, "/api/live/cancel": live.cancel, "/api/live/create": live.create,
+                 "/api/live/join": live.join, "/api/live/answer": live.answer}.get(path)
         return self._body(path, route)
 
     def do_DELETE(self):
@@ -1317,6 +1331,9 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/api/report":
             if limited(self._ip(), REPORT_RATE, "report:"):
                 return self._send(429, {"error": "Thanks - that's a lot of reports. Try again later."})
+        elif path.startswith("/api/live/"):
+            if limited(self._ip(), LIVE_RATE, "live:"):
+                return self._send(429, {"error": "Too many live requests - try again in a minute."})
         elif limited(self._ip()):
             return self._send(429, {"error": "Too many scores - try again in a few minutes."})
         if path in ("/api/challenges", "/api/leagues") and limited(self._ip(), CREATE_RATE, "create:"):
@@ -1339,6 +1356,8 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
         sys.stderr.write("%s %s\n" % (self._ip(), fmt % args))
 
+
+live.bind(sys.modules[__name__])
 
 if __name__ == "__main__":
     init()
