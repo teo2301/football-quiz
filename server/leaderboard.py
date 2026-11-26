@@ -1268,6 +1268,10 @@ class Handler(BaseHTTPRequestHandler):
                 if limited(self._ip(), LIVE_GET_RATE, "livegw:"):
                     return self._send(429, {"error": "Too many requests"})
                 return self._send(200, live.state(params.get("code"), pid))
+            if path == "/api/live/room":
+                if limited(self._ip(), LIVE_GET_RATE, "livegw:"):
+                    return self._send(429, {"error": "Too many requests"})
+                return self._send(200, live.room_get(params, pid))
             if path == "/api/live/league":
                 return self._send(200, live.league(params.get("period", "week"), pid))
             if path == "/api/health":
@@ -1312,7 +1316,7 @@ class Handler(BaseHTTPRequestHandler):
                  "/api/leagues/leave": leave_league, "/api/badges": set_badges,
                  "/api/report": add_report, "/api/push": add_push,
                  "/api/live/queue": live.queue, "/api/live/cancel": live.cancel, "/api/live/create": live.create,
-                 "/api/live/join": live.join, "/api/live/answer": live.answer}.get(path)
+                 "/api/live/join": live.join, "/api/live/answer": live.answer}.get(path) or live.ROOM_POST.get(path)
         return self._body(path, route)
 
     def do_DELETE(self):
@@ -1357,6 +1361,7 @@ class Handler(BaseHTTPRequestHandler):
         sys.stderr.write("%s %s\n" % (self._ip(), fmt % args))
 
 
+LIVE_BOT_TAG = "Bot \u26bd"      # 2v2 bots: "Bot ⚽ Nova"
 live.bind(sys.modules[__name__])
 
 if __name__ == "__main__":
