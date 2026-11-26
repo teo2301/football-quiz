@@ -547,6 +547,10 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
             await tab.wait(LOADED % "lgMsg")
             await tab.wait("document.querySelectorAll('#dvTable li').length > 0")
             await tab.shot("13-leagues")
+            # app bar turns into a frosted bar once the page scrolls
+            await tab.js("window.scrollTo(0, 400); true")
+            await tab.wait("document.body.classList.contains('scrolled')")
+            await tab.shot("13a-leagues-scrolled-bar", full=False)
             await tab.js("document.querySelector('[data-tab=home]').click()")
             await tab.wait(VISIBLE % "divStrip")
             await tab.shot("13b-home-strip", full=False)
