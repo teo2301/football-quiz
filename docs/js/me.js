@@ -30,3 +30,13 @@ async function saveMeName() {
   $("meSave").disabled = false;
   m.textContent = r.text; m.classList.toggle("err", !r.ok);
 }
+
+// Android browser visitors (not the installed app) get a "Get the Android app" tile on home.
+(function () {
+  var inApp = (document.referrer || "").indexOf("android-app://") === 0 ||
+    (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+  if (/Android/i.test(navigator.userAgent || "") && !inApp) {
+    var t = document.getElementById("getApp");
+    if (t) t.classList.remove("hidden");
+  }
+})();

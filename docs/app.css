@@ -468,3 +468,7 @@ input.code::placeholder{letter-spacing:.18em}
 .switch:disabled{opacity:.5;cursor:default}
 .pushnote{margin:6px 0 8px}
 #pushList .setrow .stx{padding-right:12px}
+
+.getapp{display:block;margin-top:12px;text-decoration:none;border-color:var(--chalk2)}
+.getapp b{display:block;font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:17px;color:#f2c230}
+.getapp span{display:block;font-size:13px;color:var(--chalk2);margin-top:2px}
