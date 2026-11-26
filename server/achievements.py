@@ -12,7 +12,7 @@ LIST = [
     ("perfect10", 1), ("perfect20", 2), ("perfect50", 3), ("icecool", 2),
     ("surv15", 2), ("surv30", 3), ("blitz10", 1), ("blitz20", 3), ("hilo10", 2), ("spotted", 1), ("scout", 3),
     ("lg_pl", 2), ("lg_ll", 2), ("lg_sa", 2), ("lg_eu", 2), ("lg_in", 2),
-    ("chalwin", 1), ("giant", 3), ("promoted", 2), ("topflight", 3),
+    ("chalwin", 1), ("giant", 3), ("duowin", 1), ("carry", 2), ("flawless", 3), ("promoted", 2), ("topflight", 3),
     ("correct500", 2), ("seen500", 2),
 ]
 TIER = {k: t for k, t in LIST}

@@ -90,7 +90,7 @@ function standingAchs() {
   return out;
 }
 
-// ev: {k: "daily"|"classic"|"career"|"chal"|"run", ...}
+// ev: {k: "daily"|"classic"|"career"|"chal"|"run"|"duo", ...}
 function achCheck(ev) {
   var ids = standingAchs();
   if (ev) {
@@ -106,6 +106,11 @@ function achCheck(ev) {
       ids.push("chalwin");
       var tr = ev.res.tiers;
       if (tr && tr.them < tr.you) ids.push("giant");
+    }
+    if (ev.k === "duo" && ev.res) {
+      if (ev.res.outcome === "win") ids.push("duowin");
+      if (ev.res.carry) ids.push("carry");
+      if (ev.res.flawless) ids.push("flawless");
     }
   }
   award(ids, false);

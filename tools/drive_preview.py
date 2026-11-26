@@ -2,7 +2,12 @@
 """Drive the preview (:8197) in headless Chromium at 390x844, light + dark,
 and save screenshots to preview-shots/. Prints console errors.
 
-    python3 tools/drive_preview.py [light|dark|both]
+    python3 tools/drive_preview.py [light|dark|both|live]
+
+`live` runs four browser contexts at once in one Chromium (two light, two dark, each with its own
+player id and client IP): a full 2v2 room game (create, three join by #r= link, a seat switch,
+start, answers at different speeds, everyone must see the same phases and scores, results,
+rematch), then a Quick match against bots while two of the players play a live 1v1.
 """
 import asyncio
 import base64
@@ -497,7 +502,7 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
                 await tab.js("document.querySelector('[data-tab=home]').click()")
 
             # Classic: 10 questions, right/wrong mix, first answers captured
-            await tab.js("document.querySelector('.mode.active').click()")
+            await tab.js("document.querySelector('[data-mode=classic]').click()")
             await tab.shot("02-classic-setup")
             if scheme == "dark":    # timer on in dark run, to see the clock
                 await tab.js("[].slice.call(document.querySelectorAll('#timers .chip')).filter(function(b){return b.textContent==='20 s'})[0].click()")
@@ -604,5 +609,236 @@ async def main(which):
         print(k, "console errors/warnings:", v or "none")
 
 
+# ---------------------------------------------------------------- live: 2v2 + 1v1 with 4 browsers at once
+
+class Player(Tab):
+    pass
+
+
+async def open_players(port, n, tag):
+    ver = json.load(urllib.request.urlopen("http://127.0.0.1:%d/json/version" % port))
+    bws = await websockets.connect(ver["webSocketDebuggerUrl"], max_size=100_000_000)
+    btab = Tab(bws, "browser")
+    breader = asyncio.ensure_future(btab.reader())
+    players = []
+    for k in range(n):
+        ctx = (await btab.send("Target.createBrowserContext"))["browserContextId"]
+        tid = (await btab.send("Target.createTarget", {"url": "about:blank", "browserContextId": ctx}))["targetId"]
+        ws = await websockets.connect("ws://127.0.0.1:%d/devtools/page/%s" % (port, tid), max_size=100_000_000)
+        scheme = "light" if k % 2 == 0 else "dark"
+        p = Player(ws, "live-p%d-%s" % (k + 1, scheme))
+        p.scheme, p.base, p.k = scheme, URL, k
+        p.name = "P%d %s" % (k + 1, tag)
+        p.rd = asyncio.ensure_future(p.reader())
+        for m in ("Runtime.enable", "Log.enable", "Page.enable", "Network.enable"):
+            await p.send(m)
+        await p.send("Network.setExtraHTTPHeaders", {"headers": {
+            "X-Preview-Client": "10.96.%d.%d" % (int(time.time()) % 200, k + 10)}})
+        await p.send("Emulation.setDeviceMetricsOverride", {"width": 390, "height": 844, "deviceScaleFactor": 2, "mobile": True})
+        await p.send("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-color-scheme", "value": scheme}]})
+        players.append(p)
+    return btab, breader, players
+
+
+async def with_name(p, hash_=""):
+    await p.goto(p.base)
+    await p.wait("BANK.length > 0 && document.fonts.status === 'loaded'")
+    await p.js("localStorage.setItem('fq_name', %s)" % json.dumps(json.dumps(p.name)))
+    if hash_:
+        await p.goto(p.base + hash_)
+        await p.wait("BANK.length > 0")
+
+
+DU = "(du && du.st ? du.st : {})"
+
+
+async def du_answer(p, delay, right):
+    """Wait `delay` s into the question, then tap the right (or a wrong) answer."""
+    await asyncio.sleep(delay)
+    return await p.js("""(function () {
+      if (!du || !du.st || du.st.phase !== 'question' || du.picked != null) return 'skip';
+      var a = BY_ID[du.st.q.id].a, want = %s;
+      var bs = document.querySelectorAll('#duOpts .opt');
+      for (var i = 0; i < bs.length; i++) {
+        var v = bs[i].getAttribute('data-v');
+        if ((v === a) === want) { bs[i].click(); return v; }
+      }
+      return 'none';
+    })()""" % ("true" if right else "false"))
+
+
+async def same_view(ps, expr):
+    vals = [await p.js(expr) for p in ps]
+    if any(v != vals[0] for v in vals):
+        raise RuntimeError("players disagree on %s: %s" % (expr, vals))
+    return vals[0]
+
+
+async def room_game(ps):
+    host, others = ps[0], ps[1:]
+    await with_name(host)
+    await host.shot("60-home-duo-tile", full=False)
+    await host.js("document.querySelector('[data-mode=duo]').click()")
+    await host.wait(VISIBLE % "duHub")
+    await host.shot("61-duo-hub")
+    await host.js("document.getElementById('duCreate').click()")
+    await host.wait(VISIBLE % "duRoom" + " && %s.phase === 'lobby'" % DU)
+    code = await host.js("du.code")
+    print("2v2 room", code)
+    await host.shot("62-duo-lobby-alone")
+    # P2 and P3 join by link (P2 lands on the other team, P3 on the host's); P3 then switches sides
+    for p in others[:2]:
+        await with_name(p, "#r=" + code)
+        await p.wait(VISIBLE % "duRoom" + " && %s.phase === 'lobby'" % DU)
+    p3 = others[1]
+    await p3.wait("%s.team === 0" % DU)
+    await p3.js("document.querySelector('.duteam.tB .duseat.empty').click()")
+    await p3.wait("%s.team === 1" % DU)
+    await with_name(others[2], "#r=" + code)
+    await others[2].wait(VISIBLE % "duRoom" + " && %s.team === 0" % DU)
+    await asyncio.gather(*[p.wait("%s.seats && %s.seats.filter(Boolean).length === 4" % (DU, DU)) for p in ps])
+    await host.shot("63-duo-lobby-full")
+    await others[0].shot("64-duo-lobby-guest")
+    teams = [await p.js("du.st.team") for p in ps]
+    print("teams", teams)
+    await host.js("document.getElementById('duStart').click()")
+    await asyncio.gather(*[p.wait("%s.phase === 'countdown' || %s.phase === 'question'" % (DU, DU)) for p in ps])
+    await host.shot("65-duo-countdown", full=False)
+    speeds = [0.4, 1.4, 2.2, 3.0]
+    for i in range(10):
+        await asyncio.gather(*[p.wait("%s.phase === 'question' && %s.cur === %d" % (DU, DU, i), 25) for p in ps])
+        if i == 0:
+            await ps[1].shot("66-duo-question", full=False)
+        # team of P1 (host) is sharper: host + P4 right most of the time, P2/P3 right on even questions
+        rights = [True, i % 2 == 0, i % 2 == 0, i != 3]
+        if i == 6:      # P2 is slow and lets the clock run out once
+            jobs = [du_answer(ps[k], speeds[k], rights[k]) for k in (0, 2, 3)]
+        else:
+            jobs = [du_answer(ps[k], speeds[k], rights[k]) for k in range(4)]
+        if i == 1:     # shoot P1 locked in while the others are still thinking
+            async def locked():
+                await ps[0].wait("%s.phase === 'question' && %s.mine != null" % (DU, DU), 10)
+                await ps[0].shot("67-duo-locked-in", full=False)
+            jobs.append(locked())
+        await asyncio.gather(*jobs)
+        await asyncio.gather(*[p.wait("%s.phase === 'reveal' && %s.cur === %d" % (DU, DU, i), 25) for p in ps])
+        await same_view(ps, "JSON.stringify([du.st.cur, du.st.scores, du.st.reveal.a, du.st.reveal.picks])")
+        if i == 0:
+            await ps[0].shot("68-duo-reveal-light", full=False)
+            await ps[1].shot("69-duo-reveal-dark", full=False)
+    await asyncio.gather(*[p.wait(VISIBLE % "duDone", 20) for p in ps])
+    await asyncio.sleep(3.5)        # let the win celebration finish before the screenshots
+    scores = await same_view(ps, "JSON.stringify(du.st.result.scores)")
+    outs = [await p.js("du.st.result.outcome") for p in ps]
+    print("2v2 result", scores, outs)
+    assert sorted(set(outs)) in (["loss", "win"], ["draw"]), outs
+    for p in ps:
+        await p.shot("70-duo-result")
+    rev = await ps[0].js("document.querySelectorAll('#duReview .rev').length")
+    assert rev == 10, rev
+    winners = [p for p, o in zip(ps, outs) if o == "win"]
+    for p in winners:
+        has = await p.js("Object.keys(achHave())")
+        print(p.tag, "achievements:", [a for a in has if a in ("duowin", "carry", "flawless")])
+        assert "duowin" in has
+    # rematch: P2 presses it, everyone is back in the same room's lobby without bots
+    await ps[1].js("document.getElementById('duAgain').click()")
+    await asyncio.gather(*[p.wait(VISIBLE % "duRoom" + " && %s.phase === 'lobby'" % DU, 10) for p in ps])
+    await same_view(ps, "du.code")
+    await ps[1].shot("71-duo-rematch-lobby")
+    for p in ps:
+        await p.js("document.getElementById('duRoomBack').click()")
+    await asyncio.gather(*[p.wait(VISIBLE % "duHub") for p in ps])
+    rows = db_rows("SELECT code, score0, score1, winner FROM live_games WHERE code = ?", (code,))
+    print("live_games row:", rows)
+    assert rows, "2v2 game not saved"
+
+
+async def quick_vs_bots(p):
+    await p.js("document.getElementById('duQuick').click()")
+    await p.wait(VISIBLE % "duRoom" + " && %s.phase === 'lobby'" % DU)
+    await asyncio.sleep(1.2)
+    await p.shot("72-quick-lobby")
+    await p.wait("%s.phase === 'countdown' || %s.phase === 'question'" % (DU, DU), 45)
+    bots = await p.js("du.st.seats.filter(function (s) { return s && s.bot; }).length")
+    print("quick match bots:", bots)
+    assert bots == 3, bots
+    for i in range(10):
+        await p.wait("%s.phase === 'question' && %s.cur === %d" % (DU, DU, i), 25)
+        await du_answer(p, 0.8, True)
+        if i == 2:
+            await asyncio.sleep(1.0)
+            await p.shot("73-quick-question-bots", full=False)
+        await p.wait("%s.phase === 'reveal' && %s.cur === %d" % (DU, DU, i), 25)
+    await p.wait(VISIBLE % "duDone", 20)
+    await asyncio.sleep(3.5)
+    print("quick match result:", await p.js("JSON.stringify([du.st.result.outcome, du.st.result.scores])"))
+    await p.shot("74-quick-result")
+    await p.js("document.getElementById('duLeave').click()")
+
+
+async def one_v_one(a, b):
+    for p in (a, b):
+        await p.js("document.querySelector('[data-tab=home]').click()")
+        await p.js("document.querySelector('[data-mode=live]').click()")
+        await p.wait(VISIBLE % "lvLobby")
+    await a.shot("80-1v1-lobby")
+    await a.js("document.getElementById('lvFind').click()")
+    await a.wait(VISIBLE % "lvWait")
+    await a.shot("81-1v1-finding")
+    await b.js("document.getElementById('lvFind').click()")
+    await asyncio.gather(*[p.wait(VISIBLE % "lvMatch", 15) for p in (a, b)])
+    for i in range(10):
+        await asyncio.gather(*[p.wait("lv && lv.phase === 'question' && lv.q && document.getElementById('lvQN').textContent.indexOf('Question %d ') === 0" % (i + 1), 25) for p in (a, b)])
+        for p, ok in ((a, True), (b, i % 3 == 0)):
+            await p.js("""(function () {
+              var bs = document.querySelectorAll('#lvOpts .opt'), q = document.getElementById('lvQText').textContent, a = null;
+              for (var k = 0; k < BANK.length; k++) if (BANK[k].q === q) { a = BANK[k].a; break; }
+              for (var i = 0; i < bs.length; i++) if ((bs[i].getAttribute('data-v') === a) === %s) { bs[i].click(); return; }
+            })()""" % ("true" if ok else "false"))
+            await asyncio.sleep(0.5)
+        if i == 0:
+            await a.wait("lv && lv.phase === 'reveal'", 10)
+            await a.shot("82-1v1-reveal", full=False)
+            await b.shot("83-1v1-reveal-dark", full=False)
+    await asyncio.gather(*[p.wait(VISIBLE % "lvDone", 25) for p in (a, b)])
+    await a.shot("84-1v1-result")
+    await b.shot("85-1v1-result-dark")
+    print("1v1 result:", await a.js("document.getElementById('lvResBig').textContent"), "/",
+          await b.js("document.getElementById('lvResBig').textContent"))
+
+
+async def live_main():
+    os.makedirs(OUT, exist_ok=True)
+    tag = time.strftime("%H%M%S")
+    port = PORT + 5
+    prof = tempfile.mkdtemp(prefix="fq-chrome-live-")
+    proc = subprocess.Popen([CHROME, "--headless=new", "--remote-debugging-port=%d" % port, "--user-data-dir=" + prof,
+                             "--no-sandbox", "--no-first-run", "--hide-scrollbars", "--disable-gpu", "about:blank"],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        for _ in range(50):
+            try:
+                urllib.request.urlopen("http://127.0.0.1:%d/json/version" % port)
+                break
+            except Exception:
+                time.sleep(0.2)
+        btab, breader, ps = await open_players(port, 4, tag)
+        await room_game(ps)
+        # then at the same time: P1 plays a quick match against bots, P2 + P3 play a ranked 1v1
+        await asyncio.gather(quick_vs_bots(ps[0]), one_v_one(ps[1], ps[2]))
+        for p in ps:
+            p.rd.cancel()
+        breader.cancel()
+        errs = {p.tag: p.errors for p in ps}
+    finally:
+        proc.terminate()
+        proc.wait()
+        shutil.rmtree(prof, ignore_errors=True)
+    for k, v in errs.items():
+        print(k, "console errors/warnings:", v or "none")
+
+
 if __name__ == "__main__":
-    asyncio.run(main(sys.argv[1] if len(sys.argv) > 1 else "both"))
+    which = sys.argv[1] if len(sys.argv) > 1 else "both"
+    asyncio.run(live_main() if which == "live" else main(which))

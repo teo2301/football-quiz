@@ -87,12 +87,12 @@ function toast(text) {
   clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.add("hidden"); }, 2600);
 }
 
-var SCREENS = ["home", "setup", "play", "hilo", "career", "done", "chal", "chIntro", "vs", "live", "boards", "leaguesTab", "league", "me"];
+var SCREENS = ["home", "setup", "play", "hilo", "career", "done", "chal", "chIntro", "vs", "live", "duo", "boards", "leaguesTab", "league", "me"];
 var TAB_OF = {home: "home", setup: "home", play: "home", hilo: "home", career: "home", done: "home",
-              chal: "home", chIntro: "home", vs: "home", live: "home",
+              chal: "home", chIntro: "home", vs: "home", live: "home", duo: "home",
               boards: "boards", leaguesTab: "leaguesTab", league: "leaguesTab", me: "me"};
 // How deep a screen sits under its tab: going deeper slides in from the right, back from the left.
-var DEPTH = {home: 0, boards: 0, leaguesTab: 0, me: 0, setup: 1, chal: 1, chIntro: 1, league: 1, live: 1,
+var DEPTH = {home: 0, boards: 0, leaguesTab: 0, me: 0, setup: 1, chal: 1, chIntro: 1, league: 1, live: 1, duo: 1,
              play: 2, hilo: 2, career: 2, done: 3, vs: 3};
 var curScreen = "home";
 function show(id) {

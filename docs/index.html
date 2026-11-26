@@ -394,6 +394,83 @@
   </div>
 </section>
 
+<!-- ============ 2v2 Online (live.js) ============ -->
+<section id="duo" class="hidden">
+  <div id="duHub">
+    <div class="pagehead"><button class="back" id="duBack" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><h1>2v2 Online</h1></div>
+    <div class="card duhero">
+      <span class="lbl">Quick match</span>
+      <h2 class="ctitle">Jump in with anyone online</h2>
+      <p class="cmeta">You get a team-mate and two opponents. Empty seats are filled by bots after 30 seconds.</p>
+      <button class="btn" id="duQuick">Quick match</button>
+    </div>
+    <div class="tile form">
+      <b>Play with mates</b>
+      <p class="cmeta">Make a room and send the link. Two a side, or fill the gaps with bots.</p>
+      <button class="btn" id="duCreate">Create a room</button>
+      <div class="namerow" style="margin-top:12px"><input id="duCode" class="code" maxlength="7" placeholder="ROOM CODE" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-label="Room code"><button class="btn ghost" id="duJoin">Join</button></div>
+    </div>
+    <p class="msg hidden" id="duMsg" aria-live="polite"></p>
+    <h2 class="sec">How it works</h2>
+    <ul class="duhow">
+      <li><b>10</b><span>questions, the same for all four players</span></li>
+      <li><b>15s</b><span>to answer each one: quicker right answers score more, harder ones are worth more</span></li>
+      <li><b>2+2</b><span>your points and your team-mate's are added up: the higher team total wins</span></li>
+    </ul>
+  </div>
+
+  <div id="duRoom" class="hidden">
+    <div class="pagehead"><button class="back" id="duRoomBack" aria-label="Leave room"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><h1 id="duRoomTitle">Room</h1></div>
+    <p class="small center dunote" id="duRoomNote"></p>
+    <div class="duteams" id="duTeams"></div>
+    <div class="card dushare hidden" id="duShareBox">
+      <span class="lbl">Room code</span><b class="codebig" id="duRoomCode"></b>
+      <button class="btn" id="duShare">Send the link</button>
+    </div>
+    <button class="btn" id="duStart">Start game</button>
+    <p class="small center" id="duStartNote"></p>
+  </div>
+
+  <div id="duGame" class="hidden">
+    <div class="playtop"><span class="mname" id="duKind">2v2</span><button class="iconbtn" id="duQuit">Quit</button></div>
+    <div class="scoreboard duboard">
+      <div class="tA"><span id="duUsName">Your team</span><b id="duUsPts">0</b></div>
+      <div class="clk"><span>Clock</span><b id="duClock">–</b></div>
+      <div class="tB"><span id="duThemName">Them</span><b id="duThemPts">0</b></div>
+    </div>
+    <div class="duplayers" id="duPlayers"></div>
+    <div class="segs" id="duSegs"></div>
+    <div class="dutimer"><i id="duBar"></i></div>
+    <div class="card qcard" id="duQCard">
+      <span class="tag" id="duQN"></span>
+      <p class="q" id="duQText"></p>
+      <img class="qflag hidden" id="duImg" alt="" width="240" height="180">
+    </div>
+    <div class="ducount hidden" id="duCount"><span>Get ready</span><b id="duCountN">3</b></div>
+    <div class="opts" id="duOpts"></div>
+    <p class="small center lvstatus" id="duStatus"></p>
+    <div class="fact hidden" id="duFact"><b>Did you know</b><p id="duFactText"></p></div>
+  </div>
+
+  <div id="duDone" class="hidden">
+    <div class="card result dures" id="duRes">
+      <div class="lbl" id="duResLabel">2v2 · full time</div>
+      <div class="big" id="duResBig"></div>
+      <div class="vsrow">
+        <div class="side tA"><span class="nm" id="duResUs"></span><b id="duResUsPts">0</b></div>
+        <div class="mid">v</div>
+        <div class="side tB"><span class="nm" id="duResThem"></span><b id="duResThemPts">0</b></div>
+      </div>
+      <p class="verdict" id="duResLine"></p>
+    </div>
+    <ul class="lb duscores" id="duScores"></ul>
+    <button class="btn" id="duAgain">Rematch</button>
+    <button class="btn ghost" id="duLeave">Leave</button>
+    <h2 class="sec">Question by question</h2>
+    <ul class="review qq" id="duReview"></ul>
+  </div>
+</section>
+
 <!-- ============ Name sheet (shared) ============ -->
 <div class="sheet hidden" id="nameSheet" role="dialog" aria-modal="true" aria-labelledby="nsTitle">
   <div class="card">

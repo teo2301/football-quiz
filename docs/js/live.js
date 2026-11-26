@@ -1,4 +1,5 @@
-// Live 1v1 matches + the ranked 1v1 league. Identical in every quiz (server side: server/live.py).
+// Live 1v1 matches, the ranked 1v1 league and 2v2 Online rooms. Identical in every quiz
+// (server side: server/live.py).
 // Plain ES2017 (iOS 12): no ?. ?? or catch-without-binding.
 "use strict";
 
@@ -264,12 +265,12 @@ function lvQuit() {
 }
 
 function handleLiveHash() {
-  var m = /^#l=([A-Za-z0-9\-]{6,7})$/.exec(location.hash);
+  var m = /^#([lr])=([A-Za-z0-9\-]{6,7})$/.exec(location.hash);
   if (!m) return false;
-  var code = tidyCode(m[1]);
+  var code = tidyCode(m[2]);
   try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { location.hash = ""; }
   if (!CODE_RE.test(code)) return false;
-  openLive(code);
+  if (m[1] === "r") openDuo(code); else openLive(code);
   return true;
 }
 
@@ -294,4 +295,357 @@ function wireLive() {
   $("lvHome").onclick = goHome;
   $("lvTabPlay").onclick = function () { openLive(); };
   window.addEventListener("hashchange", handleLiveHash);
+  wireDuo();
+}
+
+
+// ================================================================ 2v2 Online
+// Rooms of two teams of two. The client long-polls GET /live/room?v=N: the server answers as soon as
+// the room changes (or after ~25 s), so every phone sees the same phase within a moment. If long
+// polls keep failing it drops to plain polling every 1.5 s for a while.
+
+var du = null;              // {code, v, st, q, picked, deadline, total, fails, short, stopped}
+var DU_TEAMS = ["Yellows", "Blues"];
+
+function duPanel(id) {
+  ["duHub", "duRoom", "duGame", "duDone"].forEach(function (p) { $(p).classList.toggle("hidden", p !== id); });
+  document.body.classList.toggle("playing", id === "duGame");
+}
+function duStop() {
+  if (du) { du.stopped = true; clearTimeout(du.timer); }
+  du = null;
+}
+
+function openDuo(code) {
+  duStop();
+  show("duo"); duPanel("duHub");
+  $("duCode").value = code || ""; msg("duMsg", "");
+  $("duQuick").disabled = false; $("duCreate").disabled = false;
+  if (code) duJoin();
+}
+
+function duErr(e) {
+  msg("duMsg", e.status === 0 ? "2v2 needs a connection. Check your signal and try again." : e.message, true);
+}
+async function duEnter(path, body, why) {
+  try { await ensureName(why); } catch (e) { return; }
+  body.name = myName(); body.player_id = playerId();
+  $("duQuick").disabled = true; $("duCreate").disabled = true;
+  try {
+    var r = await api(path, body);
+    duBegin(r.code);
+  } catch (e) { duErr(e); }
+  $("duQuick").disabled = false; $("duCreate").disabled = false;
+}
+function duQuick() { duEnter("/live/room/quick", {}, "The other players will see this name."); }
+function duCreate() { duEnter("/live/room/create", {}, "Your mates will see this name."); }
+function duJoin() {
+  var code = tidyCode($("duCode").value);
+  if (!CODE_RE.test(code)) return msg("duMsg", "Room codes are 6 letters and numbers.", true);
+  duEnter("/live/room/join", {code: code}, "Your mates will see this name.");
+}
+
+function duBegin(code) {
+  duStop();
+  du = {code: code, v: null, st: null, q: null, picked: null, deadline: 0, fails: 0, short: 0, stopped: false, celebrated: false};
+  duPoll();
+}
+
+async function duPoll() {
+  var me = du; if (!me || me.stopped) return;
+  if (curScreen !== "duo") return duLeave(true);     // went to another tab: give the seat up
+  var st = null, longPoll = me.v != null && !me.short;
+  try {
+    st = await api("/live/room?code=" + me.code + "&player_id=" + playerId() + (longPoll ? "&v=" + me.v : ""), null,
+                   longPoll ? 32000 : 8000);
+    me.fails = 0;
+  } catch (e) {
+    if (du !== me || me.stopped) return;
+    if (e.permanent) { duStop(); openDuo(); return toast(e.status === 404 ? "That room has closed" : e.message); }
+    me.fails++;
+    if (me.fails >= 12) { duStop(); openDuo(); return toast("Lost connection to the room"); }
+    me.short = 5;                                   // a few plain polls, then try long-polling again
+  }
+  if (du !== me || me.stopped) return;
+  var same = st && st.v === me.v;
+  if (st) { me.v = st.v; duRender(st); }
+  if (me.short) me.short--;
+  var wait = !st || me.short ? 1500 : same ? 400 : 0;
+  me.timer = setTimeout(duPoll, wait);
+}
+
+function duMates(st) {
+  // seat indexes: your team first (you first), then the other team
+  var t = st.team, mine = [2 * t, 2 * t + 1], them = [2 * (1 - t), 2 * (1 - t) + 1];
+  if (mine[1] === st.you) mine.reverse();
+  return {mine: mine, them: them};
+}
+// "Bot ⚽ Nova" -> "Nova", "Sam Jones" -> "Sam"
+function duShort(s) {
+  var w = s.name.split(" ");
+  return s.you ? "You" : s.bot ? w[w.length - 1] : w[0];
+}
+function duTeamName(st, seats) {
+  var n = seats.map(function (i) { var s = st.seats[i]; return s ? duShort(s) : null; }).filter(Boolean);
+  return n.join(" & ") || "–";
+}
+
+function duRender(st) {
+  if (st.phase === "gone") { duStop(); openDuo(); return toast("You're no longer in that room"); }
+  du.st = st;
+  if (st.phase === "lobby") return duLobby(st);
+  if (st.phase === "done") return duDone(st);
+  duGame(st);
+}
+
+// ---------------------------------------------------------------- lobby
+
+function duLobby(st) {
+  if (du.wasPlaying) { du.wasPlaying = false; du.celebrated = false; }
+  duPanel("duRoom");
+  du.q = null;
+  $("duRoomTitle").textContent = st.public ? "Quick match" : "Room " + st.code;
+  var box = $("duTeams"); box.innerHTML = "";
+  [0, 1].forEach(function (t) {
+    var col = h("div", {className: "duteam t" + "AB"[t] + (st.team === t ? " mine" : "")},
+      h("div", {className: "dth"}, h("b", null, DU_TEAMS[t]), st.team === t ? h("span", null, "Your team") : null));
+    [2 * t, 2 * t + 1].forEach(function (i) {
+      var s = st.seats[i];
+      if (s) {
+        col.appendChild(h("div", {className: "duseat" + (s.you ? " you" : "") + (s.bot ? " bot" : "")},
+          h("span", {className: "av"}, s.bot ? "🤖" : s.name.charAt(0).toUpperCase()),
+          h("span", {className: "nm"}, s.name),
+          s.host ? h("span", {className: "hs"}, "Host") : null));
+      } else {
+        var b = h("button", {className: "duseat empty", type: "button"}, h("span", {className: "av"}, "+"),
+          h("span", {className: "nm"}, st.team === t ? "Empty seat" : "Move here"));
+        if (st.team !== t) b.onclick = function () { duSeat(t); };
+        else b.disabled = true;
+        col.appendChild(b);
+      }
+    });
+    box.appendChild(col);
+  });
+  $("duShareBox").classList.toggle("hidden", st.public);
+  $("duRoomCode").textContent = st.code;
+  var humans = st.seats.filter(function (s) { return s && !s.bot; }).length;
+  var hostName = "";
+  st.seats.forEach(function (s) { if (s && s.host) hostName = s.name; });
+  if (st.public) {
+    du.deadline = Date.now() + (st.ms_left || 0);
+    duLobbyTick();
+  } else {
+    $("duRoomNote").textContent = humans < 2 ? "Send the link to your mates. Tap a seat on the other team to switch." :
+      "Tap an empty seat on the other team to switch sides.";
+  }
+  $("duStart").classList.toggle("hidden", !st.host);
+  $("duStart").disabled = false;
+  $("duStartNote").textContent = st.host ? (humans < 4 ? "Empty seats are filled by bots when you start." : "Everyone's here.")
+    : "Waiting for " + (hostName || "the host") + " to start…";
+}
+function duLobbyTick() {
+  if (!du || !du.st || du.st.phase !== "lobby" || !du.st.public) return;
+  var left = Math.max(0, Math.ceil((du.deadline - Date.now()) / 1000));
+  $("duRoomNote").textContent = left > 0 ? "Looking for players… bots fill the empty seats in " + left + " s" : "Starting…";
+}
+
+async function duSeat(t) {
+  try { await api("/live/room/seat", {code: du.code, player_id: playerId(), team: t}); }
+  catch (e) { toast(e.message); }
+}
+async function duStart() {
+  $("duStart").disabled = true;
+  try { await api("/live/room/start", {code: du.code, player_id: playerId()}); }
+  catch (e) { $("duStart").disabled = false; toast(e.status === 0 ? "No connection" : e.message); }
+}
+function duShare() {
+  shareLink("🤝 " + (myName() || "A mate") + " wants you in a 2v2 on " + document.title + ". Room " + du.code, APP_URL + "#r=" + du.code);
+}
+async function duLeave(silent) {
+  var me = du;
+  duStop();
+  if (me) { try { await api("/live/room/leave", {code: me.code, player_id: playerId()}); } catch (e) { /* the room times out */ } }
+  if (!silent) openDuo();
+}
+
+// ---------------------------------------------------------------- the game
+
+function duGame(st) {
+  var me = du;
+  me.wasPlaying = true;
+  duPanel("duGame");
+  var sides = duMates(st);
+  $("duUsName").textContent = duTeamName(st, sides.mine);
+  $("duThemName").textContent = duTeamName(st, sides.them);
+  $("duUsPts").textContent = st.scores[st.team]; $("duThemPts").textContent = st.scores[1 - st.team];
+  $("duUsPts").parentNode.className = "t" + "AB"[st.team]; $("duThemPts").parentNode.className = "t" + "AB"[1 - st.team];
+  $("duKind").textContent = st.public ? "2v2 · Quick match" : "2v2 · Room " + st.code;
+  // the four players, with a tick once they've answered
+  var pl = $("duPlayers"); pl.innerHTML = "";
+  sides.mine.concat(sides.them).forEach(function (i, k) {
+    var s = st.seats[i];
+    if (!s) return;
+    var done = st.phase === "question" && s.answered;
+    pl.appendChild(h("span", {className: "dup t" + "AB"[s.team] + (k < 2 ? " us" : " them") + (done ? " in" : "") + (s.standin ? " sub" : "")},
+      h("i", null, done ? "✓" : s.bot ? "🤖" : s.name.charAt(0).toUpperCase()),
+      h("span", null, duShort(s)), s.standin ? h("em", null, "bot") : null));
+  });
+  var segs = $("duSegs");
+  if (segs.children.length !== st.n) { segs.innerHTML = ""; for (var i = 0; i < st.n; i++) segs.appendChild(h("i")); }
+  for (var k = 0; k < st.n; k++) segs.children[k].className = k < st.cur ? "ok" : k === st.cur && st.phase !== "countdown" ? "now" : "";
+  me.deadline = Date.now() + (st.ms_left || 0);
+  if (st.phase === "countdown") {
+    me.phase = "countdown"; me.q = null;
+    $("duQCard").classList.add("hidden"); $("duOpts").innerHTML = ""; $("duFact").classList.add("hidden");
+    $("duCount").classList.remove("hidden"); $("duStatus").textContent = "";
+    duTick();
+    return;
+  }
+  $("duCount").classList.add("hidden");
+  $("duQCard").classList.remove("hidden");
+  var q = st.q, key = st.cur + ":" + q.id;
+  if (me.q !== key) {
+    me.q = key; me.picked = null; me.total = st.phase === "question" ? st.ms_left : 0;
+    $("duQN").textContent = "Question " + (st.cur + 1) + " of " + st.n + " · " + ["", "Easy", "Medium", "Hard"][q.d];
+    $("duQText").textContent = q.q;
+    var im = $("duImg");
+    if (q.img) { im.src = q.img; im.classList.remove("hidden"); } else im.classList.add("hidden");
+    var box = $("duOpts"); box.innerHTML = "";
+    q.opts.forEach(function (o) {
+      var b = h("button", {className: "opt"}, h("span", {className: "t"}, o));
+      b.setAttribute("data-v", o);
+      b.onclick = function () { duAnswer(o, st.cur); };
+      box.appendChild(b);
+    });
+    $("duFact").classList.add("hidden");
+  }
+  me.phase = st.phase;
+  if (st.phase === "question") {
+    if (st.mine != null && me.picked == null) duMark(st.mine);
+    var waiting = st.seats.filter(function (s) { return s && !s.answered; }).length;
+    $("duStatus").textContent = st.mine != null ? (waiting ? "Locked in. Waiting for " + waiting + " more…" : "Everyone's in…")
+      : "Quicker right answers score more";
+  } else {
+    duReveal(st, sides);
+  }
+  duTick();
+}
+
+function duMark(choice) {
+  du.picked = choice;
+  var btns = $("duOpts").children;
+  for (var i = 0; i < btns.length; i++) {
+    var on = btns[i].getAttribute("data-v") === choice;
+    btns[i].disabled = true; btns[i].classList.toggle("picked", on); btns[i].classList.toggle("dim", !on);
+  }
+}
+
+function duReveal(st, sides) {
+  var r = st.reveal, btns = $("duOpts").children, mine = r.picks[st.you];
+  for (var j = 0; j < btns.length; j++) {
+    var b = btns[j], v = b.getAttribute("data-v");
+    b.disabled = true; b.classList.remove("picked");
+    var old = b.querySelector(".who"); if (old) old.parentNode.removeChild(old);
+    var who = h("span", {className: "who"});
+    sides.mine.concat(sides.them).forEach(function (i, k) {
+      var s = st.seats[i];
+      if (s && r.picks[i].choice === v) who.appendChild(h("i", {className: "t" + "AB"[s.team], title: s.name}, duShort(s)));
+    });
+    b.classList.toggle("right", v === r.a);
+    b.classList.toggle("wrong", v !== r.a && mine.choice === v);
+    b.classList.toggle("dim", v !== r.a && mine.choice !== v);
+    if (who.children.length) b.appendChild(who);
+  }
+  var team = 0;
+  sides.mine.forEach(function (i) { team += r.picks[i].pts; });
+  $("duStatus").textContent = (mine.choice == null ? "Out of time" : mine.pts ? "Correct! +" + mine.pts : "Not this time") +
+    (team ? " · team +" + team : "");
+  if (mine.pts && du.revealed !== st.cur) { du.revealed = st.cur; answerFeel(true, true); }
+  $("duFactText").textContent = r.x; $("duFact").classList.toggle("hidden", !r.x);
+}
+
+function duTick() {
+  if (!du || du.stopped || !du.st) return;
+  var ms = Math.max(0, du.deadline - Date.now()), left = Math.ceil(ms / 1000);
+  if (du.st.phase === "lobby") return duLobbyTick();
+  if (du.phase === "countdown") { $("duCountN").textContent = Math.max(1, left); $("duClock").textContent = "–"; $("duBar").style.width = "100%"; return; }
+  $("duClock").textContent = du.phase === "reveal" ? "–" : left;
+  $("duClock").classList.toggle("low", du.phase === "question" && left <= 5);
+  $("duBar").style.width = du.phase === "question" ? Math.min(100, ms / 150) + "%" : "0%";
+}
+setInterval(duTick, 200);
+
+async function duAnswer(choice, idx) {
+  if (!du || du.picked != null || du.phase !== "question") return;
+  duMark(choice);
+  $("duStatus").textContent = "Locked in…";
+  try { await api("/live/room/answer", {code: du.code, player_id: playerId(), idx: idx, choice: choice}, 6000); }
+  catch (e) { /* the next poll shows where things stand */ }
+}
+
+// ---------------------------------------------------------------- result
+
+function duDone(st) {
+  var me = du;
+  duPanel("duDone");
+  var r = st.result, sides = duMates(st);
+  $("duRes").className = "card result dures " + r.outcome;
+  $("duResLabel").textContent = (st.public ? "Quick match" : "2v2") + " · full time";
+  $("duResBig").textContent = r.outcome === "win" ? "You win" : r.outcome === "draw" ? "Draw" : "You lose";
+  $("duResUs").textContent = duTeamName(st, sides.mine); $("duResThem").textContent = duTeamName(st, sides.them);
+  $("duResUsPts").textContent = r.scores[st.team]; $("duResThemPts").textContent = r.scores[1 - st.team];
+  $("duResUsPts").parentNode.className = "side t" + "AB"[st.team]; $("duResThemPts").parentNode.className = "side t" + "AB"[1 - st.team];
+  var mvp = st.seats[r.mvp];
+  $("duResLine").textContent = (r.tiebreak ? "Level on points: the quicker team wins. " : "") +
+    (r.carry ? "You carried the team: top scorer!" : "Top scorer: " + (mvp ? mvp.name : "?") + " (" + r.pts[r.mvp] + ")");
+  var ul = $("duScores"); ul.innerHTML = "";
+  [0, 1, 2, 3].sort(function (a, b) { return r.pts[b] - r.pts[a]; }).forEach(function (i, k) {
+    var s = st.seats[i]; if (!s) return;
+    ul.appendChild(h("li", {className: "tile duline t" + "AB"[s.team] + (s.you ? " me" : "")},
+      h("span", {className: "pos"}, i === r.mvp ? "⭐" : String(k + 1)),
+      h("span", {className: "nm"}, h("span", {className: "n"}, s.you ? s.name + " (you)" : s.name),
+        h("span", {className: "meta"}, DU_TEAMS[s.team] + " · " + r.correct[i] + "/" + st.n + " right" + (s.bot ? " · bot" : s.standin ? " · bot stood in" : ""))),
+      h("span", {className: "pts"}, r.pts[i])));
+  });
+  var rv = $("duReview"); rv.innerHTML = "";
+  r.review.forEach(function (q, n) {
+    var li = h("li", {className: "rev"},
+      h("div", {className: "qh"}, h("span", {className: "qn"}, String(n + 1)), h("span", {className: "qt"}, q.q)),
+      h("div", {className: "ans"}, "Answer: " + q.a));
+    sides.mine.concat(sides.them).forEach(function (i) {
+      var s = st.seats[i], a = q.picks[i]; if (!s) return;
+      li.appendChild(h("div", {className: "pk " + (a.pts ? "ok" : "no")}, (s.you ? "You" : s.name) + ": " +
+        (a.choice == null ? "no answer" : a.choice) + (a.pts ? " +" + a.pts : "")));
+    });
+    rv.appendChild(li);
+  });
+  $("duAgain").disabled = false;
+  if (!me.celebrated) {
+    me.celebrated = true;
+    if (r.outcome === "win") celebrate("You win!", r.carry ? "Top scorer in a 2v2 win" : "2v2 victory");
+    achCheck({k: "duo", res: r});
+  }
+}
+async function duRematch() {
+  $("duAgain").disabled = true;
+  try { await api("/live/room/rematch", {code: du.code, player_id: playerId()}); }
+  catch (e) { $("duAgain").disabled = false; toast(e.status === 404 ? "That room has closed" : e.message); }
+}
+function duQuit() {
+  if (!confirm("Leave this game? A bot will play the rest for you.")) return;
+  duLeave(true); goHome();
+}
+
+function wireDuo() {
+  $("duBack").onclick = function () { duStop(); goHome(); };
+  $("duQuick").onclick = duQuick;
+  $("duCreate").onclick = duCreate;
+  $("duJoin").onclick = duJoin;
+  $("duCode").addEventListener("keydown", function (e) { if (e.key === "Enter") duJoin(); });
+  $("duRoomBack").onclick = function () { duLeave(); };
+  $("duShare").onclick = duShare;
+  $("duStart").onclick = duStart;
+  $("duQuit").onclick = duQuit;
+  $("duAgain").onclick = duRematch;
+  $("duLeave").onclick = function () { duLeave(true); goHome(); };
 }

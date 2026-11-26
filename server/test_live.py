@@ -401,6 +401,18 @@ class Rooms(unittest.TestCase):
         self.assertEqual(got["st"]["seats"][2]["name"], "Bob")
         self.assertLess(got["t"] - t1, 1.0)
 
+    def test_long_poll_after_leaving(self):
+        code = V.room_create({"name": "Ann", "player_id": self.p[0]})["code"]
+        V.room_join({"name": "Bob", "player_id": self.p[1], "code": code})
+        v = self.st(code, 1)["v"]
+        got = {}
+        th = threading.Thread(target=lambda: got.setdefault("st", V.room_state(code, self.p[1], v=v, hold=5)))
+        th.start()
+        time.sleep(0.2)
+        V.room_leave({"player_id": self.p[1], "code": code})
+        th.join(3)
+        self.assertEqual(got["st"], {"phase": "gone"})
+
     def test_routes_registered(self):
         for path in ("create", "join", "quick", "seat", "start", "answer", "leave", "rematch"):
             self.assertIn("/api/live/room/" + path, V.ROOM_POST)

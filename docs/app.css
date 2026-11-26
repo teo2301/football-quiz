@@ -618,3 +618,94 @@ body{overflow-x:hidden}
 .sheet .card:before{content:"";position:absolute;left:50%;top:9px;width:40px;height:5px;margin-left:-20px;border-radius:3px;background:var(--cardb)}
 @-webkit-keyframes sheetUp{0%{-webkit-transform:translateY(60%)}100%{-webkit-transform:none}}
 @keyframes sheetUp{0%{transform:translateY(60%)}100%{transform:none}}
+
+/* ---------- 2v2 Online (live.js; identical in every quiz) */
+body{--tA:var(--yellow);--tB:#5cb8ff}
+.mode.hot{width:calc(100% - 10px);min-height:92px;padding-left:80px;padding-right:64px;border-color:var(--yellow);
+  background:linear-gradient(120deg,rgba(242,194,48,.3) 0,rgba(92,184,255,.24) 100%),var(--tile);
+  box-shadow:0 5px 0 var(--btn-edge),inset 0 1px 0 var(--btn-hi)}
+.mode.hot:active{box-shadow:0 1px 0 var(--btn-edge),inset 0 1px 0 var(--btn-hi)}
+.mode.hot .ic{position:absolute;left:18px;top:50%;width:46px;height:46px;margin:-23px 0 0;color:var(--yellow)}
+.mode.hot .ic svg{width:46px;height:46px}
+.mode.hot b{font-size:23px}
+.mode.hot span{font-size:13px}
+.mode .new{position:absolute;right:12px;top:12px;margin:0;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;color:#10231a;background:var(--yellow);box-shadow:0 2px 0 var(--btn-edge)}
+.duhero .lbl,.dushare .lbl{font-family:var(--head);font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.duhero .btn{margin-top:14px}
+#duHub .tile.form{margin-top:14px}
+#duHub .tile.form .btn{margin-top:12px}
+#duHub .namerow .btn{margin-top:0}
+.duhow{list-style:none;margin:0;padding:0}
+.duhow li{display:flex;align-items:center;margin-bottom:8px;padding:10px 14px;background:var(--tile);border:1px solid var(--tileb);border-radius:14px}
+.duhow b{flex:none;width:58px;font-family:var(--head);font-size:26px;color:var(--yellow)}
+.duhow span{font-size:14px;color:var(--chalk2)}
+.dunote{min-height:1.2em;margin:0 0 12px}
+.duteams{display:flex;margin:0 -5px 16px}
+.duteam{-webkit-box-flex:1;flex:1;min-width:0;margin:0 5px;padding:10px 10px 12px;background:var(--tile);border:1px solid var(--tileb);
+  border-top:5px solid var(--tA);border-radius:16px;box-shadow:0 5px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi)}
+.duteam.tB{border-top-color:var(--tB)}
+.duteam.mine{border-color:var(--tA);border-top-width:5px}
+.duteam.tB.mine{border-color:var(--tB)}
+.dth{padding:0 2px;min-height:44px}
+.dth b{display:block}
+.dth b{font-family:var(--head);font-size:19px;text-transform:uppercase;letter-spacing:.05em;color:var(--tA)}
+.duteam.tB .dth b{color:var(--tB)}
+.dth span{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--chalk2)}
+.duseat{display:flex;align-items:center;width:100%;min-height:52px;margin-top:8px;padding:8px;border:0;border-radius:12px;
+  background:rgba(0,0,0,.2);color:var(--chalk);font:inherit;text-align:left}
+.duseat .av{-webkit-box-flex:0;flex:none;display:flex;align-items:center;justify-content:center;width:34px;height:34px;margin-right:8px;
+  border-radius:50%;background:var(--tA);color:#10231a;font-weight:800;font-size:15px}
+.duteam.tB .duseat .av{background:var(--tB)}
+.duseat .nm{-webkit-box-flex:1;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:14px}
+.duseat .hs{flex:none;margin-left:4px;padding:1px 6px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;
+  background:rgba(244,247,241,.18);color:var(--chalk)}
+.duseat.you{box-shadow:inset 0 0 0 2px var(--chalk2)}
+.duseat.empty{background:transparent;border:2px dashed var(--tileb);color:var(--chalk2);cursor:pointer;
+  box-shadow:0 3px 0 var(--ghost-edge);-webkit-transition:-webkit-transform .08s,box-shadow .08s;transition:transform .08s,box-shadow .08s}
+.duseat.empty:active{-webkit-transform:translateY(3px);transform:translateY(3px);box-shadow:none}
+.duseat.empty:disabled{box-shadow:none;cursor:default;opacity:.7}
+.duseat.empty .av,.duteam.tB .duseat.empty .av{background:transparent;color:var(--chalk2);border:2px solid var(--tileb);font-size:20px}
+.dushare{text-align:center;margin-bottom:16px}
+.dushare .codebig{display:block;font-family:var(--head);font-size:42px;letter-spacing:.12em;margin:2px 0 12px;color:var(--ink)}
+#duStartNote{margin-top:6px}
+.duboard .tA b{color:var(--tA)}
+.duboard .tB b{color:var(--tB)}
+.duboard .clk b{color:var(--chalk)}
+.duboard .clk b.low{color:var(--segwrong)}
+.duboard span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.duplayers{display:flex;flex-wrap:wrap;justify-content:center;margin:10px -3px 0}
+.dup{display:flex;align-items:center;max-width:47%;margin:3px;padding:3px 10px 3px 3px;border-radius:999px;background:var(--tile);
+  border:1px solid var(--tileb);font-size:12.5px;font-weight:600}
+.dup i{-webkit-box-flex:0;flex:none;display:flex;align-items:center;justify-content:center;width:22px;height:22px;margin-right:6px;
+  border-radius:50%;font-style:normal;font-size:11px;font-weight:800;color:#10231a;background:var(--tA)}
+.dup.tB i{background:var(--tB)}
+.dup.in i{background:var(--right);color:#fff}
+.dup span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dup em{font-style:normal;font-size:10px;text-transform:uppercase;opacity:.7;margin-left:5px}
+.dutimer{height:5px;margin:-6px 0 12px;border-radius:3px;background:var(--segnone);overflow:hidden}
+.dutimer i{display:block;height:100%;width:100%;background:var(--yellow);-webkit-transition:width .2s linear;transition:width .2s linear}
+.ducount{text-align:center;padding:36px 0 20px}
+.ducount span{display:block;font-family:var(--head);font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:var(--chalk2)}
+.ducount b{display:block;font-family:var(--head);font-weight:700;font-size:120px;line-height:1.05;color:var(--yellow);text-shadow:0 6px 0 rgba(0,0,0,.25)}
+#duOpts .opt.picked{box-shadow:0 0 0 3px var(--yellow)}
+.opt .who{display:flex;flex-wrap:wrap;justify-content:flex-end;max-width:48%;margin-left:auto;padding-left:6px}
+.opt .who i{margin:2px 0 2px 4px;padding:2px 7px;border-radius:999px;font-style:normal;font-size:11px;font-weight:800;
+  color:#10231a;background:var(--tA);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt .who i.tB{background:var(--tB)}
+#duStatus{margin:12px 0 0;font-weight:600}
+.dures.win .big{color:var(--right)}
+.dures.loss .big{color:var(--wrong)}
+.dures .vsrow .tA b{color:#b0870e}
+.dures .vsrow .tB b{color:#2a7fc4}
+.duscores{margin-top:14px}
+.duline.tA{border-left:5px solid var(--tA)}
+.duline.tB{border-left:5px solid var(--tB)}
+#duDone .btn{margin-top:10px}
+#duDone .rev{list-style:none;padding:14px 16px;margin-top:10px;background:var(--tile);border:1px solid var(--tileb);border-radius:14px}
+#duDone .rev .qh{display:flex}
+#duDone .rev .qn{font-family:var(--head);font-weight:600;color:var(--yellow);margin-right:10px}
+#duDone .rev .ans{font-size:14px;margin:6px 0;color:var(--chalk)}
+#duDone .rev .pk{font-size:13px;color:var(--chalk2)}
+#duDone .rev .pk.ok{color:var(--chalk);font-weight:600}
+@media (prefers-color-scheme:dark){.dures .vsrow .tA b{color:var(--tA)}.dures .vsrow .tB b{color:var(--tB)}}

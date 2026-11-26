@@ -1107,7 +1107,7 @@ def room_state(code, pid, v=None, hold=HOLD):
                 now = time.monotonic()
                 r = _rooms.get(r["code"])
                 if not r or _seat_of(r, pid) is None:
-                    raise L.NotFound("That room has closed")
+                    return {"phase": "gone"}           # left (or the room closed) while waiting
                 _room_tick(r, now)
                 if r["v"] != v:
                     break
