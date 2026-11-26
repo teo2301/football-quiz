@@ -42,6 +42,7 @@
   $("goal").onclick = endCelebrate;
   wireCompete();
   wireReport();
+  wirePush();
   setInterval(tickCountdown, 1000);
 
   playerId();

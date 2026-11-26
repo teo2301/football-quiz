@@ -16,6 +16,8 @@ import time
 import urllib.request
 
 import websockets
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import threading
 
 CHROME = os.path.expanduser("~/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome")
 URL = "http://127.0.0.1:8197/"
@@ -26,6 +28,7 @@ PORT = 9333
 class Tab:
     def __init__(self, ws, tag):
         self.ws, self.tag, self.i, self.errors, self.waiting = ws, tag, 0, [], {}
+        self.sw_reg = None
 
     async def reader(self):
         async for raw in self.ws:
@@ -37,6 +40,10 @@ class Tab:
                 self.errors.append("EXC " + json.dumps(p["exceptionDetails"])[:400])
             elif meth == "Runtime.consoleAPICalled" and p.get("type") in ("error", "warning"):
                 self.errors.append("CON %s %s" % (p["type"], [a.get("value", a.get("description")) for a in p["args"]][:3]))
+            elif meth == "ServiceWorker.workerRegistrationUpdated":
+                for reg in p.get("registrations", []):
+                    if not reg.get("isDeleted"):
+                        self.sw_reg = reg["registrationId"]
             elif meth == "Log.entryAdded" and p["entry"]["level"] in ("error", "warning"):
                 self.errors.append("LOG " + p["entry"]["text"][:300] + " " + p["entry"].get("url", ""))
 
@@ -81,6 +88,153 @@ class Tab:
         await self.send("Page.navigate", {"url": url})
         await asyncio.sleep(0.5)
         await self.wait("document.readyState === 'complete'")
+
+
+# ---------------------------------------------------------------- push (Phase 6)
+# Headless Chromium has no push service (pushManager.subscribe hangs), so the page gets a fake
+# PushSubscription pointing at a local fake push service on :8196 (preview_start.sh allows it via
+# PUSH_EXTRA_HOSTS). The keys are real, so the server's pywebpush encrypts to it as usual.
+PUSH_PORT = 8196
+PUSHED = []
+
+
+class FakePush(BaseHTTPRequestHandler):
+    def do_POST(self):
+        body = self.rfile.read(int(self.headers.get("Content-Length") or 0))
+        PUSHED.append((self.path, len(body), self.headers.get("Authorization", "")[:10]))
+        self.send_response(201 if self.path.startswith("/ok") else 410)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def log_message(self, *a):
+        pass
+
+
+def fake_sub():
+    import base64
+    import uuid
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import ec
+    b64 = lambda b: base64.urlsafe_b64encode(b).rstrip(b"=").decode()
+    pub = ec.generate_private_key(ec.SECP256R1()).public_key().public_bytes(
+        serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
+    return {"endpoint": "http://127.0.0.1:%d/ok/%s" % (PUSH_PORT, uuid.uuid4().hex),
+            "keys": {"p256dh": b64(pub), "auth": b64(os.urandom(16))}}
+
+
+FAKE_PUSH_JS = """(function () {
+  if (!window.PushManager) return;
+  var S = %s;
+  function Sub() { this.endpoint = S.endpoint; this.expirationTime = null; }
+  Sub.prototype.toJSON = function () { return {endpoint: S.endpoint, expirationTime: null, keys: S.keys}; };
+  Sub.prototype.unsubscribe = function () { localStorage.removeItem("__fakesub"); return Promise.resolve(true); };
+  PushManager.prototype.getSubscription = function () {
+    return Promise.resolve(localStorage.getItem("__fakesub") === "1" ? new Sub() : null); };
+  PushManager.prototype.subscribe = function () { localStorage.setItem("__fakesub", "1"); return Promise.resolve(new Sub()); };
+})();"""
+
+
+def db_rows(sql, args=()):
+    import sqlite3
+    c = sqlite3.connect("file:/tmp/fq-v2-test.db?mode=ro", uri=True)
+    try:
+        return c.execute(sql, args).fetchall()
+    finally:
+        c.close()
+
+
+async def set_notif_perm(tab, setting):
+    await tab.send("Browser.setPermission", {"permission": {"name": "notifications"}, "setting": setting,
+                                             "origin": tab.base.rstrip("/")})
+
+
+async def push_flow(tab, scheme, name, shared):
+    """On the daily result: the offer. Light says yes (permission granted), dark says not now."""
+    assert await tab.js("Notification.permission") == "default", "permission was asked before the daily"
+    await tab.wait(VISIBLE % "pushAsk")
+    await tab.js("document.getElementById('pushAsk').scrollIntoView({block: 'center'})")
+    await tab.shot("63-push-offer", full=False)
+    pid = await tab.js("playerId()")
+    if scheme == "dark":
+        await tab.js("document.getElementById('paNo').click()")
+        await tab.wait("document.getElementById('pushAsk').classList.contains('hidden')")
+        assert not db_rows("SELECT 1 FROM push_subs WHERE player_id = ?", (pid,))
+        await tab.shot("64-push-not-now", full=False)
+        return
+    await set_notif_perm(tab, "granted")         # = the player tapping Allow on the browser's prompt
+    await tab.js("document.getElementById('paYes').click()")
+    await tab.wait("document.getElementById('pushAsk').classList.contains('hidden')", 15)
+    await tab.shot("64-push-on-toast", full=False)
+    rows = db_rows("SELECT types, endpoint FROM push_subs WHERE player_id = ?", (pid,))
+    assert rows and rows[0][0] == "daily,challenge,division", rows
+    # the server really sends to it (push_send.py test, against the test DB, through pywebpush)
+    n = len(PUSHED)
+    env = dict(os.environ, QUIZ_DB="/tmp/fq-v2-test.db", VAPID_PATH=os.path.expanduser("~/keys/football-quiz-vapid.json"),
+               PUSH_EXTRA_HOSTS="127.0.0.1:%d" % PUSH_PORT,
+               QUESTIONS_PATH=os.path.join(os.path.dirname(OUT), "docs", "questions.json"))
+    root = os.path.dirname(os.path.abspath(OUT))
+    out = subprocess.run([os.path.join(root, ".venv", "bin", "python"), os.path.join(root, "server", "push_send.py"),
+                          "test", name], env=env, capture_output=True, text=True, timeout=60)
+    print(scheme, "push_send test:", out.stdout.strip(), out.stderr.strip()[-300:])
+    assert len(PUSHED) == n + 1 and PUSHED[-1][0].startswith("/ok") and PUSHED[-1][2].startswith("vapid"), PUSHED
+    # what the phone would show: hand the service worker a push event and record what it asks to show.
+    # Headless Chromium has no push service (ServiceWorker.deliverPushMessage is dropped) and keeps no
+    # notifications, so: attach to the worker, wrap showNotification, dispatch a PushEvent by hand.
+    targets = json.load(urllib.request.urlopen("http://127.0.0.1:%d/json" % tab.port))
+    sw_url = [t for t in targets if t["type"] == "service_worker" and t["url"].startswith(tab.base)][0]["webSocketDebuggerUrl"]
+    async with websockets.connect(sw_url, max_size=10_000_000) as sws:
+        sw = Tab(sws, scheme + "-sw")
+        sreader = asyncio.ensure_future(sw.reader())
+        await sw.send("Runtime.enable")
+        await sw.js("self.__shown = []; var _sn = self.registration.showNotification.bind(self.registration);"
+                    "self.registration.showNotification = function (t, o) {"
+                    "  self.__shown.push([t, o.body, o.tag, o.data.url, o.badge, o.icon]); return _sn(t, o); };"
+                    "var ev = new PushEvent('push', {data: %s});"
+                    "ev.waitUntil = function (p) { self.__wait = p; };"   # untrusted events can't waitUntil
+                    "self.dispatchEvent(ev); true" % json.dumps(json.dumps(
+                        {"title": "Football Quiz #3 is up", "body": "Keep your 2-day streak going.",
+                         "url": "./#daily", "tag": "daily"})))
+        await sw.wait("self.__shown.length > 0", 10)
+        note = await sw.js("self.__shown[0]")
+        sreader.cancel()
+        tab.errors += sw.errors
+    print(scheme, "service worker showed:", note)
+    assert note[:4] == ["Football Quiz #3 is up", "Keep your 2-day streak going.", "daily", "./#daily"], note
+    shared["push_pid"] = pid
+
+
+async def push_me(tab, scheme):
+    """Me tab notification switches (+ blocked state in dark)."""
+    await tab.js("document.querySelector('[data-tab=me]').click()")
+    await tab.js("document.getElementById('pushList').scrollIntoView({block: 'center'})")
+    await tab.shot("65-me-notifications", full=False)
+    pid = await tab.js("playerId()")
+    sw = "document.querySelectorAll('#pushList .switch')[%d]"
+    if scheme == "light":
+        await tab.js((sw % 2) + ".click()")                 # promotion/relegation off (challenge stays on)
+        await tab.wait((sw % 2) + ".getAttribute('aria-checked') === 'false' && !" + (sw % 2) + ".disabled", 10)
+        assert db_rows("SELECT types FROM push_subs WHERE player_id = ?", (pid,))[0][0] == "daily,challenge"
+        await tab.shot("66-me-notifications-changed", full=False)
+        # a notification tap with the app open lands on the right tab
+        await tab.js("location.hash = '#leagues'")
+        await tab.wait(VISIBLE % "leaguesTab")
+        await tab.js("location.hash = '#daily'")
+        await tab.wait(VISIBLE % "home")
+    else:
+        await set_notif_perm(tab, "granted")              # = Allow on the browser's prompt
+        await tab.js((sw % 0) + ".click()")                 # off -> on, daily only
+        await tab.wait((sw % 0) + ".getAttribute('aria-checked') === 'true' && !" + (sw % 0) + ".disabled", 10)
+        assert db_rows("SELECT types FROM push_subs WHERE player_id = ?", (pid,))[0][0] == "daily"
+        await tab.js((sw % 0) + ".click()")                 # and off again = deleted on the server
+        await tab.wait((sw % 0) + ".getAttribute('aria-checked') === 'false' && !" + (sw % 0) + ".disabled", 10)
+        assert not db_rows("SELECT 1 FROM push_subs WHERE player_id = ?", (pid,))
+        await set_notif_perm(tab, "denied")
+        await tab.js("renderMe()")
+        await tab.js("document.getElementById('pushList').scrollIntoView({block: 'center'})")
+        assert await tab.js("[].every.call(document.querySelectorAll('#pushList .switch'), function (b) { return b.disabled })")
+        assert "blocked" in await tab.js("document.getElementById('pushNote').textContent")
+        await tab.shot("66-me-notifications-blocked", full=False)
+    await tab.js("document.querySelector('[data-tab=home]').click()")
 
 
 async def report_flow(tab):
@@ -304,6 +458,7 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
         async with websockets.connect(ws_url, max_size=100_000_000) as ws:
             tab = Tab(ws, scheme)
             tab.base = URL
+            tab.port = port
             reader = asyncio.ensure_future(tab.reader())
             for m in ("Runtime.enable", "Log.enable", "Page.enable", "Network.enable"):
                 await tab.send(m)
@@ -311,6 +466,7 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
             # passes this on as the client IP; everything else here comes from 127.0.0.1)
             await tab.send("Network.setExtraHTTPHeaders", {"headers": {
                 "X-Preview-Client": "10.97.0.%d" % (int(time.time()) % 200 + (1 if scheme == "light" else 2))}})
+            await tab.send("Page.addScriptToEvaluateOnNewDocument", {"source": FAKE_PUSH_JS % json.dumps(shared["sub_" + scheme])})
             await tab.send("Emulation.setDeviceMetricsOverride", {"width": 390, "height": 844, "deviceScaleFactor": 2, "mobile": True})
             await tab.send("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-color-scheme", "value": scheme}]})
             await tab.goto(tab.base)
@@ -349,6 +505,7 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
             await play(tab, [False, True, True, False, True, True, True, False, True, True], snap_first="03-classic", fifty_at=2)
             await tab.wait("!document.getElementById('done').classList.contains('hidden')")
             await tab.shot("04-classic-result-askname")
+            assert await tab.js("document.getElementById('pushAsk').classList.contains('hidden')"), "push offer after classic"
             if taken_name:      # name already claimed by the light run -> must be refused
                 await tab.js("document.getElementById('nameIn').value=%s;document.getElementById('postBtn').click()" % json.dumps(taken_name))
                 await tab.wait("/taken/.test(document.getElementById('postMsg').textContent)")
@@ -367,6 +524,7 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
             await play(tab, [True, True, False, True, True, False, True], snap_first="07-daily", report_at=2)
             await tab.wait("/Posted as/.test(document.getElementById('postMsg').textContent)", 10)
             await tab.shot("08-daily-result")
+            await push_flow(tab, scheme, name, shared)
             await tab.js("document.getElementById('menu').click()")
             await tab.shot("09-home-daily-done")
             await new_modes(tab)
@@ -398,6 +556,7 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
             await tab.js("document.querySelector('[data-tab=me]').click()")
             await tab.shot("14-me")
             await achievements_and_feel(tab)
+            await push_me(tab, scheme)
             await tab.goto(tab.base + "privacy.html")
             await tab.shot("15-privacy")
             # Reload the app: daily must still say done (one attempt) and SW must be active
@@ -418,7 +577,9 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
 async def main(which):
     os.makedirs(OUT, exist_ok=True)
     errs, tag = {}, time.strftime("%H%M%S")      # fresh browser = fresh player id, so fresh names
-    shared = {}
+    shared = {"sub_light": fake_sub(), "sub_dark": fake_sub()}
+    srv = ThreadingHTTPServer(("127.0.0.1", PUSH_PORT), FakePush)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
     light_prof = tempfile.mkdtemp(prefix="fq-chrome-")
     try:
         # light sends a challenge + makes a league; dark (another player) plays it and joins;
@@ -430,6 +591,11 @@ async def main(which):
             errs["light-sender"] = await run("light", "Light " + tag, shared=shared, prof=light_prof)
     finally:
         shutil.rmtree(light_prof, ignore_errors=True)
+    srv.shutdown()
+    print("fake push service received:", PUSHED)
+    if which == "both":     # the push_send test + "Dark beat your challenge" (sent when dark played it)
+        mine = [x for x in PUSHED if x[0] == "/" + shared["sub_light"]["endpoint"].split("/", 3)[3]]
+        print("pushes to the light player:", len(mine), "(expect 2)")
     for k, v in errs.items():
         print(k, "console errors/warnings:", v or "none")
 

@@ -17,6 +17,7 @@ function renderMe() {
   $("bCareer").textContent = b.career || "–";
   renderAchGrid();
   renderFeel();
+  renderPush();
   $("version").textContent = "Football Quiz v2 · " + BANK.length + " questions";
 }
 

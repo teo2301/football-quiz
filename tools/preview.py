@@ -26,7 +26,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def _proxy(self):
         body = None
-        if self.command == "POST":
+        if self.command in ("POST", "DELETE"):
             n = int(self.headers.get("Content-Length") or 0)
             body = self.rfile.read(min(n, 65536))
         req = urllib.request.Request(UPSTREAM + self.path, data=body, method=self.command,
@@ -51,6 +51,11 @@ class Handler(SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
+        if self.path.startswith("/api/"):
+            return self._proxy()
+        self.send_error(405)
+
+    def do_DELETE(self):
         if self.path.startswith("/api/"):
             return self._proxy()
         self.send_error(405)

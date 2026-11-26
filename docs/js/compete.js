@@ -520,6 +520,12 @@ async function leaveLeague() {
 // ---------------------------------------------------------------- links (#c=CODE, #j=CODE)
 
 function handleHash() {
+  var page = location.hash === "#daily" ? "daily" : location.hash === "#leagues" ? "leagues" : "";
+  if (page) {                 // from a notification: "today's quiz is up" / promotion and relegation
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { location.hash = ""; }
+    if (page === "leagues") openLeaguesTab(); else goHome();
+    return true;
+  }
   var m = /^#([cj])=([A-Za-z0-9\-]{6,7})$/.exec(location.hash);
   if (!m) return false;
   var code = tidyCode(m[2]);

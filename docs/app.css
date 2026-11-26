@@ -460,3 +460,11 @@ input.code::placeholder{letter-spacing:.18em}
   background:transparent;color:var(--ink);font:inherit;font-size:16px;resize:vertical}
 @media (prefers-color-scheme:dark){.rpnote,.card .chip{border-color:rgba(238,243,236,.3)}}
 .rpnote::placeholder{color:var(--ink2)}
+
+/* Phase 6: notifications - the offer after a daily quiz + the Me tab switches */
+.pushask{margin:12px 0}
+.pushask .pat{margin:0 0 4px}
+.pushask .cmeta{margin:0;font-size:.9rem}
+.switch:disabled{opacity:.5;cursor:default}
+.pushnote{margin:6px 0 8px}
+#pushList .setrow .stx{padding-right:12px}

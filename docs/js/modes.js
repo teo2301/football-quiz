@@ -145,6 +145,7 @@ function finishDaily(g, date) {
   $("chBox").classList.add("hidden");
   renderMissed(g);
   show("done");
+  showPushOffer();
   achCheck({k: "daily", correct: rec.correct, total: rec.total});
   if (rec.correct === rec.total) celebrate("Goal!", rec.total + " out of " + rec.total);
   submitResult("daily", {date: date, answers: g.answers}, function (r, name) {
@@ -161,6 +162,7 @@ function resultScreen() {
   $("rShare").classList.add("hidden");
   $("again").classList.remove("hidden");
   $("chBox").classList.add("hidden");
+  $("pushAsk").classList.add("hidden");
   $("missedH").textContent = "What you missed";
   $("postMsg").classList.add("hidden");
   $("postAsk").classList.add("hidden");

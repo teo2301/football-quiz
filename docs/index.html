@@ -25,6 +25,7 @@
 <script defer src="js/games.js"></script>
 <script defer src="js/compete.js"></script>
 <script defer src="js/board.js"></script>
+<script defer src="js/push.js"></script>
 <script defer src="js/me.js"></script>
 <script defer src="js/app.js"></script>
 </head>
@@ -176,6 +177,12 @@
       <div class="namerow"><input id="nameIn" maxlength="16" placeholder="Your name" autocomplete="nickname" autocapitalize="words"><button class="btn" id="postBtn">Post</button></div>
     </div>
     <p id="postMsg" class="msg hidden"></p>
+  </div>
+  <div class="tile pushask hidden" id="pushAsk">
+    <p class="pat"><b>Want a nudge when tomorrow's quiz is up?</b></p>
+    <p class="cmeta">One notification a day at about 9am, plus when a mate beats your challenge. Switch any of them off in the Me tab.</p>
+    <div class="btnpair"><button class="btn" id="paYes">Turn on</button><button class="btn ghost" id="paNo">Not now</button></div>
+    <p class="msg err hidden" id="paMsg" aria-live="polite"></p>
   </div>
   <div id="chBox" class="hidden">
     <button class="btn" id="rChallenge">Challenge a mate</button>
@@ -366,6 +373,12 @@
       <button class="switch" id="setHaptics" role="switch" aria-checked="true" aria-label="Vibrate"></button></div>
     <div class="setrow"><span class="stx"><b>Sounds</b><span>Crowd cheers, groans and the final whistle</span></span>
       <button class="switch" id="setSound" role="switch" aria-checked="false" aria-label="Sounds"></button></div>
+  </div>
+  <h2 class="sec">Notifications</h2>
+  <div class="tile" style="padding-top:4px;padding-bottom:4px">
+    <div id="pushList"></div>
+    <p class="small pushnote hidden" id="pushNote"></p>
+    <p class="msg hidden" id="pushMsg" aria-live="polite"></p>
   </div>
   <h2 class="sec">About</h2>
   <div class="tile">

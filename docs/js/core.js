@@ -65,9 +65,9 @@ function withTimeout(p, ms) {
   });
 }
 
-// GET/POST JSON. Errors carry .status (0 = network) and .permanent (4xx: don't retry).
-async function api(path, body, ms) {
-  var opts = body ? {method: "POST", body: JSON.stringify(body)} : {};
+// GET/POST (or DELETE, with a body) JSON. Errors carry .status (0 = network) and .permanent (4xx: don't retry).
+async function api(path, body, ms, method) {
+  var opts = body ? {method: method || "POST", body: JSON.stringify(body)} : {};
   var res;
   try { res = await withTimeout(fetch(API + path, opts), ms || 8000); }
   catch (e) { var ne = new Error("offline"); ne.status = 0; throw ne; }
