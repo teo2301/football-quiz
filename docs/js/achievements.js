@@ -16,6 +16,13 @@ function buzz(ok) {
   try { navigator.vibrate(ok ? 25 : [45, 70, 45]); } catch (e) { /* not allowed yet */ }
 }
 
+// A tiny tick on every 3D button press (replaced by the answer buzz when there is one).
+function tick() {
+  if (!feel.haptics || !canVibrate()) return;
+  if (navigator.userActivation && !navigator.userActivation.hasBeenActive) return;
+  try { navigator.vibrate(8); } catch (e) { /* not allowed */ }
+}
+
 var SOUNDS = {cheer: "sounds/cheer.mp3", groan: "sounds/groan.mp3", whistle: "sounds/whistle.mp3"};
 var VOLUME = {cheer: 0.55, groan: 0.5, whistle: 0.45};
 var audioCache = {};

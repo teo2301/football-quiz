@@ -91,8 +91,20 @@ var SCREENS = ["home", "setup", "play", "hilo", "career", "done", "chal", "chInt
 var TAB_OF = {home: "home", setup: "home", play: "home", hilo: "home", career: "home", done: "home",
               chal: "home", chIntro: "home", vs: "home",
               boards: "boards", leaguesTab: "leaguesTab", league: "leaguesTab", me: "me"};
+// How deep a screen sits under its tab: going deeper slides in from the right, back from the left.
+var DEPTH = {home: 0, boards: 0, leaguesTab: 0, me: 0, setup: 1, chal: 1, chIntro: 1, league: 1,
+             play: 2, hilo: 2, career: 2, done: 3, vs: 3};
+var curScreen = "home";
 function show(id) {
+  var prev = curScreen; curScreen = id;
   SCREENS.forEach(function (s) { $(s).classList.toggle("hidden", s !== id); });
+  if (prev !== id) {
+    var el = $(id), cls = "in-fade";
+    if (TAB_OF[prev] === TAB_OF[id]) cls = DEPTH[id] > DEPTH[prev] ? "in-fwd" : "in-back";
+    el.classList.remove("in-fwd", "in-back", "in-fade");
+    void el.offsetWidth;                  // restart the animation
+    el.classList.add(cls);
+  }
   document.body.classList.toggle("playing", id === "play" || id === "hilo" || id === "career");
   var tab = TAB_OF[id];
   var btns = document.querySelectorAll("#tabbar button");
@@ -101,6 +113,7 @@ function show(id) {
     else btns[i].removeAttribute("aria-current");
   }
   window.scrollTo(0, 0);
+  document.body.classList.remove("scrolled");
 }
 
 function pad2(n) { return (n < 10 ? "0" : "") + n; }

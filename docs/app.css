@@ -14,10 +14,16 @@
   --head:"Oswald","Arial Narrow",Impact,sans-serif;
   --body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --page:repeating-linear-gradient(180deg,#136637 0,#136637 64px,#17703e 64px,#17703e 128px);
+  /* 3D "game" buttons: face, darker bottom edge, glossy top highlight */
+  --btn-face:#f2c230; --btn-edge:#b0870e; --btn-hi:rgba(255,255,255,.55);
+  --ghost-edge:rgba(2,20,10,.5); --tile-hi:rgba(255,255,255,.1); --card-edge:rgba(16,35,26,.2);
+  --bar:rgba(18,98,53,.98);
 }
 @media (prefers-color-scheme:dark){:root{
   --card:#13261b; --ink:#eef3ec; --ink2:rgba(238,243,236,.7); --cardb:rgba(238,243,236,.16);
   --tileb:rgba(238,243,236,.16); --flame:#f2c230; --right:#4cc77e;
+  --btn-edge:#99750a; --btn-hi:rgba(255,255,255,.45); --ghost-edge:rgba(0,0,0,.6); --tile-hi:rgba(255,255,255,.07);
+  --card-edge:rgba(0,0,0,.5); --bar:rgba(8,23,14,.98);
   --page:radial-gradient(ellipse 70% 45% at 0 0,rgba(255,247,214,.16),rgba(255,247,214,0) 100%),
          radial-gradient(ellipse 70% 45% at 100% 0,rgba(255,247,214,.16),rgba(255,247,214,0) 100%),
          repeating-linear-gradient(180deg,#08170e 0,#08170e 64px,#0b1d12 64px,#0b1d12 128px);
@@ -472,3 +478,127 @@ input.code::placeholder{letter-spacing:.18em}
 .getapp{display:block;margin-top:12px;text-decoration:none;border-color:var(--chalk2)}
 .getapp b{display:block;font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:17px;color:#f2c230}
 .getapp span{display:block;font-size:13px;color:var(--chalk2);margin-top:2px}
+
+/* =====================================================================
+   App feel (revamp step 1): chunky 3D buttons, app bar, tab pill,
+   screen transitions, sheets. Everything raised has a darker bottom
+   edge (box-shadow), sinks on press and bounces back (.boing, app.js).
+   ===================================================================== */
+html,body{overscroll-behavior-y:none}
+main{padding-top:calc(12px + env(safe-area-inset-top));
+  padding-left:calc(16px + env(safe-area-inset-left));padding-right:calc(16px + env(safe-area-inset-right))}
+button,.btn,.chip,.mode,.opt,.tabbar,.divstrip,.getapp,.lb li.tap{-webkit-user-select:none;user-select:none;
+  -webkit-touch-callout:none;touch-action:manipulation}
+
+/* primary */
+.btn{position:relative;border-radius:16px;margin-bottom:5px;
+  background:linear-gradient(180deg,rgba(255,255,255,.26) 0,rgba(255,255,255,0) 55%),var(--btn-face);
+  box-shadow:0 5px 0 var(--btn-edge),0 8px 14px rgba(0,0,0,.2),inset 0 2px 0 var(--btn-hi);
+  -webkit-transition:-webkit-transform .08s ease-out,box-shadow .08s ease-out;transition:transform .08s ease-out,box-shadow .08s ease-out}
+.btn:active{-webkit-transform:translateY(4px);transform:translateY(4px);
+  box-shadow:0 1px 0 var(--btn-edge),0 2px 4px rgba(0,0,0,.2),inset 0 2px 0 var(--btn-hi)}
+.btn:disabled{opacity:.55;-webkit-transform:translateY(4px);transform:translateY(4px);box-shadow:0 1px 0 var(--btn-edge)}
+/* ghost (secondary) */
+.btn.ghost{background:var(--tile);border:1px solid var(--tileb);
+  box-shadow:0 5px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi)}
+.btn.ghost:active{box-shadow:0 1px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi)}
+.btn.ghost:disabled{box-shadow:0 1px 0 var(--ghost-edge)}
+.card .btn.ghost{background:transparent;border-color:var(--cardb);box-shadow:0 4px 0 var(--card-edge)}
+.card .btn.ghost:active{box-shadow:0 1px 0 var(--card-edge)}
+.iconbtn{-webkit-user-select:none;user-select:none;box-shadow:0 3px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi);margin-bottom:3px;
+  -webkit-transition:-webkit-transform .08s,box-shadow .08s;transition:transform .08s,box-shadow .08s}
+.iconbtn:active{-webkit-transform:translateY(3px);transform:translateY(3px);box-shadow:0 0 0 var(--ghost-edge)}
+
+/* chips */
+.chip{margin:4px 4px 7px;box-shadow:0 3px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi);
+  -webkit-transition:-webkit-transform .08s,box-shadow .08s;transition:transform .08s,box-shadow .08s}
+.chip:active{-webkit-transform:translateY(3px);transform:translateY(3px);box-shadow:0 0 0 var(--ghost-edge)}
+.chip[aria-pressed=true]{background:linear-gradient(180deg,rgba(255,255,255,.26) 0,rgba(255,255,255,0) 60%),var(--btn-face);
+  box-shadow:0 3px 0 var(--btn-edge),inset 0 1px 0 var(--btn-hi)}
+.chip[aria-pressed=true]:active{box-shadow:0 0 0 var(--btn-edge)}
+.card .chip{box-shadow:0 3px 0 var(--card-edge)}
+.card .chip[aria-pressed=true]{box-shadow:0 3px 0 var(--btn-edge),inset 0 1px 0 var(--btn-hi)}
+.card .chip:active{box-shadow:0 0 0 var(--card-edge)}
+
+/* segmented control: a trough with a raised yellow thumb */
+.seg{box-shadow:inset 0 2px 4px rgba(0,0,0,.25);padding:4px 4px 7px}
+.seg button{-webkit-transition:-webkit-transform .08s,box-shadow .08s;transition:transform .08s,box-shadow .08s}
+.seg button[aria-pressed=true]{background:linear-gradient(180deg,rgba(255,255,255,.26) 0,rgba(255,255,255,0) 60%),var(--btn-face);
+  box-shadow:0 3px 0 var(--btn-edge),inset 0 1px 0 var(--btn-hi)}
+.seg button:active{-webkit-transform:translateY(3px);transform:translateY(3px);box-shadow:none}
+
+/* mode tiles: raised cards */
+.mode{margin:5px 5px 10px;border-radius:16px;box-shadow:0 5px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi);
+  -webkit-transition:-webkit-transform .08s ease-out,box-shadow .08s ease-out;transition:transform .08s ease-out,box-shadow .08s ease-out}
+.mode.active{border-color:rgba(242,194,48,.55)}
+.mode:active{-webkit-transform:translateY(4px);transform:translateY(4px);box-shadow:0 1px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi)}
+.mode:disabled{-webkit-transform:translateY(4px);transform:translateY(4px);box-shadow:0 1px 0 var(--ghost-edge)}
+.divstrip,.getapp{box-shadow:0 4px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi);margin-bottom:4px;
+  -webkit-transition:-webkit-transform .08s,box-shadow .08s;transition:transform .08s,box-shadow .08s}
+.divstrip:active,a.getapp:active{-webkit-transform:translateY(3px);transform:translateY(3px);box-shadow:0 1px 0 var(--ghost-edge)}
+div.getapp{box-shadow:none}
+.lb li.tap{box-shadow:0 3px 0 var(--ghost-edge);margin-bottom:3px;-webkit-transition:-webkit-transform .08s,box-shadow .08s;transition:transform .08s,box-shadow .08s}
+.lb li.tap:active{-webkit-transform:translateY(3px);transform:translateY(3px);box-shadow:0 0 0 var(--ghost-edge)}
+
+/* answer buttons: raised until the reveal, then everything sinks flat */
+.opt{margin-top:12px;border-radius:16px;box-shadow:0 5px 0 var(--ghost-edge),inset 0 1px 0 var(--tile-hi);
+  -webkit-transition:-webkit-transform .1s ease-out,box-shadow .1s ease-out,opacity .2s;
+  transition:transform .1s ease-out,box-shadow .1s ease-out,opacity .2s}
+.opt:active{-webkit-transform:translateY(4px);transform:translateY(4px);box-shadow:0 1px 0 var(--ghost-edge)}
+.opt:disabled{-webkit-transform:translateY(4px);transform:translateY(4px);box-shadow:0 1px 0 var(--ghost-edge)}
+.opt.right{box-shadow:0 0 0 3px var(--yellow)}
+.opt.wrong{box-shadow:0 1px 0 rgba(0,0,0,.3)}
+.lifeline{box-shadow:0 3px 0 var(--btn-edge);margin-bottom:9px;-webkit-transition:-webkit-transform .08s,box-shadow .08s;transition:transform .08s,box-shadow .08s}
+.lifeline:active{-webkit-transform:translateY(3px);transform:translateY(3px);box-shadow:0 0 0 var(--btn-edge)}
+.lifeline:disabled{box-shadow:none;-webkit-transform:translateY(3px);transform:translateY(3px)}
+
+/* release bounce (class added by app.js on click) */
+.boing{-webkit-animation:boing .26s ease-out;animation:boing .26s ease-out}
+@-webkit-keyframes boing{0%{-webkit-transform:translateY(3px)}55%{-webkit-transform:translateY(-2px)}100%{-webkit-transform:translateY(0)}}
+@keyframes boing{0%{transform:translateY(3px)}55%{transform:translateY(-2px)}100%{transform:translateY(0)}}
+
+/* sticky top app bar (every .pagehead); sub-screens get a back chevron */
+.pagehead{position:-webkit-sticky;position:sticky;top:0;z-index:4;justify-content:flex-start;
+  margin:-12px -16px 10px;padding:calc(8px + env(safe-area-inset-top)) 16px 8px;min-height:60px;
+  background:transparent;-webkit-transition:background .2s,box-shadow .2s;transition:background .2s,box-shadow .2s}
+/* transparent over the page until it scrolls, then a frosted bar (iOS-style) */
+body.scrolled .pagehead{background:var(--bar);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  box-shadow:0 1px 0 rgba(244,247,241,.1),0 6px 16px rgba(0,0,0,.22)}
+.pagehead h1{-webkit-box-flex:1;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:26px}
+.back{-webkit-box-flex:0;flex:none;width:44px;height:44px;margin:0 6px 0 -8px;padding:0;border:0;border-radius:50%;
+  background:transparent;color:var(--chalk);cursor:pointer;-webkit-transition:background .12s;transition:background .12s}
+.back svg{display:block;width:26px;height:26px;margin:0 auto}
+.back:active{background:rgba(244,247,241,.16)}
+
+/* tab bar: raised yellow pill behind the active icon, icon pops in */
+.tabbar{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+.tabbar button{padding:8px 0 6px}
+.tabbar svg{box-sizing:content-box;width:24px;height:24px;padding:4px 18px;border-radius:999px;margin:0 auto 3px;
+  -webkit-transition:background .15s,color .15s;transition:background .15s,color .15s}
+.tabbar button:active svg{background:rgba(244,247,241,.12)}
+.tabbar button[aria-current=page] svg{color:#10231a;
+  background:linear-gradient(180deg,rgba(255,255,255,.3) 0,rgba(255,255,255,0) 60%),var(--btn-face);
+  box-shadow:0 3px 0 var(--btn-edge),inset 0 1px 0 var(--btn-hi);
+  -webkit-animation:tabpop .32s cubic-bezier(.2,.9,.3,1.4);animation:tabpop .32s cubic-bezier(.2,.9,.3,1.4)}
+@-webkit-keyframes tabpop{0%{-webkit-transform:scale(.8)}100%{-webkit-transform:scale(1)}}
+@keyframes tabpop{0%{transform:scale(.8)}100%{transform:scale(1)}}
+
+/* screen transitions (show() adds one of these to the incoming screen) */
+.in-fwd{-webkit-animation:inFwd .2s ease-out;animation:inFwd .2s ease-out}
+.in-back{-webkit-animation:inBack .2s ease-out;animation:inBack .2s ease-out}
+.in-fade{-webkit-animation:inFade .18s ease-out;animation:inFade .18s ease-out}
+@-webkit-keyframes inFwd{0%{opacity:0;-webkit-transform:translateX(28px)}100%{opacity:1;-webkit-transform:none}}
+@keyframes inFwd{0%{opacity:0;transform:translateX(28px)}100%{opacity:1;transform:none}}
+@-webkit-keyframes inBack{0%{opacity:0;-webkit-transform:translateX(-28px)}100%{opacity:1;-webkit-transform:none}}
+@keyframes inBack{0%{opacity:0;transform:translateX(-28px)}100%{opacity:1;transform:none}}
+@-webkit-keyframes inFade{0%{opacity:0;-webkit-transform:translateY(6px)}100%{opacity:1;-webkit-transform:none}}
+@keyframes inFade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:none}}
+body{overflow-x:hidden}
+
+/* bottom sheets slide up */
+.sheet{-webkit-animation:inFade .18s ease-out;animation:inFade .18s ease-out}
+.sheet .card{border-radius:22px;padding-top:24px;position:relative;
+  -webkit-animation:sheetUp .28s cubic-bezier(.2,.9,.3,1.1);animation:sheetUp .28s cubic-bezier(.2,.9,.3,1.1)}
+.sheet .card:before{content:"";position:absolute;left:50%;top:9px;width:40px;height:5px;margin-left:-20px;border-radius:3px;background:var(--cardb)}
+@-webkit-keyframes sheetUp{0%{-webkit-transform:translateY(60%)}100%{-webkit-transform:none}}
+@keyframes sheetUp{0%{transform:translateY(60%)}100%{transform:none}}

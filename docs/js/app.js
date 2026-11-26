@@ -39,6 +39,7 @@
   $("meName").addEventListener("keydown", function (e) { if (e.key === "Enter") saveMeName(); });
   window.addEventListener("online", function () { flushPending(); syncBadges(); });
   wireFeel();
+  wireAppFeel();
   $("goal").onclick = endCelebrate;
   wireCompete();
   wireReport();
@@ -54,3 +55,35 @@
   });
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
 })();
+
+// Native-app touches: :active on iOS, haptic tick + release bounce on 3D buttons,
+// app-bar shadow once the page scrolls, screen animation classes cleaned up.
+function wireAppFeel() {
+  var PRESS = ".btn,.chip,.seg button,.mode,.opt,.iconbtn,.back,.lifeline,.divstrip,.getapp,.lb li.tap,.tabbar button,.switch";
+  var BOUNCE = ".btn,.chip,.seg button,.iconbtn,.lifeline,.divstrip";
+  document.addEventListener("touchstart", function () {}, {passive: true});
+  document.addEventListener("click", function (e) {
+    var t = e.target && e.target.closest ? e.target.closest(PRESS) : null;
+    if (!t || t.disabled) return;
+    tick();
+    if (!t.matches(BOUNCE)) return;
+    t.classList.remove("boing");
+    void t.offsetWidth;
+    t.classList.add("boing");
+  }, true);
+  document.addEventListener("animationend", function (e) {
+    var c = e.target.classList;
+    if (!c) return;
+    if (c.contains("boing")) c.remove("boing");
+    if (e.animationName === "inFwd" || e.animationName === "inBack" || e.animationName === "inFade") c.remove("in-fwd", "in-back", "in-fade");
+  });
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      document.body.classList.toggle("scrolled", window.pageYOffset > 4);
+    });
+  }, {passive: true});
+}
