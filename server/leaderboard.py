@@ -34,6 +34,12 @@ on 127.0.0.1:8093 and is reached publicly through Tailscale Funnel on :10000.
     POST /api/report            {player_id, id, reason: wrong|outdated|typo|other, note?}  -> {ok}
                                 one report per player per question (a second one updates it); own rate limit
 
+  Phase 6 (push notifications, see push.py):
+    GET    /api/push/key        -> {key} the VAPID public key (503 if push isn't set up on the server)
+    POST   /api/push            {player_id, subscription: PushSubscription JSON, types: [daily|challenge|division]}
+                                -> stores/updates it (keyed by endpoint); own rate limit
+    DELETE /api/push            {endpoint}  -> forget it (also done when the push service says 404/410)
+
   Phase 4 (achievements):
     POST /api/badges            {player_id, badges: [id, ...]}  -> badges are earned in the app; the server
                                 keeps the union and boards/tables show each player's best three as `badges`
@@ -65,6 +71,7 @@ import achievements  # noqa: E402
 import daily_gen  # noqa: E402
 import divisions  # noqa: E402
 import modes  # noqa: E402
+import push  # noqa: E402
 
 DB = os.environ.get("QUIZ_DB", "/data/leaderboard.db")
 QUESTIONS_PATH = os.environ.get("QUESTIONS_PATH") or os.path.join(
@@ -256,6 +263,22 @@ def init():
             created_utc TEXT NOT NULL,
             UNIQUE(player_id, qid))""")
         c.execute("CREATE INDEX IF NOT EXISTS reports_status ON reports(status, qid)")
+        # Phase 6: Web Push subscriptions (one row per browser) + what's been sent (no double sends).
+        c.execute("""CREATE TABLE IF NOT EXISTS push_subs (
+            endpoint TEXT PRIMARY KEY,
+            player_id TEXT NOT NULL,
+            p256dh TEXT NOT NULL,
+            auth TEXT NOT NULL,
+            types TEXT NOT NULL,
+            created_utc TEXT NOT NULL,
+            updated_utc TEXT NOT NULL)""")
+        c.execute("CREATE INDEX IF NOT EXISTS push_subs_player ON push_subs(player_id)")
+        c.execute("""CREATE TABLE IF NOT EXISTS push_log (
+            kind TEXT NOT NULL,
+            ref TEXT NOT NULL,
+            player_id TEXT NOT NULL,
+            sent_utc TEXT NOT NULL,
+            PRIMARY KEY (kind, ref, player_id))""")
 
 
 def clock():
@@ -898,9 +921,21 @@ def play_challenge(data):
             raise Conflict("You've already played this challenge")
         log_answers(c, pid, marks, "challenge", now)
         log_points(c, pid, "challenge", points, now)
+    if (points, correct) > (ch["points"], ch["correct"]):
+        push.send_async(push_challenge_beaten, code, ch["creator_pid"], pid, name, correct, points,
+                        ch["correct"], len(ids))
     out = get_challenge(code, pid)
     out["ok"] = True
     return out
+
+
+def push_challenge_beaten(code, creator, pid, name, correct, points, their_correct, total):
+    if not claim_push("challenge", code + ":" + pid, creator):
+        return None
+    return push.send_to(db, creator, "challenge", {
+        "title": "%s beat your challenge" % name,
+        "body": "%d/%d against your %d/%d. Fancy a rematch?" % (correct, total, their_correct, total),
+        "url": "./#c=" + code, "tag": "challenge-" + code}, ttl=24 * 3600)
 
 
 # ---------------------------------------------------------------- private leagues
@@ -1110,6 +1145,63 @@ def add_report(data):
     return {"ok": True}
 
 
+# ---------------------------------------------------------------- push notifications
+
+PUSH_RATE = (30, 600)       # subscribe / change / delete: own budget
+
+
+def claim_push(kind, ref, pid):
+    """True the first time (kind, ref, pid) is claimed - so nobody gets the same notification twice."""
+    with db() as c:
+        try:
+            c.execute("INSERT INTO push_log (kind, ref, player_id, sent_utc) VALUES (?,?,?,?)",
+                      (kind, ref, pid, now_utc()))
+            return True
+        except sqlite3.IntegrityError:
+            return False
+
+
+def push_key():
+    key = push.public_key()
+    if not key:
+        raise Unavailable("Notifications aren't set up on the server yet")
+    return {"key": key}
+
+
+def add_push(data):
+    pid = clean_pid(data.get("player_id"))
+    endpoint, p256dh, auth = push.clean_sub(data.get("subscription"))
+    types = push.clean_types(data.get("types", list(push.TYPES)))
+    now = now_utc()
+    with db() as c:
+        if not types:
+            c.execute("DELETE FROM push_subs WHERE endpoint = ?", (endpoint,))
+            return {"ok": True, "types": []}
+        c.execute("""INSERT INTO push_subs (endpoint, player_id, p256dh, auth, types, created_utc, updated_utc)
+                     VALUES (?,?,?,?,?,?,?)
+                     ON CONFLICT(endpoint) DO UPDATE SET player_id = excluded.player_id, p256dh = excluded.p256dh,
+                     auth = excluded.auth, types = excluded.types, updated_utc = excluded.updated_utc""",
+                  (endpoint, pid, p256dh, auth, ",".join(types), now, now))
+        extra = [r[0] for r in c.execute("SELECT endpoint FROM push_subs WHERE player_id = ? "
+                                         "ORDER BY updated_utc DESC, created_utc DESC LIMIT -1 OFFSET ?",
+                                         (pid, push.MAX_SUBS))]
+        c.executemany("DELETE FROM push_subs WHERE endpoint = ?", [(e,) for e in extra])
+    return {"ok": True, "types": types}
+
+
+def delete_push(data):
+    endpoint = data.get("endpoint")
+    if not isinstance(endpoint, str) or not endpoint:
+        raise ValueError("bad endpoint")
+    with db() as c:
+        c.execute("DELETE FROM push_subs WHERE endpoint = ?", (endpoint,))
+    return {"ok": True}
+
+
+class Unavailable(Exception):
+    """Becomes HTTP 503."""
+
+
 # ---------------------------------------------------------------- HTTP
 
 class Handler(BaseHTTPRequestHandler):
@@ -1123,6 +1215,9 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Vary", "Origin")
 
     def _send(self, code, obj):
+        if code >= 400 and code != 404:     # why a request was refused, for the container log
+            sys.stderr.write("%s %s %s -> %d %s\n" % (self._ip(), self.command, self.path.split("?")[0], code,
+                                                     obj.get("error", "")))
         body = json.dumps(obj, ensure_ascii=False).encode()
         self.send_response(code)
         self._cors()
@@ -1140,7 +1235,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(204)
         self._cors()
-        self.send_header("Access-Control-Allow-Methods", "GET, POST")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.send_header("Access-Control-Max-Age", "86400")
         self.end_headers()
@@ -1165,6 +1260,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, fn(pid))
             if path == "/api/health":
                 return self._send(200, {"ok": True})
+            if path == "/api/push/key":
+                return self._send(200, push_key())
             if path == "/api/board" and params.get("mode", "classic") != "classic":
                 period = params.get("period", "week")
                 if params["mode"] not in RUN_MODES or period not in ("week", "all"):
@@ -1189,6 +1286,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, public_board(period))
         except NotFound as e:
             return self._send(404, {"error": str(e)})
+        except Unavailable as e:
+            return self._send(503, {"error": str(e)})
         except ValueError as e:
             return self._send(400, {"error": str(e)})
         self._send(404, {"error": "not found"})
@@ -1199,10 +1298,20 @@ class Handler(BaseHTTPRequestHandler):
                  "/api/challenges": create_challenge, "/api/challenge/play": play_challenge,
                  "/api/leagues": create_league, "/api/leagues/join": join_league,
                  "/api/leagues/leave": leave_league, "/api/badges": set_badges,
-                 "/api/report": add_report}.get(path)
+                 "/api/report": add_report, "/api/push": add_push}.get(path)
+        return self._body(path, route)
+
+    def do_DELETE(self):
+        path = self.path.split("?")[0]
+        return self._body(path, {"/api/push": delete_push}.get(path))
+
+    def _body(self, path, route):
         if not route:
             return self._send(404, {"error": "not found"})
-        if path == "/api/badges":
+        if path == "/api/push":
+            if limited(self._ip(), PUSH_RATE, "push:"):
+                return self._send(429, {"error": "Too many changes - try again in a few minutes."})
+        elif path == "/api/badges":
             if limited(self._ip(), BADGE_RATE, "badges:"):
                 return self._send(429, {"error": "Too many updates - try again in a few minutes."})
         elif path == "/api/report":

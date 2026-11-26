@@ -21,6 +21,8 @@ import daily_gen  # noqa: E402
 import divisions as D  # noqa: E402
 import leaderboard as L  # noqa: E402
 import modes as M  # noqa: E402
+import push as P  # noqa: E402
+import push_send as PS  # noqa: E402
 
 BANK = json.load(open(os.environ["QUESTIONS_PATH"], encoding="utf-8"))
 BY_ID = {q["id"]: q for q in BANK}
@@ -47,6 +49,7 @@ class Base(unittest.TestCase):
         L.init()
         L._settled["week"] = None
         L.clock = REAL_CLOCK
+        P.send_async = lambda fn, *a: P._quiet(fn, *a)  # no stray threads racing the next test's fresh DB
 
 
 class Classic(Base):
@@ -675,6 +678,244 @@ class Reports(Base):
         self.assertEqual(out.returncode, 0, out.stderr)
         self.assertIn("1 open report on 1 question", out.stdout)
         self.assertIn("He retired", out.stdout)
+
+
+try:
+    import pywebpush  # noqa: F401
+    import http_ece
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import ec
+    HAVE_PUSH = True
+except ImportError:         # system python: storage tests still run; sending needs the venv
+    HAVE_PUSH = False
+
+
+def b64u(b):
+    import base64
+    return base64.urlsafe_b64encode(b).rstrip(b"=").decode()
+
+
+class FakePushService:
+    """A local stand-in for FCM: /ok/... -> 201, /gone/... -> 410, /down/... -> 500. Records every POST."""
+    def __init__(self):
+        import threading
+        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+        got = self.got = []
+
+        class H(BaseHTTPRequestHandler):
+            def do_POST(self):
+                body = self.rfile.read(int(self.headers.get("Content-Length") or 0))
+                got.append((self.path, dict(self.headers), body))
+                code = 201 if self.path.startswith("/ok") else 410 if self.path.startswith("/gone") else 500
+                self.send_response(code)
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+
+            def log_message(self, *a):
+                pass
+        self.srv = ThreadingHTTPServer(("127.0.0.1", 0), H)
+        self.host = "127.0.0.1:%d" % self.srv.server_address[1]
+        threading.Thread(target=self.srv.serve_forever, daemon=True).start()
+
+    def sub(self, kind="ok"):
+        """A real-looking subscription (fresh P-256 key + auth secret) pointing at us; keeps the private key."""
+        if HAVE_PUSH:
+            k = ec.generate_private_key(ec.SECP256R1())
+            pub = k.public_key().public_bytes(serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
+        else:
+            k, pub = None, b"\x04" + os.urandom(64)
+        auth = os.urandom(16)
+        s = {"endpoint": "http://%s/%s/%s" % (self.host, kind, uuid.uuid4().hex),
+             "keys": {"p256dh": b64u(pub), "auth": b64u(auth)}}
+        return s, (k, auth)
+
+    def decrypt(self, i, secret):
+        k, auth = secret
+        return json.loads(http_ece.decrypt(self.got[i][2], private_key=k, auth_secret=auth, version="aes128gcm"))
+
+
+class Push(Base):
+    @classmethod
+    def setUpClass(cls):
+        cls.fake = FakePushService()
+        P.EXTRA_HOSTS.add(cls.fake.host)
+        cls.vapid = os.path.join(TMP, "vapid.json")
+        if HAVE_PUSH:
+            k = ec.generate_private_key(ec.SECP256R1())
+            pub = k.public_key().public_bytes(serialization.Encoding.X962, serialization.PublicFormat.UncompressedPoint)
+            pem = k.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
+                                  serialization.NoEncryption()).decode()
+        else:
+            pub, pem = b"\x04" + os.urandom(64), "-----BEGIN PRIVATE KEY-----\n-----END PRIVATE KEY-----\n"
+        cls.pubkey = b64u(pub)
+        with open(cls.vapid, "w") as f:
+            json.dump({"public_key": cls.pubkey, "private_pem": pem, "subject": "https://example.org"}, f)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.fake.srv.shutdown()
+        P.EXTRA_HOSTS.discard(cls.fake.host)
+
+    def setUp(self):
+        super().setUp()
+        P.VAPID_PATH = self.vapid
+        self.fake.got.clear()
+
+    def subscribe(self, player, kind="ok", types=None):
+        s, secret = self.fake.sub(kind)
+        L.add_push({"player_id": player, "subscription": s, "types": types if types is not None else list(P.TYPES)})
+        return s, secret
+
+    def test_only_real_push_services(self):
+        good = {"endpoint": "https://fcm.googleapis.com/fcm/send/abc:def", "keys": self.fake.sub()[0]["keys"]}
+        self.assertEqual(P.clean_sub(good)[0], good["endpoint"])
+        moz = dict(good, endpoint="https://updates.push.services.mozilla.com/wpush/v2/x")
+        self.assertTrue(P.clean_sub(moz))
+        for ep in ("http://fcm.googleapis.com/x", "https://example.com/push", "https://fcm.googleapis.com.evil.io/x",
+                   "https://user@fcm.googleapis.com/x", "file:///etc/passwd", "http://127.0.0.1:1/ok/x", ""):
+            with self.assertRaises(ValueError, msg=ep):
+                P.clean_sub(dict(good, endpoint=ep))
+        for keys in ({}, {"p256dh": "x", "auth": "y"}, {"p256dh": good["keys"]["p256dh"], "auth": "a b c d e f g h i j"}):
+            with self.assertRaises(ValueError):
+                P.clean_sub(dict(good, keys=keys))
+        with self.assertRaises(ValueError):
+            P.clean_types(["daily", "spam"])
+        self.assertEqual(P.clean_types({"division": True, "daily": True, "challenge": False}), ["daily", "division"])
+
+    def test_store_update_cap_and_delete(self):
+        me = pid()
+        s, _ = self.subscribe(me, types=["daily"])
+        self.assertEqual(L.add_push({"player_id": me, "subscription": s, "types": ["daily", "challenge"]})["types"],
+                         ["daily", "challenge"])
+        with L.db() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*), MAX(types) FROM push_subs").fetchone()[:], (1, "daily,challenge"))
+        for _ in range(P.MAX_SUBS + 2):
+            self.subscribe(me)
+        with L.db() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM push_subs WHERE player_id = ?", (me,)).fetchone()[0],
+                             P.MAX_SUBS)
+        s2, _ = self.subscribe(me)
+        L.add_push({"player_id": me, "subscription": s2, "types": []})      # all off = forgotten
+        L.delete_push({"endpoint": s2["endpoint"]})
+        with L.db() as c:
+            self.assertFalse(c.execute("SELECT 1 FROM push_subs WHERE endpoint = ?", (s2["endpoint"],)).fetchone())
+        with self.assertRaises(ValueError):
+            L.add_push({"player_id": "nope", "subscription": s2})
+
+    def test_http_routes(self):
+        h = Http("test_routes")
+        import threading
+        from http.server import ThreadingHTTPServer
+        srv = ThreadingHTTPServer(("127.0.0.1", 0), type("Q", (L.Handler,), {"log_message": lambda *a: None}))
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        h.port = srv.server_address[1]
+        try:
+            L._hits.clear()
+            self.assertEqual(h.call("/push/key"), (200, {"key": self.pubkey}))
+            P.VAPID_PATH = os.path.join(TMP, "missing.json")
+            self.assertEqual(h.call("/push/key")[0], 503)
+            P.VAPID_PATH = self.vapid
+            me = pid()
+            s, _ = self.fake.sub()
+            self.assertEqual(h.call("/push", {"player_id": me, "subscription": s, "types": ["daily"]}),
+                             (200, {"ok": True, "types": ["daily"]}))
+            self.assertEqual(h.call("/push", {"player_id": me, "subscription": {"endpoint": "https://x.io/1"}})[0], 400)
+            import urllib.request
+            req = urllib.request.Request("http://127.0.0.1:%d/api/push" % h.port, method="DELETE",
+                                         data=json.dumps({"endpoint": s["endpoint"]}).encode(),
+                                         headers={"Content-Type": "application/json", "X-Forwarded-For": "10.0.0.9"})
+            with urllib.request.urlopen(req) as r:
+                self.assertEqual(json.loads(r.read()), {"ok": True})
+            with L.db() as c:
+                self.assertEqual(c.execute("SELECT COUNT(*) FROM push_subs").fetchone()[0], 0)
+            req = urllib.request.Request("http://127.0.0.1:%d/api/push" % h.port, method="OPTIONS",
+                                         headers={"Origin": "https://teo2301.github.io"})
+            with urllib.request.urlopen(req) as r:
+                self.assertIn("DELETE", r.headers["Access-Control-Allow-Methods"])
+            for i in range(L.PUSH_RATE[0]):
+                h.call("/push", {"player_id": me, "subscription": s, "types": ["daily"]}, ip="10.0.0.7")
+            self.assertEqual(h.call("/push", {"player_id": me, "subscription": s}, ip="10.0.0.7")[0], 429)
+            self.assertEqual(h.call("/scores", {}, ip="10.0.0.7")[0], 400)     # scores budget untouched
+        finally:
+            srv.shutdown()
+
+    @unittest.skipUnless(HAVE_PUSH, "pywebpush not installed (run with .venv/bin/python)")
+    def test_challenge_beaten_pushes_the_creator_once(self):
+        a, b, c3 = pid(), pid(), pid()
+        _, secret = self.subscribe(a)
+        self.subscribe(a, types=["daily"])              # this one doesn't want challenge pushes
+        body, qs = classic_body(right=[True] * 5 + [False] * 5, player=a, name="Setter")
+        code = L.create_challenge(body)["code"]
+        L.play_challenge({"code": code, "name": "Loser", "player_id": c3, "answers": answers(qs, [True] * 3 + [False] * 7)})
+        self.assertEqual(self.fake.got, [])             # didn't beat it: nothing sent
+        L.play_challenge({"code": code, "name": "Winner", "player_id": b, "answers": answers(qs, [True] * 8 + [False] * 2)})
+        self.assertEqual(len(self.fake.got), 1)
+        msg = self.fake.decrypt(0, secret)
+        self.assertEqual(msg["title"], "Winner beat your challenge")
+        self.assertEqual(msg["body"], "8/10 against your 5/10. Fancy a rematch?")
+        self.assertEqual(msg["url"], "./#c=" + code)
+        hdr = {k.lower(): v for k, v in self.fake.got[0][1].items()}
+        self.assertTrue(hdr["authorization"].startswith("vapid t="))
+        self.assertEqual(hdr["ttl"], str(24 * 3600))
+        self.assertFalse(L.claim_push("challenge", code + ":" + b, a))   # logged: never twice
+
+    @unittest.skipUnless(HAVE_PUSH, "pywebpush not installed (run with .venv/bin/python)")
+    def test_daily_send_skips_players_dedupes_and_drops_dead_subs(self):
+        fake_clock(datetime(2026, 12, 3, 9, 0, tzinfo=timezone.utc))
+        keen, played, quiet, dead = pid(), pid(), pid(), pid()
+        _, s_keen = self.subscribe(keen)
+        self.subscribe(played)
+        self.subscribe(quiet, types=["challenge"])
+        dsub, _ = self.subscribe(dead, kind="gone")
+        for day in (1, 2):                              # keen has a 2-day streak going into today
+            with L.db() as c:
+                c.execute("INSERT INTO daily (player_id, date, number, correct, total, points, grid, created_utc)"
+                          " VALUES (?,?,?,?,?,?,?,?)", (keen, "2026-12-0%d" % day, day, 5, 7, 9, "1111100", L.now_utc()))
+        d = daily_gen.uk_today(L.clock())
+        L.add_daily({"name": "Played", "player_id": played, "date": d.isoformat(),
+                     "answers": [{"id": i, "choice": BY_ID[i]["a"]} for i in L.daily_ids(d)["ids"]]})
+        r = PS.daily()
+        self.assertEqual((r["players"], r["ok"], r["gone"]), (2, 1, 1))
+        msg = self.fake.decrypt([g[0][:3] for g in self.fake.got].index("/ok"), s_keen)
+        self.assertEqual(msg["title"], "Football Quiz #%d is up" % daily_gen.number(d))
+        self.assertEqual(msg["body"], "Keep your 2-day streak going.")
+        self.assertEqual(msg["url"], "./#daily")
+        with L.db() as c:
+            self.assertFalse(c.execute("SELECT 1 FROM push_subs WHERE endpoint = ?", (dsub["endpoint"],)).fetchone())
+        self.assertEqual(PS.daily()["players"], 0)      # re-run: nobody twice
+        fake_clock(datetime(2026, 11, 26, 9, 0, tzinfo=timezone.utc))
+        self.assertIn("skipped", PS.daily())            # before daily #1
+        self.assertEqual(PS.daily(force=True)["players"], 2)    # keen + played (played 3 Dec, not today)
+
+    @unittest.skipUnless(HAVE_PUSH, "pywebpush not installed (run with .venv/bin/python)")
+    def test_monday_division_results(self):
+        fake_clock(datetime(2026, 12, 2, 12, 0, tzinfo=timezone.utc))
+        ids = [pid() for _ in range(6)]
+        secrets = {}
+        for i, p in enumerate(ids):
+            Divisions.post_points(None, p, "D%d" % i, 10 - i)
+            secrets[p] = self.subscribe(p, types=["division"])[1]
+        fake_clock(datetime(2026, 12, 7, 9, 5, tzinfo=timezone.utc))
+        r = PS.monday()
+        self.assertEqual(r["ok"], 6)
+        got = {}
+        for i, (path, _, _) in enumerate(self.fake.got):
+            for p, sec in secrets.items():
+                try:
+                    got[p] = self.fake.decrypt(i, sec)
+                except Exception:
+                    pass
+        self.assertEqual(got[ids[0]]["title"], "Promoted!")
+        self.assertEqual(got[ids[0]]["body"], "You're up from Sunday League to League Two this week.")
+        self.assertEqual(got[ids[2]]["title"], "You stayed in Sunday League")    # bottom tier: nobody relegated
+        self.assertEqual(PS.monday()["players"], 0)
+
+    def test_sending_without_pywebpush_or_key_is_a_no_op(self):
+        P.VAPID_PATH = os.path.join(TMP, "missing.json")
+        me = pid()
+        self.subscribe(me)
+        self.assertEqual(P.send_to(L.db, me, "daily", {"title": "x"}), {"ok": 0, "gone": 0, "error": 0})
+        self.assertEqual(self.fake.got, [])
 
 
 class Http(Base):

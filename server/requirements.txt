@@ -1,0 +1,5 @@
+# Phase 6: Web Push. The only non-stdlib dependency of the scores server.
+pywebpush==2.5.0
+py-vapid==1.9.6
+http_ece==1.2.1
+cryptography==50.0.2
