@@ -780,6 +780,18 @@ class Content(unittest.TestCase):
         self.assertGreaterEqual(hard, 2 * daily_gen.NO_REPEAT + 1)
         self.assertEqual(sorted(daily_gen.PLAN), [1, 1, 2, 2, 2, 3, 3])
 
+    def test_launch_content_target(self):
+        # Phase 5: ~1,200 classic questions, every league well stocked at every level, all explained
+        self.assertGreaterEqual(len(BANK), 1200)
+        for lg in ("pl", "ll", "sa", "eu", "in"):
+            for d in (1, 2, 3):
+                n = sum(1 for q in BANK if q["l"] == lg and q["d"] == d)
+                self.assertGreaterEqual(n, 35, (lg, d, n))
+        self.assertEqual([q["id"] for q in BANK if not q.get("x")], [])
+        for lg in ("pl", "ll", "sa", "eu", "in"):   # ids run on per league with no gaps
+            nums = sorted(int(q["id"][2:]) for q in BANK if q["l"] == lg)
+            self.assertEqual(nums, list(range(1, len(nums) + 1)), lg)
+
 
 if __name__ == "__main__":
     try:
