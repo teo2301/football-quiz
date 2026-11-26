@@ -39,4 +39,10 @@ async function saveMeName() {
     var t = document.getElementById("getApp");
     if (t) t.classList.remove("hidden");
   }
+  var ios = /iPhone|iPad|iPod/.test(navigator.userAgent || "") ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (ios && !window.navigator.standalone && !inApp) {
+    var i = document.getElementById("getAppIos");
+    if (i) i.classList.remove("hidden");
+  }
 })();
