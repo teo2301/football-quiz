@@ -339,7 +339,7 @@ def _review(m, by_id):
     out = []
     for i, qid in enumerate(m["ids"]):
         q = by_id[qid]
-        row = {"q": q["q"], "a": q["a"], "x": q.get("x", "")}
+        row = {"q": q["q"], "a": q["a"], "x": q.get("x", ""), "img": q.get("img")}
         for s, key in ((0, "p1"), (1, "p2")):
             a = m["ans"][s].get(i)
             row[key] = {"choice": a[0] if a else None, "pts": a[2] if a else 0}
@@ -402,11 +402,11 @@ def state(code, pid):
         won = outcome == 0 and "draw" or ((outcome == 1) == (s == 0) and "win" or "loss")
         rev = _review(m, by_id)
         if s == 1:
-            rev = [{"q": r["q"], "a": r["a"], "x": r["x"], "p1": r["p2"], "p2": r["p1"]} for r in rev]
+            rev = [{"q": r["q"], "a": r["a"], "x": r["x"], "img": r["img"], "p1": r["p2"], "p2": r["p1"]} for r in rev]
         with L.db() as c:
             h2h = _h2h(c, me_pid, op_pid)
         out.update(phase="done", result={"outcome": won, "forfeit": m["forfeit"], "h2h": h2h,
-                                         "review": [{"q": r["q"], "a": r["a"], "x": r["x"], "you": r["p1"],
+                                         "review": [{"q": r["q"], "a": r["a"], "x": r["x"], "img": r["img"], "you": r["p1"],
                                                      "opp": r["p2"]} for r in rev]})
         return out
 
@@ -866,7 +866,7 @@ def _room_view(r, me, now):
         for i in range(R_SEATS):
             a = r["ans"][i].get(k)
             picks.append({"choice": a[0] if a else None, "pts": a[2] if a else 0})
-        review.append({"q": q["q"], "a": q["a"], "x": q.get("x", ""), "picks": picks})
+        review.append({"q": q["q"], "a": q["a"], "x": q.get("x", ""), "img": q.get("img"), "picks": picks})
     out["result"] = {"outcome": outcome, "winner": res["winner"], "scores": res["scores"], "mvp": res["mvp"],
                      "tiebreak": res["scores"][0] == res["scores"][1] and res["winner"] != -1,
                      "correct": [s[1] for s in st], "pts": [s[0] for s in st],

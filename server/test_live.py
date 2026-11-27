@@ -240,6 +240,7 @@ class Rooms(unittest.TestCase):
         self.assertEqual(res["scores"][0], sum(res["pts"][:2]))
         self.assertTrue(res["flawless"] if team[0] == 0 else not res["flawless"])
         self.assertEqual(len(res["review"]), V.N_QUESTIONS)
+        self.assertTrue(all("img" in row for row in res["review"]))   # picture questions keep their picture
         # whoever answered first on team 0 every time is the MVP, and "carried" the win
         mvp = res["mvp"]
         self.assertEqual(V._team(mvp), 0)

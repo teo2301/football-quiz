@@ -251,12 +251,15 @@ function lvDone(st) {
   r.review.forEach(function (q, i) {
     var pick = function (who, a) { return h("div", {className: "pk " + (a.pts ? "ok" : "no")}, who + ": " + (a.choice == null ? "no answer" : a.choice) + (a.pts ? " +" + a.pts : "")); };
     ul.appendChild(h("li", {className: "rev"},
-      h("div", {className: "qh"}, h("span", {className: "qn"}, String(i + 1)), h("span", {className: "qt"}, q.q)),
+      h("div", {className: "qh"}, h("span", {className: "qn"}, String(i + 1)), h("span", {className: "qt"}, lvThumb(q), q.q)),
       h("div", {className: "ans"}, "Answer: " + q.a),
       pick("You", q.you), pick(st.opp.name, q.opp)));
   });
   lv = null;
 }
+
+// flag thumbnail for picture questions in the reviews (quizzes without pictures have no qThumb)
+function lvThumb(q) { return typeof qThumb === "function" ? qThumb(q) : null; }
 
 function lvQuit() {
   if (!lv) return openLive();
@@ -609,7 +612,7 @@ function duDone(st) {
   var rv = $("duReview"); rv.innerHTML = "";
   r.review.forEach(function (q, n) {
     var li = h("li", {className: "rev"},
-      h("div", {className: "qh"}, h("span", {className: "qn"}, String(n + 1)), h("span", {className: "qt"}, q.q)),
+      h("div", {className: "qh"}, h("span", {className: "qn"}, String(n + 1)), h("span", {className: "qt"}, lvThumb(q), q.q)),
       h("div", {className: "ans"}, "Answer: " + q.a));
     sides.mine.concat(sides.them).forEach(function (i) {
       var s = st.seats[i], a = q.picks[i]; if (!s) return;
