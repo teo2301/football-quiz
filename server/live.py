@@ -12,8 +12,11 @@ once the question is closed. Clients poll GET /api/live/state about once a secon
     GET  /api/live/state    ?code= &player_id=       the match as you should see it right now
     POST /api/live/answer   {code, player_id, idx, choice}
     GET  /api/live/league   ?period=week|all &player_id=   ranked table (3 for a win, 1 for a draw)
+    POST /api/live/bot      {name, player_id, level}  a 1v1 against a bot (easy|medium|hard), starts at once
 
 Ranked = quick match. Friendly (code) matches show a head-to-head but don't touch the table.
+Bot matches (1v1 and 2v2) never touch the league, the divisions or live_matches/live_games;
+only the answers are logged (question stats). Bot names come from leaderboard.LIVE_BOT_NAMES.
 A match lives in memory while it's played and is written to live_matches when it ends, so a
 server restart only loses matches in progress.
 """
@@ -144,6 +147,8 @@ def _tick(m, now):
     """Move the clock on: close a question when both answered or time's up, reveal, open the next."""
     if m["state"] != "live":
         return
+    if m.get("bot"):
+        m["seen"][1] = now                      # the bot never leaves
     # a player who stopped polling has left
     for s in (0, 1):
         if now - m["seen"][s] > SEEN_STALE and m["start"] and now > m["start"] + SEEN_STALE:
@@ -152,6 +157,8 @@ def _tick(m, now):
         if m["cur"] >= N_QUESTIONS:
             return _finish(m, now)
         if m["closed"] is None:
+            if m.get("bot"):
+                _bot_answer_1v1(m, now)
             both = m["cur"] in m["ans"][0] and m["cur"] in m["ans"][1]
             if both:
                 m["closed"] = max(m["ans"][0][m["cur"]][3], m["ans"][1][m["cur"]][3])
@@ -187,6 +194,12 @@ def _finish(m, now, forfeit_by=None):
 
 
 def _save(m, p1, p2, outcome):
+    if m.get("bot"):
+        # bot matches: no league, no divisions, no head-to-head; the answers still feed question stats
+        with L.db() as c:
+            L.log_answers(c, m["p"][0], [(m["ids"][i], a[2] > 0) for i, a in sorted(m["ans"][0].items())],
+                          "live", L.now_utc())
+        return
     L.settle_weeks()
     now = L.now_utc()
     week = L.divisions.week_key(L.clock())
@@ -372,7 +385,7 @@ def state(code, pid):
         _tick(m, now)
         by_id = L.bank()[0]
         o = 1 - s
-        out = {"code": code, "ranked": m["ranked"], "status": m["state"], "n": N_QUESTIONS,
+        out = {"code": code, "ranked": m["ranked"], "bot": m.get("bot"), "status": m["state"], "n": N_QUESTIONS,
                "you": {"name": m["names"][s]}, "opp": {"name": m["names"][o]} if m["p"][o] else None}
         if m["state"] == "waiting":
             return out
@@ -403,8 +416,11 @@ def state(code, pid):
         rev = _review(m, by_id)
         if s == 1:
             rev = [{"q": r["q"], "a": r["a"], "x": r["x"], "img": r["img"], "p1": r["p2"], "p2": r["p1"]} for r in rev]
-        with L.db() as c:
-            h2h = _h2h(c, me_pid, op_pid)
+        if m.get("bot"):
+            h2h = None
+        else:
+            with L.db() as c:
+                h2h = _h2h(c, me_pid, op_pid)
         out.update(phase="done", result={"outcome": won, "forfeit": m["forfeit"], "h2h": h2h,
                                          "review": [{"q": r["q"], "a": r["a"], "x": r["x"], "img": r["img"], "you": r["p1"],
                                                      "opp": r["p2"]} for r in rev]})
@@ -506,8 +522,15 @@ LOBBY_GONE = 45.0         # a lobby player not heard from for this long loses th
 STANDIN_AFTER = 2         # questions missed without being seen -> a bot takes over
 ROOM_IDLE = 1800.0        # rooms nobody has touched for 30 minutes are dropped
 DIFF_MULT = {1: 1.0, 2: 1.25, 3: 1.5}
-BOT_ACC = {1: 0.75, 2: 0.55, 3: 0.35}
-BOT_SECS = (3.0, 12.0)
+# Bot levels: chance of a right answer by question difficulty, and how long they take (s).
+# Quick-match fillers and stand-ins play at "medium".
+BOT_LEVELS = {
+    "easy": {"acc": {1: 0.65, 2: 0.5, 3: 0.35}, "secs": (5.0, 13.0)},
+    "medium": {"acc": {1: 0.85, 2: 0.7, 3: 0.55}, "secs": (3.0, 11.0)},
+    "hard": {"acc": {1: 0.97, 2: 0.9, 3: 0.8}, "secs": (1.5, 6.5)},
+}
+BOT_ACC = BOT_LEVELS["medium"]["acc"]
+BOT_SECS = BOT_LEVELS["medium"]["secs"]
 BOT_NAMES = ["Ace", "Rook", "Nova", "Blaze", "Echo", "Pixel", "Turbo", "Comet", "Sparky", "Zippy", "Bolt", "Dash"]
 
 _rooms = {}               # code -> room dict
@@ -543,6 +566,59 @@ def init_db2(c):
 
 def _bot_tag():
     return getattr(L, "LIVE_BOT_TAG", "Bot")
+
+
+def _bot_names():
+    """Per-quiz themed names (leaderboard.LIVE_BOT_NAMES), else the generic ones."""
+    names = list(getattr(L, "LIVE_BOT_NAMES", None) or BOT_NAMES)
+    return names if len(names) >= R_SEATS else names + BOT_NAMES
+
+
+def _level(v):
+    v = str(v or "medium").lower()
+    if v not in BOT_LEVELS:
+        raise ValueError("bad level")
+    return v
+
+
+def _bot_answer_1v1(m, now):
+    """1v1 vs a bot: plan the bot's answer when a question opens, record it once its time comes."""
+    cur = m["cur"]
+    if cur >= N_QUESTIONS or cur in m["ans"][1] or now < m["opened"]:
+        return
+    if cur not in m["plan"]:
+        q = L.bank()[0][m["ids"][cur]]
+        m["plan"][cur] = _bot_pick({"opened": m["opened"], "level": m["bot"]}, q)
+    t, choice = m["plan"][cur]
+    if t <= now and t <= m["opened"] + Q_SECS:
+        q = L.bank()[0][m["ids"][cur]]
+        left = max(0.0, m["opened"] + Q_SECS - t)
+        pts = BASE_PTS + int(round(SPEED_PTS * left / Q_SECS)) if choice == q["a"] else 0
+        m["ans"][1][cur] = (choice, int(round((t - m["opened"]) * 1000)), pts, t)
+
+
+def bot_match(data):
+    """POST /api/live/bot: a friendly 1v1 against a bot that starts straight away. Never ranked."""
+    name, pid = L.clean_name(data.get("name")), L.clean_pid(data.get("player_id"))
+    level = _level(data.get("level"))
+    with L.db() as c:
+        L.bind_name(c, name, pid)
+    now = time.monotonic()
+    with _lock:
+        _sweep(now)
+        m = _current(pid)
+        if m and m["state"] == "waiting":           # drop your own unjoined friendly match
+            del _matches[m["code"]]
+            _by_player.pop(pid, None)
+        elif m and not m.get("bot"):
+            raise L.Conflict("You're already in a live match")
+        elif m:                                     # an old bot match: you forfeit it
+            _finish(m, now, forfeit_by=0)
+        _queue.pop(pid, None)
+        m = _make(pid, name, False)
+        m["bot"], m["plan"] = level, {}
+        _fill(m, "bot:" + m["code"], "%s %s" % (_bot_tag(), _rng.choice(_bot_names())))
+        return {"ok": True, "code": m["code"], "level": level}
 
 
 def _team(seat):
@@ -645,7 +721,7 @@ def _leave_lobby_rooms(pid, now):
 
 def _room_start(r, now):
     used = set(s["name"] for s in r["seats"] if s)
-    names = [n for n in BOT_NAMES if "%s %s" % (_bot_tag(), n) not in used]
+    names = [n for n in _bot_names() if "%s %s" % (_bot_tag(), n) not in used]
     _rng.shuffle(names)
     for i in range(R_SEATS):
         if r["seats"][i] is None:
@@ -676,8 +752,9 @@ def _plan_bots(r):
 
 
 def _bot_pick(r, q):
-    t = r["opened"] + _rng.uniform(*BOT_SECS)
-    choice = q["a"] if _rng.random() < BOT_ACC.get(q["d"], 0.5) else _rng.choice(list(q["w"]))
+    lv = BOT_LEVELS[r.get("level") or "medium"]
+    t = r["opened"] + _rng.uniform(*lv["secs"])
+    choice = q["a"] if _rng.random() < lv["acc"].get(q["d"], 0.5) else _rng.choice(list(q["w"]))
     return (t, choice)
 
 
@@ -787,6 +864,14 @@ def _room_finish(r, at):
 
 
 def _room_save(r):
+    if r.get("level"):
+        # 2v2 vs bots: nothing on any table or division; the human's own answers feed question stats
+        with L.db() as c:
+            for i, s in enumerate(r["seats"]):
+                if not s["bot"]:
+                    L.log_answers(c, s["pid"], [(r["ids"][k], a[2] > 0) for k, a in sorted(r["ans"][i].items())
+                                                if not a[4]], "live2", L.now_utc())
+        return
     L.settle_weeks()
     now = L.now_utc()
     res = r["result"]
@@ -827,7 +912,7 @@ def _room_view(r, me, now):
                              if r["phase"] == "done" or k < r["cur"] or r["closed"] is not None)
             row["answered"] = r["cur"] in r["ans"][i]
         seats.append(row)
-    out = {"code": r["code"], "public": r["public"], "phase": r["phase"], "v": r["v"], "you": me,
+    out = {"code": r["code"], "public": r["public"], "bots": r.get("level"), "phase": r["phase"], "v": r["v"], "you": me,
            "team": _team(me), "host": r["seats"][me]["pid"] == r["host"], "n": N_QUESTIONS, "seats": seats}
     if r["phase"] == "lobby":
         if r["public"] and r["fill_at"] is not None:
@@ -975,6 +1060,21 @@ def room_quick(data):
         return {"ok": True, "code": r["code"], "seat": 0}
 
 
+def room_bots(data):
+    """POST /api/live/room/bots {name, player_id, level}: you + 3 bots (one on your team), starts at once."""
+    name, pid = _who(data)
+    level = _level(data.get("level"))
+    now = time.monotonic()
+    with _lock:
+        _room_sweep(now)
+        _leave_lobby_rooms(pid, now)
+        r = _room_new(pid, name, False, now)
+        r["level"] = level
+        _seat_human(r, 0, pid, name, now)
+        _room_start(r, now)
+        return {"ok": True, "code": r["code"], "seat": 0, "level": level}
+
+
 def room_seat(data):
     pid = L.clean_pid(data.get("player_id"))
     team = data.get("team")
@@ -1005,7 +1105,7 @@ def room_start(data):
             return {"ok": True}
         if r["host"] != pid:
             raise L.Conflict("Only the host can start the game")
-        if not r["public"]:
+        if not r["public"] and not r.get("level"):
             for t in (0, 1):
                 if not any(r["seats"][k] for k in (2 * t, 2 * t + 1)):
                     raise L.Conflict("Each team needs at least one player - send the link to a mate")
@@ -1084,7 +1184,10 @@ def room_rematch(data):
         r["fill_at"] = now + QUICK_FILL if r["public"] else None
         for k in _humans(r):
             r["seats"][k]["missed"] = 0
-        _bump(r)
+        if r.get("level") and _humans(r):
+            _room_start(r, now)                  # vs bots: straight into the next game
+        else:
+            _bump(r)
         return {"ok": True}
 
 
@@ -1120,7 +1223,8 @@ def room_state(code, pid, v=None, hold=HOLD):
 ROOM_POST = {"/api/live/room/create": room_create, "/api/live/room/join": room_join,
              "/api/live/room/quick": room_quick, "/api/live/room/seat": room_seat,
              "/api/live/room/start": room_start, "/api/live/room/answer": room_answer,
-             "/api/live/room/leave": room_leave, "/api/live/room/rematch": room_rematch}
+             "/api/live/room/leave": room_leave, "/api/live/room/rematch": room_rematch,
+             "/api/live/room/bots": room_bots, "/api/live/bot": bot_match}
 
 
 def room_get(params, pid):

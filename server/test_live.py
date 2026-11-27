@@ -414,6 +414,99 @@ class Rooms(unittest.TestCase):
         th.join(3)
         self.assertEqual(got["st"], {"phase": "gone"})
 
+    # ---------------------------------------------------------------- bot games
+    def test_bot_1v1_plays_itself_and_stays_off_the_league(self):
+        a = self.p[0]
+        r = V.bot_match({"name": "Ann", "player_id": a, "level": "hard"})
+        code = r["code"]
+        st = V.state(code, a)
+        self.assertEqual((st["status"], st["phase"], st["bot"], st["ranked"]), ("live", "countdown", "hard", False))
+        self.assertTrue(st["opp"]["name"].startswith(V._bot_tag() + " "))
+        FakeTime.t += V.START_SECS + 0.1
+        bot_answered = 0
+        for i in range(V.N_QUESTIONS):
+            st = V.state(code, a)
+            self.assertEqual((st["phase"], st["cur"]), ("question", i))
+            FakeTime.t += 7.0                               # the hard bot answers within 6.5 s
+            st = V.state(code, a)
+            bot_answered += st["opp_answered"]
+            q = L.bank()[0][st["q"]["id"]]
+            V.answer({"code": code, "player_id": a, "idx": i, "choice": q["a"]})
+            st = V.state(code, a)
+            self.assertEqual(st["phase"], "reveal")         # both in: closes at once
+            FakeTime.t += V.REVEAL_SECS + 0.1
+        self.assertEqual(bot_answered, V.N_QUESTIONS)
+        st = V.state(code, a)
+        self.assertEqual(st["status"], "done")
+        self.assertIsNone(st["result"]["h2h"])
+        self.assertEqual(st["correct"]["you"], 10)
+        self.assertEqual(st["score"]["you"], 10 * 10 + 10 * round(5 * 8 / 15))   # 10 + speed for 8 s left
+        self.assertEqual(V.league("week", a)["rows"], [])
+        self.assertEqual(V.league("all", a)["rows"], [])
+        with L.db() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM live_matches").fetchone()[0], 0)
+            self.assertIsNone(c.execute("SELECT 1 FROM points_log").fetchone())       # no division points
+        # a fresh bot match is fine straight after, a bad level isn't
+        self.assertNotEqual(V.bot_match({"name": "Ann", "player_id": a})["code"], code)
+        with self.assertRaises(ValueError):
+            V.bot_match({"name": "Ann", "player_id": a, "level": "godlike"})
+
+    def test_bot_1v1_times_out_and_human_can_lose(self):
+        a = self.p[0]
+        code = V.bot_match({"name": "Ann", "player_id": a, "level": "easy"})["code"]
+        FakeTime.t += V.START_SECS + 0.1
+        for _ in range(200):
+            st = V.state(code, a)                          # Ann never answers
+            if st["status"] == "done":
+                break
+            FakeTime.t += 1
+        self.assertEqual(st["score"]["you"], 0)
+        self.assertGreater(st["correct"]["opp"], 0)
+        self.assertEqual(st["result"]["outcome"], "loss")
+        self.assertFalse(st["result"]["forfeit"])
+
+    def test_bot_levels_and_names(self):
+        q = next(q for q in L.bank()[0].values() if q["d"] == 2)
+        acc, secs = {}, {}
+        for lv in ("easy", "medium", "hard"):
+            picks = [V._bot_pick({"opened": 0.0, "level": lv}, q) for _ in range(3000)]
+            acc[lv] = sum(1 for _, c in picks if c == q["a"]) / 3000.0
+            secs[lv] = sum(t for t, _ in picks) / 3000.0
+        self.assertLess(abs(acc["easy"] - 0.5), 0.05)
+        self.assertLess(abs(acc["medium"] - 0.7), 0.05)
+        self.assertLess(abs(acc["hard"] - 0.9), 0.05)
+        self.assertGreater(secs["easy"], secs["medium"])
+        self.assertGreater(secs["medium"], secs["hard"])
+        self.assertEqual(V._bot_pick({"opened": 0.0}, q)[0] <= V.BOT_LEVELS["medium"]["secs"][1], True)  # fillers = medium
+        old = getattr(L, "LIVE_BOT_NAMES", None)
+        try:
+            L.LIVE_BOT_NAMES = ["Alpha", "Bravo", "Charlie", "Delta"]
+            code = V.room_bots({"name": "Ann", "player_id": self.p[0], "level": "easy"})["code"]
+            names = [s["name"] for s in self.st(code, 0)["seats"][1:]]
+            self.assertTrue(all(n.split(" ")[-1] in L.LIVE_BOT_NAMES for n in names))
+            self.assertEqual(len(set(names)), 3)
+        finally:
+            if old is None:
+                del L.LIVE_BOT_NAMES
+            else:
+                L.LIVE_BOT_NAMES = old
+
+    def test_bot_2v2_starts_at_once_and_stays_off_every_table(self):
+        r = V.room_bots({"name": "Ann", "player_id": self.p[0], "level": "medium"})
+        st = self.st(r["code"], 0)
+        self.assertEqual((st["phase"], st["bots"], st["public"]), ("countdown", "medium", False))
+        self.assertEqual([s["bot"] for s in st["seats"]], [False, True, True, True])
+        st = self.run_bots(r["code"], 0)
+        self.assertEqual(st["phase"], "done")
+        with L.db() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM live_games").fetchone()[0], 0)
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM live_players").fetchone()[0], 0)
+            self.assertIsNone(c.execute("SELECT 1 FROM points_log").fetchone())
+        V.room_rematch({"player_id": self.p[0], "code": r["code"]})          # rematch = straight back in
+        self.assertEqual(self.st(r["code"], 0)["phase"], "countdown")
+        for path in ("/api/live/bot", "/api/live/room/bots"):
+            self.assertIn(path, V.ROOM_POST)
+
     def test_routes_registered(self):
         for path in ("create", "join", "quick", "seat", "start", "answer", "leave", "rematch"):
             self.assertIn("/api/live/room/" + path, V.ROOM_POST)

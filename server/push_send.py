@@ -2,6 +2,7 @@
 """Send the scheduled push notifications (Phase 6). Run it inside the scores container:
 
     docker exec football-quiz-scores python -u /app/push_send.py daily     # "Today's quiz is up"
+    docker exec football-quiz-scores python -u /app/push_send.py reminder  # 18:30 nudge if today's daily isn't played
     docker exec football-quiz-scores python -u /app/push_send.py monday    # last week's promotion/relegation
     docker exec football-quiz-scores python -u /app/push_send.py test NAME # one test notification to a player
 
@@ -33,6 +34,11 @@ def _targets(c, kind):
 
 def _deliver(kind, ref, jobs, dry):
     """jobs: [(pid, payload, ttl)] -> counts."""
+    return _deliver_as(kind, kind, ref, jobs, dry)
+
+
+def _deliver_as(kind, sub_type, ref, jobs, dry):
+    """kind = the push_log key (once per player per ref); sub_type = which subscription switch it goes to."""
     n = {"players": 0, "ok": 0, "gone": 0, "error": 0, "skipped": 0}
     for pid, payload, ttl in jobs:
         if dry:
@@ -42,7 +48,7 @@ def _deliver(kind, ref, jobs, dry):
         if not lb.claim_push(kind, ref, pid):
             n["skipped"] += 1
             continue
-        r = push.send_to(lb.db, pid, kind, payload, ttl)
+        r = push.send_to(lb.db, pid, sub_type, payload, ttl)
         n["players"] += 1
         for k in ("ok", "gone", "error"):
             n[k] += r[k]
@@ -66,6 +72,31 @@ def daily(force=False, dry=False):
             jobs.append((pid, {"title": "Football Quiz #%d is up" % number if number >= 1 else "Today's quiz is up",
                                "body": body, "url": "./#daily", "tag": "daily"}, 10 * 3600))
     return _deliver("daily", today.isoformat(), jobs, dry)
+
+
+def reminder_targets(c, today):
+    """Evening nudge recipients: daily pushes switched on, today's daily not played, not nudged today yet."""
+    played = {r[0] for r in c.execute("SELECT player_id FROM daily WHERE date = ?", (today.isoformat(),))}
+    nudged = {r[0] for r in c.execute("SELECT player_id FROM push_log WHERE kind = 'reminder' AND ref = ?",
+                                      (today.isoformat(),))}
+    return sorted(p for p in _targets(c, "daily") if p not in played and p not in nudged)
+
+
+def reminder(force=False, dry=False):
+    """Evening nudge (cron ~18:30 UK) for players who haven't played today's daily yet.
+    Same opt-in as the morning push (the "daily" switch); at most once per player per day."""
+    today = daily_gen.uk_today(lb.clock())
+    number = daily_gen.number(today)
+    if number < 1 and not force:
+        return {"skipped": "daily quiz #1 hasn't started yet (%s)" % today.isoformat()}
+    jobs = []
+    with lb.db() as c:
+        for pid in reminder_targets(c, today):
+            streak = lb.streak_for(c, pid, today - timedelta(days=1))
+            body = ("Don't lose your %d-day streak. " % streak if streak >= 2 else "") + "You haven't played today's 7 yet. Two minutes, same questions for everyone."
+            jobs.append((pid, {"title": "Football Quiz #%d closes at midnight" % max(number, 1), "body": body, "url": "./#daily", "tag": "daily"},
+                         5 * 3600))
+    return _deliver_as("reminder", "daily", today.isoformat(), jobs, dry)
 
 
 def monday(dry=False):
@@ -109,9 +140,9 @@ def test(name, dry=False):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("what", choices=("daily", "monday", "test"))
+    ap.add_argument("what", choices=("daily", "reminder", "monday", "test"))
     ap.add_argument("name", nargs="?")
-    ap.add_argument("--force", action="store_true", help="daily: send even before daily quiz #1")
+    ap.add_argument("--force", action="store_true", help="daily/reminder: send even before daily quiz #1")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
     lb.init()
@@ -120,6 +151,8 @@ def main(argv=None):
         return 2
     if a.what == "daily":
         print(daily(a.force, a.dry_run))
+    elif a.what == "reminder":
+        print(reminder(a.force, a.dry_run))
     elif a.what == "monday":
         print(monday(a.dry_run))
     else:

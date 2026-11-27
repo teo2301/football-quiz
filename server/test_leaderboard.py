@@ -910,6 +910,39 @@ class Push(Base):
         self.assertEqual(got[ids[2]]["title"], "You stayed in Sunday League")    # bottom tier: nobody relegated
         self.assertEqual(PS.monday()["players"], 0)
 
+    def test_evening_reminder_recipients(self):
+        fake_clock(datetime(2026, 12, 3, 18, 30, tzinfo=timezone.utc))
+        keen, played, off, nudged = pid(), pid(), pid(), pid()
+        self.subscribe(keen)
+        self.subscribe(played)
+        self.subscribe(off, types=["challenge", "division"])     # daily switch off = opted out
+        self.subscribe(nudged, types=["daily"])
+        d = daily_gen.uk_today(L.clock())
+        L.add_daily({"name": "Played", "player_id": played, "date": d.isoformat(),
+                     "answers": [{"id": i, "choice": BY_ID[i]["a"]} for i in L.daily_ids(d)["ids"]]})
+        self.assertTrue(L.claim_push("reminder", d.isoformat(), nudged))   # already nudged today
+        with L.db() as c:
+            self.assertEqual(PS.reminder_targets(c, d), [keen])
+        r = PS.reminder(dry=True)
+        self.assertEqual(r["players"], 1)
+        with L.db() as c:                               # a dry run logs nothing
+            self.assertEqual(PS.reminder_targets(c, d), [keen])
+        fake_clock(datetime(2026, 11, 26, 18, 30, tzinfo=timezone.utc))
+        self.assertIn("skipped", PS.reminder(dry=True))  # before daily #1
+        self.assertEqual(PS.reminder(force=True, dry=True)["players"], 3)  # another day: keen, played, nudged
+
+    @unittest.skipUnless(HAVE_PUSH, "pywebpush not installed (run with .venv/bin/python)")
+    def test_evening_reminder_sends_once(self):
+        fake_clock(datetime(2026, 12, 3, 18, 30, tzinfo=timezone.utc))
+        keen = pid()
+        _, secret = self.subscribe(keen, types=["daily"])
+        r = PS.reminder()
+        self.assertEqual((r["players"], r["ok"]), (1, 1))
+        msg = self.fake.decrypt(0, secret)
+        self.assertIn("closes at midnight", msg["title"])
+        self.assertEqual(msg["url"], "./#daily")
+        self.assertEqual(PS.reminder()["players"], 0)   # at most one per player per day
+
     def test_sending_without_pywebpush_or_key_is_a_no_op(self):
         P.VAPID_PATH = os.path.join(TMP, "missing.json")
         me = pid()

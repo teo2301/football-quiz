@@ -708,3 +708,11 @@ body{--tA:var(--yellow);--tB:#5cb8ff}
 #duDone .rev .pk{font-size:13px;color:var(--chalk2)}
 #duDone .rev .pk.ok{color:var(--chalk);font-weight:600}
 @media (prefers-color-scheme:dark){.dures .vsrow .tA b{color:var(--tA)}.dures .vsrow .tB b{color:var(--tB)}}
+
+/* Play vs bots (live.js) */
+.lvbots .seg{margin:12px 0}
+.lvbotbtns{display:flex;gap:10px}
+.lvbotbtns .btn{-webkit-box-flex:1;flex:1;margin:0}
+.lvbots.hot{outline:2px solid var(--yellow);outline-offset:2px}
+#lvBotOff{margin:8px 0 0}
+#duBots{margin-top:12px}

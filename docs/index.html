@@ -336,6 +336,13 @@
       <p class="cmeta">10 questions, 15 seconds each, against whoever's online. Quicker right answers score more. Win = 3 league points, draw = 1.</p>
       <button class="btn" id="lvFind">Find a match</button>
     </div>
+    <div class="card lvbots" id="lvBotCard">
+      <h2 class="ctitle">Play vs bots</h2>
+      <p class="cmeta">No waiting: the same 10 questions, 15 seconds each. Bot games don't count for the league. The 1v1 works offline too.</p>
+      <p class="msg hidden" id="lvBotOff">Can't reach the server right now, so the bot game runs on your phone.</p>
+      <div class="seg" id="lvLevel" role="group" aria-label="Bot level"></div>
+      <div class="lvbotbtns"><button class="btn" id="lvBot1">1v1 vs bot</button><button class="btn ghost" id="lvBot2">2v2 with bots</button></div>
+    </div>
     <div class="tile form">
       <b>Play a mate</b>
       <div class="namerow"><input id="lvCode" class="code" maxlength="7" placeholder="ABC123" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"><button class="btn" id="lvJoin">Join</button></div>
@@ -388,6 +395,7 @@
       <p class="h2h" id="lvResNote"></p>
     </div>
     <button class="btn" id="lvAgain">Find another match</button>
+    <button class="btn ghost" id="lvShareRes">Share result</button>
     <button class="btn ghost" id="lvHome">Home</button>
     <h2 class="sec">Question by question</h2>
     <ul class="review qq" id="lvReview"></ul>
@@ -410,6 +418,7 @@
       <button class="btn" id="duCreate">Create a room</button>
       <div class="namerow" style="margin-top:12px"><input id="duCode" class="code" maxlength="7" placeholder="ROOM CODE" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-label="Room code"><button class="btn ghost" id="duJoin">Join</button></div>
     </div>
+    <button class="btn ghost" id="duBots">Play vs bots (you + a bot v 2 bots)</button>
     <p class="msg hidden" id="duMsg" aria-live="polite"></p>
     <h2 class="sec">How it works</h2>
     <ul class="duhow">
@@ -465,6 +474,7 @@
     </div>
     <ul class="lb duscores" id="duScores"></ul>
     <button class="btn" id="duAgain">Rematch</button>
+    <button class="btn ghost" id="duShareRes">Share result</button>
     <button class="btn ghost" id="duLeave">Leave</button>
     <h2 class="sec">Question by question</h2>
     <ul class="review qq" id="duReview"></ul>
