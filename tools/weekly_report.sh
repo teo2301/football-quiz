@@ -1,5 +1,5 @@
 #!/bin/sh
-# Weekly question-quality summary -> Matteo's phone via ~/scripts/notify.sh (ntfy).
+# Weekly question-quality summary -> Matteo's phone via /home/riccioserver/projects/server-ops/scripts/notify.sh (ntfy).
 # Open player reports + questions whose real correct rate disagrees with their difficulty
 # (server/question_stats.py, DB opened read-only). Silent when there's nothing to look at.
 #
@@ -11,7 +11,7 @@
 #   30 8 * * 1 /mnt/ssdstorage/share/football-quiz/tools/weekly_report.sh >/dev/null 2>&1
 cd "$(dirname "$0")/.." || exit 1
 DB="${QUIZ_DB:-$PWD/data/leaderboard.db}"
-NOTIFY="${NOTIFY:-/home/riccioserver/scripts/notify.sh}"
+NOTIFY="${NOTIFY:-/home/riccioserver/projects/server-ops/scripts/notify.sh}"
 [ -f "$DB" ] || { echo "no database at $DB" >&2; exit 1; }
 TEXT=$(python3 server/question_stats.py --db "$DB" --short) || exit 1
 case "$TEXT" in
