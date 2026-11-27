@@ -2,7 +2,7 @@
 """Drive the preview (:8197) in headless Chromium at 390x844, light + dark,
 and save screenshots to preview-shots/. Prints console errors.
 
-    python3 tools/drive_preview.py [light|dark|both|live]
+    python3 tools/drive_preview.py [light|dark|both|offline|live]     (both includes offline)
 
 `live` runs four browser contexts at once in one Chromium (two light, two dark, each with its own
 player id and client IP): a full 2v2 room game (create, three join by #r= link, a seat switch,
@@ -583,6 +583,83 @@ async def run(scheme, name, taken_name=None, shared=None, prof=None):
             shutil.rmtree(prof, ignore_errors=True)
 
 
+PREVIEW_CMD = "setsid nohup python3 -u tools/preview.py fq-v2-preview-marker > /tmp/fq-v2-preview.log 2>&1 < /dev/null &"
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+
+
+def preview_static(up):
+    """Stop / restart only the static+proxy server (:8197); the test API and its DB keep running."""
+    if up:
+        subprocess.run(PREVIEW_CMD, shell=True, cwd=ROOT)
+        for _ in range(50):
+            try:
+                urllib.request.urlopen(URL, timeout=1).read()
+                return
+            except Exception:
+                time.sleep(0.2)
+        raise RuntimeError("preview did not come back")
+    subprocess.run(["pkill", "-f", "tools/preview.py fq-v2-preview-marker"])
+    time.sleep(1)
+
+
+async def offline_check(scheme):
+    """Fresh profile: load once so the SW caches the app, then take the site down and play
+    Classic and the Daily from the cache. API calls fail while offline; those are expected."""
+    prof = tempfile.mkdtemp(prefix="fq-chrome-")
+    port = PORT + 2
+    proc = subprocess.Popen([CHROME, "--headless=new", "--remote-debugging-port=%d" % port, "--user-data-dir=" + prof,
+                             "--no-sandbox", "--no-first-run", "--hide-scrollbars", "--disable-gpu", "about:blank"],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        for _ in range(50):
+            try:
+                tabs = json.load(urllib.request.urlopen("http://127.0.0.1:%d/json" % port))
+                ws_url = [t for t in tabs if t["type"] == "page"][0]["webSocketDebuggerUrl"]
+                break
+            except Exception:
+                time.sleep(0.2)
+        async with websockets.connect(ws_url, max_size=100_000_000) as ws:
+            tab = Tab(ws, scheme)
+            reader = asyncio.ensure_future(tab.reader())
+            for m in ("Runtime.enable", "Log.enable", "Page.enable", "Network.enable"):
+                await tab.send(m)
+            await tab.send("Emulation.setDeviceMetricsOverride", {"width": 390, "height": 844, "deviceScaleFactor": 2, "mobile": True})
+            await tab.send("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-color-scheme", "value": scheme}]})
+            await tab.goto(URL)
+            await tab.wait("BANK.length > 0")
+            await tab.wait("navigator.serviceWorker.getRegistration().then(function(r){return !!(r && r.active)})", 15)
+            await tab.goto(URL)      # second load comes through the active SW, filling its cache
+            await tab.wait("BANK.length > 0 && document.fonts.status === 'loaded'")
+            preview_static(False)
+            try:
+                await tab.goto(URL)
+                await tab.wait("BANK.length > 0 && document.fonts.status === 'loaded'")
+                print(scheme, "offline: app loaded from the cache")
+                await tab.shot("80-offline-home")
+                await tab.js("document.querySelector('[data-mode=classic]').click()")
+                await tab.js("document.getElementById('start').click()")
+                await play(tab, [True, False, True, True, False, True, True, True, False, True], snap_first="81-offline-classic")
+                await tab.wait(VISIBLE % "done")
+                await tab.shot("82-offline-classic-result")
+                await tab.js("document.getElementById('menu').click()")
+                await tab.js("settings.league = 'all'; store.set('settings', settings); true")
+                await tab.js("document.getElementById('dPlay').click()")
+                await play(tab, [True, True, False, True, True, False, True], snap_first="85-offline-daily")
+                await tab.wait(VISIBLE % "done")
+                await tab.shot("86-offline-daily-result")
+                await tab.js("document.getElementById('menu').click()")
+                await tab.shot("87-offline-home-after")
+            finally:
+                preview_static(True)
+            reader.cancel()
+            # failed /api calls (and the failed page navigation before the SW answered) are expected offline
+            return [e for e in tab.errors if "/api/" not in e and "ERR_CONNECTION_REFUSED" not in e]
+    finally:
+        proc.terminate()
+        proc.wait()
+        shutil.rmtree(prof, ignore_errors=True)
+
+
 async def main(which):
     os.makedirs(OUT, exist_ok=True)
     errs, tag = {}, time.strftime("%H%M%S")      # fresh browser = fresh player id, so fresh names
@@ -593,7 +670,8 @@ async def main(which):
     try:
         # light sends a challenge + makes a league; dark (another player) plays it and joins;
         # then the light profile reopens to see the sender's side.
-        errs["light"] = await run("light", "Light " + tag, shared=shared, prof=light_prof)
+        if which != "offline":
+            errs["light"] = await run("light", "Light " + tag, shared=shared, prof=light_prof)
         if which == "both":
             errs["dark"] = await run("dark", "Dark " + tag, taken_name="light " + tag, shared=shared)
             shared["creator_view"] = True
@@ -601,6 +679,9 @@ async def main(which):
     finally:
         shutil.rmtree(light_prof, ignore_errors=True)
     srv.shutdown()
+    if which in ("both", "offline"):
+        errs["offline-light"] = await offline_check("light")
+        errs["offline-dark"] = await offline_check("dark")
     print("fake push service received:", PUSHED)
     if which == "both":     # the push_send test + "Dark beat your challenge" (sent when dark played it)
         mine = [x for x in PUSHED if x[0] == "/" + shared["sub_light"]["endpoint"].split("/", 3)[3]]
@@ -792,8 +873,8 @@ async def one_v_one(a, b):
         await asyncio.gather(*[p.wait("lv && lv.phase === 'question' && lv.q && document.getElementById('lvQN').textContent.indexOf('Question %d ') === 0" % (i + 1), 25) for p in (a, b)])
         for p, ok in ((a, True), (b, i % 3 == 0)):
             await p.js("""(function () {
-              var bs = document.querySelectorAll('#lvOpts .opt'), q = document.getElementById('lvQText').textContent, a = null;
-              for (var k = 0; k < BANK.length; k++) if (BANK[k].q === q) { a = BANK[k].a; break; }
+              var bs = document.querySelectorAll('#lvOpts .opt'), q = lv.q, a = null;
+              for (var k = 0; k < BANK.length; k++) if (BANK[k].id === q) { a = BANK[k].a; break; }
               for (var i = 0; i < bs.length; i++) if ((bs[i].getAttribute('data-v') === a) === %s) { bs[i].click(); return; }
             })()""" % ("true" if ok else "false"))
             await asyncio.sleep(0.5)

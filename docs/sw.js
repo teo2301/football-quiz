@@ -1,6 +1,6 @@
 // Offline support. Bump VERSION after changing any app file or the file list.
 // The data files (questions, stats, careers) are network-first so new content shows up without a bump.
-const VERSION = "fq-v14";
+const VERSION = "fq-v15";
 const DATA = ["/questions.json", "/stats.json", "/careers.json"];
 const FILES = ["./", "index.html", "app.css", "privacy.html", "questions.json", "stats.json", "careers.json", "manifest.json",
   "icon-192.png", "icon-512.png", "badge-96.png", "sounds/cheer.mp3", "sounds/groan.mp3", "sounds/whistle.mp3",

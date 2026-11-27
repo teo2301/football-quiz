@@ -414,8 +414,7 @@ function duLobby(st) {
       if (s) {
         col.appendChild(h("div", {className: "duseat" + (s.you ? " you" : "") + (s.bot ? " bot" : "")},
           h("span", {className: "av"}, s.bot ? "🤖" : s.name.charAt(0).toUpperCase()),
-          h("span", {className: "nm"}, s.name),
-          s.host ? h("span", {className: "hs"}, "Host") : null));
+          h("span", {className: "nm"}, s.name, s.host ? h("small", null, "Host") : null)));
       } else {
         var b = h("button", {className: "duseat empty", type: "button"}, h("span", {className: "av"}, "+"),
           h("span", {className: "nm"}, st.team === t ? "Empty seat" : "Move here"));
