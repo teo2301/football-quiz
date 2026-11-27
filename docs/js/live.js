@@ -20,7 +20,7 @@ function lvPanel(id) {
 
 function openLive(code) {
   lvStop(); lv = null;
-  show("live"); lvPanel("lvLobby");
+  show("live"); lvPanel("lvLobby"); lvChallengeBanner(null);
   $("lvCode").value = code || ""; msg("lvMsg", "");
   $("lvFind").disabled = false;
   lvSyncLevel();
@@ -293,7 +293,41 @@ function lvQuit() {
   lvStop(); lv = null; goHome();
 }
 
+// A shared result links to a fresh challenge (#vs=<name>&s=<score>[&m=2]), not the finished match:
+// the friend lands on the lobby with "Play a mate" highlighted and a one-tap button to start a new one.
+function lvChallengeHash() {
+  var m = /^#vs=([^&]{1,90})(?:&s=(\d{1,4}))?(&m=2)?$/.exec(location.hash);
+  if (!m) return false;
+  try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { location.hash = ""; }
+  var name = "";
+  try { name = decodeURIComponent(m[1]); } catch (e) { name = ""; }
+  name = name.replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, 24) || "A mate";
+  if (m[3]) openDuo(); else openLive();
+  lvChallengeBanner({name: name, score: m[2] || "", duo: !!m[3]});
+  return true;
+}
+function lvChallengeBanner(c) {
+  ["lvChal", "duChal"].forEach(function (id) {
+    var old = $(id); if (old) old.parentNode.removeChild(old);
+  });
+  var tiles = document.querySelectorAll(".lvchalhot");
+  for (var i = 0; i < tiles.length; i++) tiles[i].classList.remove("lvchalhot");
+  if (!c) return;
+  var tile = $(c.duo ? "duCreate" : "lvCreate").parentNode;
+  var box = h("div", {className: "card lvchal", id: c.duo ? "duChal" : "lvChal"});
+  box.appendChild(h("h2", {className: "ctitle"}, "⚔️ " + c.name + " challenged you" + (c.score ? " — beat " + c.score : "")));
+  box.appendChild(h("p", {className: "cmeta"}, c.duo ? "Make a room and send them the link. You both need to be online." :
+    "Start a friendly match and send them the code. You both need to be online; it starts the moment they join."));
+  var go = h("button", {className: "btn", type: "button"}, c.duo ? "Create a room" : "Create a match");
+  go.onclick = c.duo ? duCreate : lvCreate;
+  box.appendChild(go);
+  tile.parentNode.insertBefore(box, tile);
+  tile.classList.add("lvchalhot");
+  try { box.scrollIntoView({block: "start"}); } catch (e) { /* old browsers */ }
+}
+
 function handleLiveHash() {
+  if (lvChallengeHash()) return true;
   var m = /^#([lr])=([A-Za-z0-9\-]{6,7})$/.exec(location.hash);
   if (!m) return false;
   var code = tidyCode(m[2]);
@@ -356,7 +390,7 @@ function duStop() {
 
 function openDuo(code) {
   duStop();
-  show("duo"); duPanel("duHub");
+  show("duo"); duPanel("duHub"); lvChallengeBanner(null);
   $("duCode").value = code || ""; msg("duMsg", "");
   $("duQuick").disabled = false; $("duCreate").disabled = false;
   if (code) duJoin();
@@ -887,9 +921,11 @@ function lvShareResult() {
   var verdict = x.outcome === "win" ? "Won" : x.outcome === "draw" ? "Drew" : "Lost";
   var text = (x.size === 2 ? "🤝 " : "⚔️ ") + verdict + " " + x.us + " – " + x.them + " (" + x.usName + " v " + x.themName + ")" +
     (x.line ? " · " + x.line : "") + " · " + lvModeText(x) + " on " + document.title + ".";
-  var url = APP_URL;
-  if (!x.bot && x.code && x.size === 2 && !x.isPublic) { url = APP_URL + "#r=" + x.code; text += " Room " + x.code + ", join us:"; }
-  else if (!x.bot && x.code && x.size !== 2 && !x.ranked) { url = APP_URL + "#l=" + x.code; text += " Code " + x.code + ":"; }
-  else text += " Fancy a game?";
+  var url = APP_URL, friendly = !x.bot && x.code && (x.size === 2 ? !x.isPublic : !x.ranked);
+  if (friendly) {
+    // a fresh challenge, not the finished match (that link would only say "already started")
+    url = APP_URL + "#vs=" + encodeURIComponent(myName() || x.usName || "A mate") + "&s=" + x.us + (x.size === 2 ? "&m=2" : "");
+    text += " Think you can beat " + x.us + "? Rematch:";
+  } else text += " Fancy a game?";
   shareLink(text, url);
 }

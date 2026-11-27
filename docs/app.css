@@ -714,5 +714,8 @@ body{--tA:var(--yellow);--tB:#5cb8ff}
 .lvbotbtns{display:flex;gap:10px}
 .lvbotbtns .btn{-webkit-box-flex:1;flex:1;margin:0}
 .lvbots.hot{outline:2px solid var(--yellow);outline-offset:2px}
+.lvchal{border-left:4px solid var(--yellow)}
+.lvchal .btn{margin-top:10px}
+.lvchalhot{outline:2px solid var(--yellow);outline-offset:2px}
 #lvBotOff{margin:8px 0 0}
 #duBots{margin-top:12px}
