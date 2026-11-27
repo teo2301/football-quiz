@@ -49,7 +49,7 @@ The client falls back to plain polling either way, so a cut is slower but not br
 
     git push                                      # origin = git@github-quiz:teo2301/football-quiz.git, main
     # wait ~1 min, then:
-    curl -s https://teo2301.github.io/football-quiz/sw.js | head -3    # VERSION fq-v14 (or later)
+    curl -s https://teo2301.github.io/football-quiz/sw.js | head -3    # VERSION fq-v16 (or later)
 
 ## 5. Smoke test on the phone (on 4G, outside the tailnet)
 
