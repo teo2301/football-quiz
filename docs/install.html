@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Install Football Quiz on Android or iPhone</title>
+<meta name="description" content="Get Football Quiz on your phone: Android app (APK) download and iPhone Add to Home Screen steps.">
+<meta name="theme-color" content="#0f7a3d">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+<style>
+/* install page only; the look comes from app.css. iOS 12 safe (no gap/clamp/inset). */
+main.inst{padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+.ihead{text-align:center;padding:22px 0 6px}
+.ihead img{width:84px;height:84px;border-radius:20px;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.ihead h1{font-size:32px;margin-top:14px;line-height:1.1}
+.ihead p{margin:8px 0 0;color:var(--chalk2);font-size:15px}
+a.btn{text-decoration:none;text-align:center;line-height:26px}
+.plat{margin-top:22px;position:relative}
+.plat h2{font-size:22px;color:var(--ink)}
+.plat.you{box-shadow:0 0 0 3px var(--yellow),0 10px 28px rgba(0,0,0,.25)}
+.yourdev{display:none;position:absolute;right:14px;top:-12px;background:var(--yellow);color:#10231a;border-radius:999px;
+  padding:3px 10px;font:600 12px/1.4 var(--body);text-transform:uppercase;letter-spacing:.05em}
+.plat.you .yourdev{display:block}
+.steps{list-style:none;margin:14px 0 0;padding:0}
+.steps li{display:flex;align-items:flex-start;padding:9px 0;border-top:1px solid var(--cardb);color:var(--ink)}
+.steps li:first-child{border-top:0}
+.steps .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--card);font:700 14px/26px var(--body);
+  text-align:center;margin-right:10px}
+.steps .ic{flex:none;margin:2px 10px 0 0;color:var(--ink2)}
+.steps li span{flex:1}
+.note{margin:12px 0 0;font-size:14px;color:var(--ink2)}
+.direct{display:block;text-align:center;margin-top:10px;font-size:14px;color:var(--ink2)}
+.card a{color:inherit}
+.warn{display:none;margin:12px 0 0;padding:10px 12px;border-radius:12px;background:rgba(232,89,12,.14);color:var(--ink);font-size:14px}
+.warn.on{display:block}
+.foot{text-align:center;margin-top:26px;font-size:13px;color:var(--chalk2)}
+.foot a{color:var(--chalk2)}
+</style>
+</head>
+<body>
+<main class="inst">
+  <div class="ihead">
+    <img src="icon-192.png" alt="" width="84" height="84">
+    <h1>Football Quiz</h1>
+    <p>General knowledge football quiz, 1999 to today</p>
+  </div>
+  <a class="btn" href="./">Play now in your browser</a>
+
+  <div id="plats">
+  <section class="card plat" id="android">
+    <span class="yourdev">Your device</span>
+    <h2>Android</h2>
+    <a class="btn" href="https://github.com/teo2301/football-quiz/releases/latest" rel="noopener">Download the Android app (APK)</a>
+    <a class="direct" href="https://github.com/teo2301/football-quiz/releases/download/v2.1/FootballQuiz-2.1.apk" rel="noopener">Direct download: FootballQuiz-2.1.apk (version 2.1)</a>
+    <ol class="steps">
+      <li><span class="n">1</span><svg class="ic" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span>Tap the button above and download the APK.</span></li>
+      <li><span class="n">2</span><svg class="ic" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><span>If asked, allow <b>Install unknown apps</b> for your browser.</span></li>
+      <li><span class="n">3</span><svg class="ic" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg><span>Open the downloaded file, then tap <b>Install</b>.</span></li>
+    </ol>
+    <p class="note">Updates arrive automatically: the app loads the live site, so you only install it once.</p>
+  </section>
+
+  <section class="card plat" id="ios">
+    <span class="yourdev">Your device</span>
+    <h2>iPhone &amp; iPad</h2>
+    <p class="warn" id="notSafari">You're not in Safari. Copy this page's link and open it in <b>Safari</b> to add the app.</p>
+    <ol class="steps">
+      <li><span class="n">1</span><svg class="ic" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>Open <a href="./">teo2301.github.io/football-quiz/</a> in <b>Safari</b> (not Chrome or an in-app browser).</span></li>
+      <li><span class="n">2</span><svg class="ic" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg><span>Tap the <b>Share</b> button (on newer iOS it may be under the <b>⋯</b> menu).</span></li>
+      <li><span class="n">3</span><svg class="ic" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg><span>Scroll down and tap <b>Add to Home Screen</b>.</span></li>
+      <li><span class="n">4</span><svg class="ic" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Tap <b>Add</b>.</span></li>
+      <li><span class="n">5</span><svg class="ic" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg><span>Open Football Quiz from your home screen.</span></li>
+    </ol>
+    <p class="note">Notifications need iOS 16.4 or later and only work in the home-screen app.</p>
+  </section>
+  </div>
+
+  <p class="foot">Free, no accounts, no ads. <a href="privacy.html">Privacy policy</a> · <a href="https://github.com/teo2301/football-quiz" rel="noopener">Source</a></p>
+</main>
+<script>
+(function () {
+  var ua = navigator.userAgent || "";
+  var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var droid = /Android/i.test(ua);
+  var pick = ios ? "ios" : droid ? "android" : "";
+  if (!pick) return;
+  var el = document.getElementById(pick), box = document.getElementById("plats");
+  el.className += " you";
+  if (box.firstElementChild !== el) box.insertBefore(el, box.firstElementChild);
+  if (ios && /CriOS|FxiOS|EdgiOS|OPiOS|GSA\/|FBAN|FBAV|Instagram|WhatsApp|Line\//.test(ua))
+    document.getElementById("notSafari").className += " on";
+})();
+</script>
+</body>
+</html>

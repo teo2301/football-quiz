@@ -1,8 +1,8 @@
 // Offline support. Bump VERSION after changing any app file or the file list.
 // The data files (questions, stats, careers) are network-first so new content shows up without a bump.
-const VERSION = "fq-v18";
+const VERSION = "fq-v19";
 const DATA = ["/questions.json", "/stats.json", "/careers.json"];
-const FILES = ["./", "index.html", "app.css", "privacy.html", "questions.json", "stats.json", "careers.json", "manifest.json",
+const FILES = ["./", "index.html", "app.css", "privacy.html", "install.html", "questions.json", "stats.json", "careers.json", "manifest.json",
   "icon-192.png", "icon-512.png", "badge-96.png", "sounds/cheer.mp3", "sounds/groan.mp3", "sounds/whistle.mp3",
   "js/daily-gen.js", "js/match.js", "js/ach-defs.js", "js/core.js", "js/achievements.js", "js/quiz.js", "js/social.js", "js/report.js", "js/modes.js", "js/games.js", "js/compete.js", "js/live.js", "js/board.js", "js/push.js", "js/me.js", "js/app.js",
   "fonts/inter-latin.woff2", "fonts/inter-latin-ext.woff2", "fonts/oswald-latin.woff2", "fonts/oswald-latin-ext.woff2"];

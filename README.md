@@ -1,5 +1,20 @@
 # Football Quiz
 
+## Get the app
+
+**[Install page: Android + iPhone](https://teo2301.github.io/football-quiz/install.html)** · [Play in your browser](https://teo2301.github.io/football-quiz/)
+
+**Android:** [Download the APK (latest release)](https://github.com/teo2301/football-quiz/releases/latest).
+Open it, allow "Install unknown apps" for your browser if asked, then tap Install.
+Updates arrive automatically because the app loads the live site.
+
+**iPhone / iPad:**
+1. Open https://teo2301.github.io/football-quiz/ in **Safari** (not Chrome or an in-app browser).
+2. Tap **Share**, then **Add to Home Screen**, then **Add**.
+3. Open Football Quiz from your home screen. Notifications need iOS 16.4+ and only work from the home-screen app.
+
+## About
+
 General-knowledge football quiz, 1999 to today, mostly Premier League, La Liga and Serie A
 (plus Europe and international). It's an installable PWA that works offline. Pure static files,
 with no backend.
